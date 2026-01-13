@@ -1,26 +1,471 @@
 @import "tailwindcss";
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   BIBEL APP – "Refined Sanctuary" Design System
+   Editorial elegance meets organic warmth
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Color Palette – Light Mode: Pergament & Tinte
+   ───────────────────────────────────────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Backgrounds */
+  --bg-primary: #FAF6F1;
+  --bg-secondary: #F0EAE2;
+  --bg-elevated: #FFFFFF;
+  --bg-hover: #F5EFE7;
+
+  /* Text */
+  --text-primary: #1C1917;
+  --text-secondary: #57534E;
+  --text-muted: #A8A29E;
+
+  /* Accent – Gebranntes Sienna */
+  --accent: #9A3412;
+  --accent-hover: #7C2D12;
+  --accent-soft: #FDBA74;
+  --accent-bg: #FEF3E8;
+
+  /* Borders & Dividers */
+  --border: #E7E0D8;
+  --border-strong: #D6CFC5;
+
+  /* Highlights for Markierungen */
+  --highlight-yellow: #FEF9C3;
+  --highlight-green: #DCFCE7;
+  --highlight-blue: #DBEAFE;
+  --highlight-pink: #FCE7F3;
+  --highlight-orange: #FFEDD5;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(28, 25, 23, 0.04);
+  --shadow-md: 0 4px 12px rgba(28, 25, 23, 0.08);
+  --shadow-lg: 0 12px 32px rgba(28, 25, 23, 0.12);
+
+  /* Paper Texture Overlay */
+  --paper-texture: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   Dark Mode – Mitternacht & Gold
+   ───────────────────────────────────────────────────────────────────────────── */
+.dark {
+  --bg-primary: #171412;
+  --bg-secondary: #231F1C;
+  --bg-elevated: #2A2523;
+  --bg-hover: #332E2A;
+
+  --text-primary: #F5F2ED;
+  --text-secondary: #A8A29E;
+  --text-muted: #6B6560;
+
+  --accent: #F59E0B;
+  --accent-hover: #D97706;
+  --accent-soft: #92400E;
+  --accent-bg: #292219;
+
+  --border: #3D3835;
+  --border-strong: #524B45;
+
+  --highlight-yellow: rgba(254, 249, 195, 0.15);
+  --highlight-green: rgba(220, 252, 231, 0.12);
+  --highlight-blue: rgba(219, 234, 254, 0.12);
+  --highlight-pink: rgba(252, 231, 243, 0.12);
+  --highlight-orange: rgba(255, 237, 213, 0.15);
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Tailwind Theme Integration
+   ───────────────────────────────────────────────────────────────────────────── */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--bg-primary);
+  --color-foreground: var(--text-primary);
+
+  /* Custom colors for Tailwind */
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-secondary: var(--bg-secondary);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-bg-hover: var(--bg-hover);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-bg: var(--accent-bg);
+
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+
+  /* Fonts */
+  --font-serif: var(--font-cormorant);
+  --font-display: var(--font-playfair);
+  --font-sans: var(--font-dm-sans);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ─────────────────────────────────────────────────────────────────────────────
+   Base Styles
+   ───────────────────────────────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  line-height: 1.6;
+  min-height: 100dvh;
+}
+
+/* Subtle paper texture overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: var(--paper-texture);
+  opacity: 0.015;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.dark body::before {
+  opacity: 0.03;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Typography – Bibeltext
+   ───────────────────────────────────────────────────────────────────────────── */
+.bible-text {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: var(--bible-font-size, 1.25rem);
+  line-height: 1.8;
+  letter-spacing: 0.01em;
+  font-feature-settings: "onum" 1, "pnum" 1;
+}
+
+/* Versnummer – Kapitälchen */
+.verse-number {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-variant: small-caps;
+  font-weight: 600;
+  color: var(--text-muted);
+  font-size: 0.85em;
+  margin-right: 0.35em;
+  user-select: none;
+}
+
+/* Illuminierte Initiale */
+.drop-cap {
+  float: left;
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: 4.5em;
+  line-height: 0.8;
+  padding-right: 0.08em;
+  padding-top: 0.05em;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.dark .drop-cap {
+  color: var(--accent);
+  text-shadow: 0 0 40px rgba(245, 158, 11, 0.3);
+}
+
+/* Kapitelüberschrift */
+.chapter-title {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Verse Highlighting – Handschrift-Stil
+   ───────────────────────────────────────────────────────────────────────────── */
+.verse-highlight {
+  position: relative;
+  border-radius: 2px;
+  padding: 0.05em 0.1em;
+  margin: 0 -0.1em;
+  transition: background-color 0.2s ease;
+}
+
+.verse-highlight-yellow { background-color: var(--highlight-yellow); }
+.verse-highlight-green { background-color: var(--highlight-green); }
+.verse-highlight-blue { background-color: var(--highlight-blue); }
+.verse-highlight-pink { background-color: var(--highlight-pink); }
+.verse-highlight-orange { background-color: var(--highlight-orange); }
+
+/* Vers-Selektion */
+.verse-selected {
+  background-color: var(--accent-bg);
+  border-radius: 4px;
+}
+
+/* Handschrift-artige Unterstreichung */
+.verse-underline {
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-decoration-style: wavy;
+  text-underline-offset: 3px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Interactive Elements
+   ───────────────────────────────────────────────────────────────────────────── */
+.verse-interactive {
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  border-radius: 4px;
+  padding: 0.25em 0;
+  margin: 0 -0.25em;
+  padding-left: 0.25em;
+  padding-right: 0.25em;
+}
+
+.verse-interactive:hover {
+  background-color: var(--bg-hover);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Buttons & Controls
+   ───────────────────────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-secondary {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-strong);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+}
+
+.btn-ghost:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Cards & Containers
+   ───────────────────────────────────────────────────────────────────────────── */
+.card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.card-interactive:hover {
+  transform: translateY(-2px);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Navigation
+   ───────────────────────────────────────────────────────────────────────────── */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  color: var(--text-secondary);
+  transition: all 0.15s ease;
+}
+
+.nav-item:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.nav-item.active {
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Reading Progress Indicator
+   ───────────────────────────────────────────────────────────────────────────── */
+.reading-progress {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--border);
+  z-index: 50;
+}
+
+.reading-progress-bar {
+  width: 100%;
+  background: var(--accent);
+  transition: height 0.1s ease-out;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Animations
+   ───────────────────────────────────────────────────────────────────────────── */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out forwards;
+}
+
+/* Staggered children animation */
+.stagger-children > * {
+  opacity: 0;
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.stagger-children > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger-children > *:nth-child(2) { animation-delay: 0.1s; }
+.stagger-children > *:nth-child(3) { animation-delay: 0.15s; }
+.stagger-children > *:nth-child(4) { animation-delay: 0.2s; }
+.stagger-children > *:nth-child(5) { animation-delay: 0.25s; }
+.stagger-children > *:nth-child(6) { animation-delay: 0.3s; }
+.stagger-children > *:nth-child(7) { animation-delay: 0.35s; }
+.stagger-children > *:nth-child(8) { animation-delay: 0.4s; }
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Scrollbar Styling
+   ───────────────────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Selection
+   ───────────────────────────────────────────────────────────────────────────── */
+::selection {
+  background: var(--accent-soft);
+  color: var(--text-primary);
+}
+
+.dark ::selection {
+  background: var(--accent);
+  color: var(--bg-primary);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Font Size Settings (User Preference)
+   ───────────────────────────────────────────────────────────────────────────── */
+.font-size-sm { --bible-font-size: 1rem; }
+.font-size-md { --bible-font-size: 1.25rem; }
+.font-size-lg { --bible-font-size: 1.5rem; }
+.font-size-xl { --bible-font-size: 1.75rem; }
+.font-size-2xl { --bible-font-size: 2rem; }
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Mobile Optimizations
+   ───────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .reading-progress {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+  }
+
+  .reading-progress-bar {
+    height: 100%;
+    width: 0;
+  }
+
+  .drop-cap {
+    font-size: 3.5em;
+  }
+}
+
+/* Touch-friendly tap targets */
+@media (pointer: coarse) {
+  .btn {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .nav-item {
+    min-height: 48px;
+  }
 }
