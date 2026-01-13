@@ -56,6 +56,21 @@ export function VerseActionBar({
   const book = getBookById(bookId);
   const verseRange = getVerseRange();
 
+  // Ermitteln, welche Farbe die ausgewählten Verse haben
+  const getSelectedVersesColor = (): Highlight["color"] | null => {
+    const verses = getSelectedVerseNumbers();
+    if (verses.length === 0) return null;
+
+    const firstColor = currentHighlights.get(verses[0]);
+    if (!firstColor) return null;
+
+    // Prüfe ob alle ausgewählten Verse die gleiche Farbe haben
+    const allSameColor = verses.every((v) => currentHighlights.get(v) === firstColor);
+    return allSameColor ? firstColor : null;
+  };
+
+  const selectedColor = getSelectedVersesColor();
+
   const showToast = (message: string) => {
     setToast(message);
     setTimeout(() => setToast(null), 2000);
@@ -158,11 +173,28 @@ export function VerseActionBar({
                 key={color}
                 onClick={() => handleHighlight(color)}
                 className={clsx(
-                  "w-7 h-7 rounded-full border-2 transition-transform hover:scale-110",
-                  COLOR_CLASSES[color]
+                  "w-7 h-7 rounded-full border-2 transition-all hover:scale-110",
+                  COLOR_CLASSES[color],
+                  selectedColor === color && "ring-2 ring-offset-2 ring-[var(--accent)] scale-110"
                 )}
                 title={`${color} markieren`}
-              />
+              >
+                {selectedColor === color && (
+                  <svg
+                    className="w-full h-full p-1 text-[var(--text-primary)]"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={3}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                )}
+              </button>
             ))}
           </div>
 
@@ -240,11 +272,32 @@ export function VerseActionBar({
         <AnimatePresence>
           {toast && (
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 10 }}
-              className="absolute -top-12 left-1/2 -translate-x-1/2 bg-[var(--text-primary)] text-[var(--bg-primary)] px-4 py-2 rounded-lg text-sm font-medium shadow-lg"
+              initial={{ opacity: 0, y: 20, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 400, damping: 25 }}
+              className="absolute -top-16 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-[var(--text-primary)] text-[var(--bg-primary)] px-4 py-2.5 rounded-xl text-sm font-medium shadow-xl"
             >
+              {toast === "Kopiert" && (
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              )}
+              {toast === "Markiert" && (
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9.53 16.122a3 3 0 0 0-5.78 1.128 2.25 2.25 0 0 1-2.4 2.245 4.5 4.5 0 0 0 8.4-2.245c0-.399-.078-.78-.22-1.128Zm0 0a15.998 15.998 0 0 0 3.388-1.62m-5.043-.025a15.994 15.994 0 0 1 1.622-3.395m3.42 3.42a15.995 15.995 0 0 0 4.764-4.648l3.876-5.814a1.151 1.151 0 0 0-1.597-1.597L14.146 6.32a15.996 15.996 0 0 0-4.649 4.763m3.42 3.42a6.776 6.776 0 0 0-3.42-3.42" />
+                </svg>
+              )}
+              {toast === "Markierung entfernt" && (
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              )}
+              {toast === "Lesezeichen gespeichert" && (
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
+                </svg>
+              )}
               {toast}
             </motion.div>
           )}

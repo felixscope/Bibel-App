@@ -34,6 +34,15 @@ const navItems = [
     ),
   },
   {
+    href: "/notizen",
+    label: "Notizen",
+    icon: (
+      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+      </svg>
+    ),
+  },
+  {
     href: "/leseplaene",
     label: "Leseplan",
     icon: (
@@ -110,10 +119,12 @@ export function Navigation() {
         </div>
       </aside>
 
-      {/* Mobile Bottom Navigation */}
+      {/* Mobile Bottom Navigation - zeigt 5 wichtigste Items */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[var(--bg-elevated)] border-t border-[var(--border)] z-50 safe-area-inset-bottom">
         <div className="flex justify-around items-center h-16">
-          {navItems.slice(0, 4).map((item) => {
+          {navItems.filter(item =>
+            ["/", "/suche", "/notizen", "/lesezeichen", "/einstellungen"].includes(item.href)
+          ).map((item) => {
             const isActive = pathname === item.href ||
               (item.href !== "/" && pathname.startsWith(item.href));
 
@@ -122,19 +133,19 @@ export function Navigation() {
                 key={item.href}
                 href={item.href}
                 className={clsx(
-                  "flex flex-col items-center justify-center w-16 h-full transition-colors",
+                  "flex flex-col items-center justify-center w-14 h-full transition-colors",
                   isActive ? "text-[var(--accent)]" : "text-[var(--text-muted)]"
                 )}
               >
                 {isActive && (
                   <motion.div
                     layoutId="activeMobileNav"
-                    className="absolute top-0 w-12 h-0.5 bg-[var(--accent)] rounded-full"
+                    className="absolute top-0 w-10 h-0.5 bg-[var(--accent)] rounded-full"
                     transition={{ type: "spring", stiffness: 500, damping: 35 }}
                   />
                 )}
                 {item.icon}
-                <span className="text-[10px] mt-1 font-medium">{item.label}</span>
+                <span className="text-[9px] mt-1 font-medium">{item.label}</span>
               </Link>
             );
           })}

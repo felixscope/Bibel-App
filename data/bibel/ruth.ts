@@ -1,7 +1,7 @@
 export const ruth = {
     id: "ruth",
     name: "Ruth",
-    shortName: "Rut",
+    shortName: "Ruth",
     testament: "old" as const,
     chapters: [
       {

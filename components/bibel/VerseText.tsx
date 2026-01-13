@@ -74,11 +74,6 @@ export function VerseText({
         </span>
       )}
 
-      {/* Selection-Indikator */}
-      {isSelected && (
-        <span className="absolute -left-1 top-0 bottom-0 w-0.5 bg-[var(--accent)] rounded-full" />
-      )}
-
       {/* Leerzeichen nach dem Vers */}
       {" "}
     </span>
