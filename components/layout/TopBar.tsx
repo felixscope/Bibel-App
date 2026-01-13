@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "@/components/providers/ThemeProvider";
 import { BookSelector } from "@/components/bibel/BookSelector";
+import { SearchOverlay } from "@/components/bibel/SearchOverlay";
 import clsx from "clsx";
 
 interface TopBarProps {
@@ -25,8 +26,22 @@ const fontSizeLabels: Record<FontSize, string> = {
 export function TopBar({ currentBookId, currentChapter }: TopBarProps) {
   const { theme, setTheme, resolvedTheme, fontSize, setFontSize, mounted } = useTheme();
   const [showFontSettings, setShowFontSettings] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
 
   const isDark = resolvedTheme === "dark";
+
+  // Keyboard shortcut for search (Cmd+K or Ctrl+K)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setShowSearch(true);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   const toggleDarkMode = () => {
     setTheme(isDark ? "light" : "dark");
@@ -44,15 +59,15 @@ export function TopBar({ currentBookId, currentChapter }: TopBarProps) {
         {/* Rechte Icons */}
         <div className="flex items-center gap-1">
           {/* Suche */}
-          <Link
-            href="/suche"
+          <button
+            onClick={() => setShowSearch(true)}
             className="p-2.5 rounded-lg hover:bg-[var(--bg-hover)] transition-colors"
-            title="Suche"
+            title="Suche (Cmd+K)"
           >
             <svg className="w-5 h-5 text-[var(--text-secondary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
             </svg>
-          </Link>
+          </button>
 
           {/* Lesezeichen */}
           <Link
@@ -151,6 +166,9 @@ export function TopBar({ currentBookId, currentChapter }: TopBarProps) {
           </button>
         </div>
       </div>
+
+      {/* Search Overlay */}
+      <SearchOverlay isOpen={showSearch} onClose={() => setShowSearch(false)} />
     </header>
   );
 }

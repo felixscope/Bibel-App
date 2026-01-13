@@ -1,18 +1,48 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { getAllNotes, deleteNote, updateNote, type Note } from "@/lib/db";
 import { getBookById } from "@/lib/types";
+import { useToast } from "@/components/providers/ToastProvider";
+
+// Importiere verfügbare Bibeldaten
+import { genesis } from "@/data/bibel/genesis";
+import { ruth } from "@/data/bibel/ruth";
+
+const bibleData: Record<string, typeof genesis> = {
+  genesis,
+  ruth,
+};
 
 export default function NotizenPage() {
   const notes = useLiveQuery(() => getAllNotes());
   const [editingNote, setEditingNote] = useState<Note | null>(null);
   const [editContent, setEditContent] = useState("");
   const [deleteConfirm, setDeleteConfirm] = useState<number | null>(null);
+  const { showToast } = useToast();
+
+  // Funktion um den Verstext für eine Notiz zu holen
+  const getVerseText = (note: Note): string | null => {
+    const bookData = bibleData[note.bookId];
+    if (!bookData) return null;
+
+    const chapter = bookData.chapters.find(c => c.number === note.chapter);
+    if (!chapter) return null;
+
+    const verses: string[] = [];
+    for (let v = note.verseStart; v <= note.verseEnd; v++) {
+      const verse = chapter.verses.find(vs => vs.number === v);
+      if (verse) {
+        verses.push(`${v} ${verse.text}`);
+      }
+    }
+
+    return verses.length > 0 ? verses.join(" ") : null;
+  };
 
   const handleEdit = (note: Note) => {
     setEditingNote(note);
@@ -24,11 +54,13 @@ export default function NotizenPage() {
     await updateNote(editingNote.id, editContent.trim());
     setEditingNote(null);
     setEditContent("");
+    showToast("Notiz gespeichert", "check");
   };
 
   const handleDelete = async (id: number) => {
     await deleteNote(id);
     setDeleteConfirm(null);
+    showToast("Notiz gelöscht", "remove");
   };
 
   const getVerseLabel = (note: Note) => {
@@ -173,10 +205,25 @@ export default function NotizenPage() {
                     </div>
                   </div>
 
+                  {/* Verse Text */}
+                  {(() => {
+                    const verseText = getVerseText(note);
+                    return verseText ? (
+                      <div className="mb-3 p-3 rounded-lg bg-[var(--bg-secondary)] border-l-2 border-[var(--accent)]">
+                        <p className="bible-text text-sm text-[var(--text-secondary)] italic leading-relaxed">
+                          "{verseText}"
+                        </p>
+                      </div>
+                    ) : null;
+                  })()}
+
                   {/* Note Content */}
-                  <p className="text-[var(--text-primary)] whitespace-pre-wrap">
-                    {note.content}
-                  </p>
+                  <div className="mb-3">
+                    <p className="text-xs text-[var(--text-muted)] mb-1 uppercase tracking-wider">Meine Notiz:</p>
+                    <p className="text-[var(--text-primary)] whitespace-pre-wrap">
+                      {note.content}
+                    </p>
+                  </div>
 
                   {/* Go to Verse Button */}
                   <div className="mt-4 pt-3 border-t border-[var(--border)]">

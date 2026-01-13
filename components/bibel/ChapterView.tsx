@@ -142,6 +142,7 @@ function ChapterContent({
         onOpenNoteModal={() => setIsNoteModalOpen(true)}
         onHighlightChange={handleDataChange}
         currentHighlights={highlightMap}
+        currentBookmarks={bookmarkVerses}
       />
 
       {/* Note Modal */}

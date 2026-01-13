@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { createPortal } from "react-dom";
 import { useSelection } from "@/components/providers/SelectionProvider";
+import { useToast } from "@/components/providers/ToastProvider";
 import {
   addHighlightsForVerses,
   removeHighlightsForVerses,
@@ -27,12 +28,14 @@ interface VerseActionBarProps {
   onOpenNoteModal: () => void;
   onHighlightChange?: () => void;
   currentHighlights?: Map<number, Highlight["color"]>;
+  currentBookmarks?: Set<number>;
 }
 
 export function VerseActionBar({
   onOpenNoteModal,
   onHighlightChange,
   currentHighlights = new Map(),
+  currentBookmarks = new Set(),
 }: VerseActionBarProps) {
   const {
     selectedVerses,
@@ -44,8 +47,8 @@ export function VerseActionBar({
     getVerseRange,
   } = useSelection();
 
+  const { showToast } = useToast();
   const [mounted, setMounted] = useState(false);
-  const [toast, setToast] = useState<string | null>(null);
 
   // Client-side only
   if (typeof window !== "undefined" && !mounted) {
@@ -71,10 +74,14 @@ export function VerseActionBar({
 
   const selectedColor = getSelectedVersesColor();
 
-  const showToast = (message: string) => {
-    setToast(message);
-    setTimeout(() => setToast(null), 2000);
+  // Prüfe ob ausgewählte Verse bereits als Lesezeichen markiert sind
+  const isBookmarked = (): boolean => {
+    const verses = getSelectedVerseNumbers();
+    if (verses.length === 0) return false;
+    return verses.some((v) => currentBookmarks.has(v));
   };
+
+  const versesAreBookmarked = isBookmarked();
 
   const handleHighlight = async (color: Highlight["color"]) => {
     const verses = getSelectedVerseNumbers();
@@ -88,11 +95,11 @@ export function VerseActionBar({
     if (allHaveSameColor) {
       // Remove highlights
       await removeHighlightsForVerses(bookId, chapter, verses);
-      showToast("Markierung entfernt");
+      showToast("Markierung entfernt", "remove");
     } else {
       // Add highlights
       await addHighlightsForVerses(bookId, chapter, verses, color);
-      showToast("Markiert");
+      showToast("Markiert", "highlight");
     }
 
     onHighlightChange?.();
@@ -103,7 +110,8 @@ export function VerseActionBar({
     if (!verseRange) return;
 
     await addBookmark(bookId, chapter, verseRange.start, verseRange.end);
-    showToast("Lesezeichen gespeichert");
+    showToast("Lesezeichen gespeichert", "bookmark");
+    onHighlightChange?.();
     clearSelection();
   };
 
@@ -122,10 +130,10 @@ export function VerseActionBar({
 
     try {
       await navigator.clipboard.writeText(formattedText + reference);
-      showToast("Kopiert");
+      showToast("Kopiert", "copy");
       clearSelection();
     } catch {
-      showToast("Kopieren fehlgeschlagen");
+      showToast("Kopieren fehlgeschlagen", "remove");
     }
   };
 
@@ -224,11 +232,16 @@ export function VerseActionBar({
 
             <button
               onClick={handleBookmark}
-              className="flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-lg bg-[var(--bg-secondary)] hover:bg-[var(--bg-hover)] transition-colors"
+              className={clsx(
+                "flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-lg transition-colors",
+                versesAreBookmarked
+                  ? "bg-[var(--accent-bg)] text-[var(--accent)]"
+                  : "bg-[var(--bg-secondary)] hover:bg-[var(--bg-hover)]"
+              )}
             >
               <svg
-                className="w-4 h-4 text-[var(--text-secondary)]"
-                fill="none"
+                className={clsx("w-4 h-4", versesAreBookmarked ? "text-[var(--accent)]" : "text-[var(--text-secondary)]")}
+                fill={versesAreBookmarked ? "currentColor" : "none"}
                 viewBox="0 0 24 24"
                 stroke="currentColor"
                 strokeWidth={1.5}
@@ -239,8 +252,8 @@ export function VerseActionBar({
                   d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"
                 />
               </svg>
-              <span className="text-sm font-medium text-[var(--text-primary)]">
-                Merken
+              <span className={clsx("text-sm font-medium", versesAreBookmarked ? "text-[var(--accent)]" : "text-[var(--text-primary)]")}>
+                {versesAreBookmarked ? "Gemerkt" : "Merken"}
               </span>
             </button>
 
@@ -267,41 +280,6 @@ export function VerseActionBar({
             </button>
           </div>
         </div>
-
-        {/* Toast */}
-        <AnimatePresence>
-          {toast && (
-            <motion.div
-              initial={{ opacity: 0, y: 20, scale: 0.9 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -10, scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 400, damping: 25 }}
-              className="absolute -top-16 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-[var(--text-primary)] text-[var(--bg-primary)] px-4 py-2.5 rounded-xl text-sm font-medium shadow-xl"
-            >
-              {toast === "Kopiert" && (
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                </svg>
-              )}
-              {toast === "Markiert" && (
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9.53 16.122a3 3 0 0 0-5.78 1.128 2.25 2.25 0 0 1-2.4 2.245 4.5 4.5 0 0 0 8.4-2.245c0-.399-.078-.78-.22-1.128Zm0 0a15.998 15.998 0 0 0 3.388-1.62m-5.043-.025a15.994 15.994 0 0 1 1.622-3.395m3.42 3.42a15.995 15.995 0 0 0 4.764-4.648l3.876-5.814a1.151 1.151 0 0 0-1.597-1.597L14.146 6.32a15.996 15.996 0 0 0-4.649 4.763m3.42 3.42a6.776 6.776 0 0 0-3.42-3.42" />
-                </svg>
-              )}
-              {toast === "Markierung entfernt" && (
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              )}
-              {toast === "Lesezeichen gespeichert" && (
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
-                </svg>
-              )}
-              {toast}
-            </motion.div>
-          )}
-        </AnimatePresence>
       </motion.div>
     </AnimatePresence>
   );

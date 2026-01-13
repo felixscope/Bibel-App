@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Playfair_Display, DM_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import { ToastProvider } from "@/components/providers/ToastProvider";
 
 // Bibeltext – elegant, klassisch, hervorragende Lesbarkeit
 const cormorant = Cormorant_Garamond({
@@ -65,7 +66,9 @@ export default function RootLayout({
         className={`${cormorant.variable} ${playfair.variable} ${dmSans.variable} antialiased`}
       >
         <ThemeProvider>
-          {children}
+          <ToastProvider>
+            {children}
+          </ToastProvider>
         </ThemeProvider>
       </body>
     </html>

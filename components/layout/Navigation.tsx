@@ -16,15 +16,6 @@ const navItems = [
     ),
   },
   {
-    href: "/suche",
-    label: "Suche",
-    icon: (
-      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-      </svg>
-    ),
-  },
-  {
     href: "/lesezeichen",
     label: "Lesezeichen",
     icon: (
@@ -119,11 +110,11 @@ export function Navigation() {
         </div>
       </aside>
 
-      {/* Mobile Bottom Navigation - zeigt 5 wichtigste Items */}
+      {/* Mobile Bottom Navigation - zeigt 4 wichtigste Items */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[var(--bg-elevated)] border-t border-[var(--border)] z-50 safe-area-inset-bottom">
         <div className="flex justify-around items-center h-16">
           {navItems.filter(item =>
-            ["/", "/suche", "/notizen", "/lesezeichen", "/einstellungen"].includes(item.href)
+            ["/", "/notizen", "/lesezeichen", "/einstellungen"].includes(item.href)
           ).map((item) => {
             const isActive = pathname === item.href ||
               (item.href !== "/" && pathname.startsWith(item.href));
