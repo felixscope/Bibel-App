@@ -7,12 +7,14 @@ import { TopBar } from "@/components/layout/TopBar";
 import { ChapterView } from "@/components/bibel/ChapterView";
 import { ChapterNavigation } from "@/components/bibel/ChapterNavigation";
 import { genesis } from "@/data/bibel/genesis";
+import { ruth } from "@/data/bibel/ruth";
 import { getBookById } from "@/lib/types";
 import { motion } from "framer-motion";
 
 // Verfügbare Bibeldaten (wird später erweitert)
 const bibleData: Record<string, typeof genesis> = {
   genesis: genesis,
+  ruth: ruth,
 };
 
 interface PageProps {

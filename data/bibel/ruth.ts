@@ -1,0 +1,113 @@
+export const ruth = {
+    id: "ruth",
+    name: "Ruth",
+    shortName: "Rut",
+    testament: "old" as const,
+    chapters: [
+      {
+        number: 1,
+        verses: [
+          { number: 1, text: "Zu der Zeit, da die Richter regierten, ward eine Teuerung im Lande. Und ein Mann von Bethlehem-Juda zog aus ins der Moabiter Land zu herbergen mit seinem Weibe und seinen zwei Söhnen." },
+          { number: 2, text: "Der hieß Elimelech und sein Weib Naemi und seine zwei Söhne Mahlon und Chiljon; die waren Ephrathiter von Bethlehem-Juda. Und da sie kamen ins der Moabiter Land, blieben sie daselbst." },
+          { number: 3, text: "Und Elimelech, der Naemi Mann, starb, und sie blieb übrig mit ihren zwei Söhnen." },
+          { number: 4, text: "Die nahmen moabitische Weiber; eine hieß Orpa, die andere Ruth. Und da sie daselbst gewohnt hatten ungefähr zehn Jahre," },
+          { number: 5, text: "starben sie alle beide, Mahlon und Chiljon, daß das Weib überlebte beide Söhne und ihren Mann." },
+          { number: 6, text: "Da machte sie sich auf mit ihren beiden Schwiegertöchtern und zog aus der Moabiter Lande wieder heim; denn sie hatte erfahren im Moabiterlande, daß der HERR sein Volk hatte heimgesucht und ihnen Brot gegeben." },
+          { number: 7, text: "Und sie ging aus von dem Ort, da sie gewesen war, und ihre beiden Schwiegertöchter mit ihr. Und als sie gingen auf dem Wege, daß sie wieder ins Land Juda kämen," },
+          { number: 8, text: "sprach sie zu ihren beiden Schwiegertöchtern: Gehet hin und kehret um, eine jegliche zu ihrer Mutter Haus. Der HERR tue an euch Barmherzigkeit, wie ihr an den Toten und mir getan habt!" },
+          { number: 9, text: "Der HERR gebe euch, daß ihr Ruhe findet, eine jegliche in ihres Mannes Hause! Und küßte sie. Da hoben sie ihre Stimme auf und weinten" },
+          { number: 10, text: "und sprachen zu ihr: Wir wollen mit dir zu deinem Volk gehen." },
+          { number: 11, text: "Aber Naemi sprach: Kehret um, meine Töchter! warum wollt ihr mit mir gehen? Wie kann ich fürder Kinder in meinem Leibe haben, die eure Männer sein könnten?" },
+          { number: 12, text: "Kehret um, meine Töchter, und gehet hin! denn ich bin nun zu alt, daß ich einen Mann nehme. Und wenn ich spräche: Es ist zu hoffen, daß ich diese Nacht einen Mann nehme und Kinder gebäre," },
+          { number: 13, text: "wie könntet ihr doch harren, bis sie groß würden? wie wolltet ihr verziehen, daß ihr nicht Männer solltet nehmen? Nicht, meine Töchter! denn mich jammert euer sehr; denn des HERRN Hand ist über mich ausgegangen." },
+          { number: 14, text: "Da hoben sie ihre Stimme auf und weinten noch mehr. Und Orpa küßte ihre Schwiegermutter; Ruth aber ließ nicht von ihr." },
+          { number: 15, text: "Sie aber sprach: Siehe, deine Schwägerin ist umgewandt zu ihrem Volk und zu ihrem Gott; kehre du auch um, deiner Schwägerin nach." },
+          { number: 16, text: "Ruth antwortete: Rede mir nicht ein, daß ich dich verlassen sollte und von dir umkehren. Wo du hin gehst, da will ich auch hin gehen; wo du bleibst, da bleibe ich auch. Dein Volk ist mein Volk, und dein Gott ist mein Gott." },
+          { number: 17, text: "Wo du stirbst, da sterbe ich auch, da will ich auch begraben werden. Der HERR tue mir dies und das, der Tod muß mich und dich scheiden." },
+          { number: 18, text: "Als sie nun sah, daß sie fest im Sinn war, mit ihr zu gehen, ließ sie ab, mit ihr davon zu reden." },
+          { number: 19, text: "Also gingen die beiden miteinander, bis sie gen Bethlehem kamen. Und da sie nach Bethlehem hineinkamen, regte sich die ganze Stadt über ihnen und sprach: Ist das die Naemi?" },
+          { number: 20, text: "Sie aber sprach zu ihnen: Heißet mich nicht Naemi, sondern Mara; denn der Allmächtige hat mich sehr betrübt." },
+          { number: 21, text: "Voll zog ich aus, aber leer hat mich der HERR wieder heimgebracht. Warum heißt ihr mich denn Naemi, so mich doch der HERR gedemütigt und der Allmächtige betrübt hat?" },
+          { number: 22, text: "Es kam aber Naemi wieder und ihre Schwiegertochter Ruth, die Moabitin, mit ihr, die aus der Moabiter Land umgekehrt war. Und sie kamen gen Bethlehem auf den Anfang der Gerstenernte." }
+        ]
+      },
+      {
+        number: 2,
+        verses: [
+          { number: 1, text: "Es war auch ein Mann, ein Verwandter des Mannes der Naemi, von dem Geschlecht Elimelechs, mit Namen Boas; der war ein wohlhabender Mann." },
+          { number: 2, text: "Und Ruth, die Moabitin, sprach zu Naemi: Laß mich aufs Feld gehen und Ähren auflesen dem nach, vor dem ich Gnade finde. Sie aber sprach zu ihr: Gehe hin, meine Tochter." },
+          { number: 3, text: "Sie ging hin, kam und las auf, den Schnittern nach, auf dem Felde. Und es begab sich eben, daß das Feld dem Boas gehörte, der von dem Geschlecht Elimelechs war." },
+          { number: 4, text: "Und siehe, Boas kam eben von Bethlehem und sprach zu den Schnittern: Der HERR mit euch! Sie antworteten: Der HERR segne dich!" },
+          { number: 5, text: "Und Boas sprach zu seinem Knaben, der über die Schnitter gestellt war: Wes ist die Dirne?" },
+          { number: 6, text: "Der Knabe, der über die Schnitter gestellt war, antwortete und sprach: Es ist die Dirne, die Moabitin, die mit Naemi wiedergekommen ist aus der Moabiter Land." },
+          { number: 7, text: "Sie hat gesagt: Liebe, laßt mich auflesen und sammeln unter den Garben, den Schnittern nach; und ist also gekommen und dagestanden vom Morgen an bis her und bleibt wenig daheim." },
+          { number: 8, text: "Da sprach Boas zu Ruth: Hörst du es, meine Tochter? Du sollst nicht gehen auf einen andern Acker, aufzulesen, und gehe auch nicht von hinnen, sondern halte dich zu meinen Dirnen." },
+          { number: 9, text: "Und siehe, wo sie schneiden im Felde, da gehe ihnen nach. Ich habe meinen Knechten geboten, daß dich niemand antaste. Und so dich dürstet, so gehe hin zu dem Gefäß und trinke von dem, was meine Knechte schöpfen." },
+          { number: 10, text: "Da fiel sie auf ihr Angesicht und beugte sich nieder zur Erde und sprach zu ihm: Womit habe ich die Gnade gefunden vor deinen Augen, daß du mich ansiehst, die ich doch fremd bin?" },
+          { number: 11, text: "Boas antwortete und sprach zu ihr: Es ist mir angesagt alles, was du getan hast an deiner Schwiegermutter nach deines Mannes Tod: daß du verlassen hast deinen Vater und deine Mutter und dein Vaterland und zu einem Volk gezogen bist, das du zuvor nicht kanntest." },
+          { number: 12, text: "Der HERR vergelte dir deine Tat, und dein Lohn müsse vollkommen sein bei dem HERRN, dem Gott Israels, zu welchem du gekommen bist, daß du unter seinen Flügeln Zuversicht hättest." },
+          { number: 13, text: "Sie sprach: Laß mich Gnade vor deinen Augen finden, mein Herr; denn du hast mich getröstet und deine Magd freundlich angesprochen, so ich doch nicht bin wie deiner Mägde eine." },
+          { number: 14, text: "Boas sprach zu ihr, da es Essenszeit war: Komm hierher und iß vom Brot und tauche deinen Bissen ins Essigfäßlein. Und sie setzte sich zur Seite der Schnitter. Er aber legte ihr geröstete Körner vor, und sie aß und ward satt und ließ übrig." },
+          { number: 15, text: "Und da sie sich aufmachte zu lesen, gebot Boas seinen Knaben und sprach: Laßt sie auch zwischen den Garben lesen und beschämet sie nicht." },
+          { number: 16, text: "Auch von den Haufen laßt absichtlich etwas für sie fallen und laßt es liegen, daß sie es auflese, und niemand schelte sie darum." },
+          { number: 17, text: "Also las sie auf dem Felde bis zum Abend und schlug's aus, was sie aufgelesen hatte; und es war bei einem Epha Gerste." },
+          { number: 18, text: "Und sie hob's auf und kam in die Stadt; und ihre Schwiegermutter sah es, was sie gelesen hatte. Da zog sie hervor und gab ihr, was ihr übriggeblieben war, davon sie satt war geworden." },
+          { number: 19, text: "Da sprach ihre Schwiegermutter zu ihr: Wo hast du heute gelesen, und wo hast du gearbeitet? Gesegnet sei, der dich angesehen hat! Sie aber sagte es ihrer Schwiegermutter, bei wem sie gearbeitet hätte, und sprach: Der Mann, bei dem ich heute gearbeitet habe, heißt Boas." },
+          { number: 20, text: "Naemi aber sprach zu ihrer Schwiegertochter: Gesegnet sei er dem HERRN! denn er hat seine Barmherzigkeit nicht gelassen an den Lebendigen und an den Toten. Und Naemi sprach zu ihr: Der Mann gehört uns zu und ist unser Erbe." },
+          { number: 21, text: "Ruth, die Moabitin, sprach: Er sprach auch das zu mir: Du sollst dich zu meinen Leuten halten, bis sie mir alles eingeerntet haben." },
+          { number: 22, text: "Naemi sprach zu Ruth, ihrer Schwiegertochter: Es ist gut, meine Tochter, daß du mit seinen Dirnen ausgehst, auf daß nicht jemand dir dreinrede auf einem andern Acker." },
+          { number: 23, text: "Also hielt sie sich zu den Dirnen des Boas, daß sie las, bis daß die Gerstenernte und Weizenernte aus war; und kam wieder zu ihrer Schwiegermutter." }
+        ]
+      },
+      {
+        number: 3,
+        verses: [
+          { number: 1, text: "Und Naemi, ihre Schwiegermutter, sprach zu ihr: Meine Tochter, ich will dir Ruhe suchen, daß dir's wohl gehe." },
+          { number: 2, text: "Nun, der Boas, unser Verwandter, bei dessen Dirnen du gewesen bist, siehe, er worfelt diese Nacht Gerste auf der Tenne." },
+          { number: 3, text: "So bade dich und salbe dich und lege dein Kleid an und gehe hinab auf die Tenne; gib dich dem Manne nicht zu erkennen, bis er ganz gegessen und getrunken hat." },
+          { number: 4, text: "Wenn er sich dann legt, so merke den Ort, da er sich hin legt, und komm und decke auf zu seinen Füßen und lege dich, so wird er dir wohl sagen, was du tun sollst." },
+          { number: 5, text: "Sie sprach zu ihr: Alles, was du mir sagst, will ich tun." },
+          { number: 6, text: "Sie ging hinab zur Tenne und tat alles, wie ihre Schwiegermutter geboten hatte." },
+          { number: 7, text: "Und da Boas gegessen und getrunken hatte, ward sein Herz guter Dinge, und er kam und legte sich hinter einen Schober. Und sie kam leise und deckte auf zu seinen Füßen und legte sich." },
+          { number: 8, text: "Mitten in der Nacht aber erschrak der Mann und griff um sich; und siehe, ein Weib lag zu seinen Füßen." },
+          { number: 9, text: "Und er sprach: Wer bist du? Sie antwortete: Ich bin Ruth, deine Magd. Breite deine Decke über deine Magd; denn du bist der Erbe." },
+          { number: 10, text: "Er aber sprach: Gesegnet seist du dem HERRN, meine Tochter! Du hast deine Liebe hernach besser gezeigt denn zuvor, daß du bist nicht den Jünglingen nachgegangen, weder reich noch arm." },
+          { number: 11, text: "Nun, meine Tochter, fürchte dich nicht. Alles was du sagst, will ich dir tun; denn die ganze Stadt meines Volkes weiß, daß du ein tugendsam Weib bist." },
+          { number: 12, text: "Nun, es ist wahr, daß ich der Erbe bin; aber es ist einer näher denn ich." },
+          { number: 13, text: "Bleibe über Nacht. Morgen, wenn er dich erbt, gut; wenn er dich aber nicht will erben, so will ich dich erben, so wahr der HERR lebt. Liege bis am Morgen." },
+          { number: 14, text: "Und sie lag zu seinen Füßen bis am Morgen. Und sie stand auf, ehe einer den andern erkennen konnte; und er gedachte: Daß nur niemand inne werde, daß ein Weib auf die Tenne gekommen ist." },
+          { number: 15, text: "Und er sprach: Reiche her den Mantel, den du an hast, und halte ihn. Und sie hielt ihn hin. Und er maß sechs Maß Gerste und legte sie auf sie. Und er ging in die Stadt." },
+          { number: 16, text: "Sie aber kam zu ihrer Schwiegermutter; die sprach: Wie steht's mit dir, meine Tochter? Und sie sagte ihr alles, was ihr der Mann getan hatte," },
+          { number: 17, text: "und sprach: Diese sechs Maß Gerste gab er mir; denn er sprach: Du sollst nicht leer zu deiner Schwiegermutter kommen." },
+          { number: 18, text: "Sie aber sprach: Sei still, meine Tochter, bis du erfährst, wie es ausfällt; denn der Mann wird nicht ruhen, er bringe es denn heute zu Ende." }
+        ]
+      },
+      {
+        number: 4,
+        verses: [
+          { number: 1, text: "Boas ging hinauf ins Tor und setzte sich daselbst. Und siehe, da der Erbe vorüberging, von dem er geredet hatte, sprach Boas: Komm und setze dich hierher, du Soundso! Und er kam und setzte sich." },
+          { number: 2, text: "Und er nahm zehn Männer von den Ältesten der Stadt und sprach: Setzet euch hierher! Und sie setzten sich." },
+          { number: 3, text: "Da sprach er zu dem Erben: Naemi, die aus der Moabiter Land wiedergekommen ist, bietet feil das Stück Feld, das unsers Bruders Elimelech war." },
+          { number: 4, text: "Darum dachte ich, ich will's vor deine Ohren bringen und sagen: Kaufe es vor den Bürgern und vor den Ältesten meines Volks. Willst du erben, so erbe; willst du aber nicht erben, so sage mir's, daß ich's wisse; denn es ist kein Erbe ohne dich, und ich bin nach dir. Er sprach: Ich will's erben." },
+          { number: 5, text: "Boas sprach: Des Tages, da du das Feld kaufst von der Hand Naemis, mußt du auch Ruth, die Moabitin, des Verstorbenen Weib, nehmen, daß du dem Verstorbenen einen Namen erweckst auf seinem Erbe." },
+          { number: 6, text: "Da sprach der Erbe: Ich kann's nicht erben, daß ich nicht vielleicht mein Erbe verderbe. Beerbe du, was ich beerben soll; denn ich vermag es nicht zu beerben." },
+          { number: 7, text: "Und es war von alters her eine solche Gewohnheit in Israel: Wenn einer ein Gut dem andern überließ durch Erbschaft oder Kauf, daß es fest wäre, so zog er seinen Schuh aus und gab ihn dem andern; das war das Zeugnis in Israel." },
+          { number: 8, text: "So sprach der Erbe zu Boas: Kaufe du es! und zog seinen Schuh aus." },
+          { number: 9, text: "Und Boas sprach zu den Ältesten und zu allem Volk: Ihr seid heute Zeugen, daß ich gekauft habe alles, was Elimelech gehört hat, und alles, was Chiljon und Mahlon gehört hat, von der Hand Naemis;" },
+          { number: 10, text: "dazu auch Ruth, die Moabitin, Mahlons Weib, nehme ich mir zum Weibe, daß ich dem Verstorbenen einen Namen erwecke auf seinem Erbe und sein Name nicht ausgerottet werde unter seinen Brüdern und aus dem Tor seines Ortes. Zeugen seid ihr heute des." },
+          { number: 11, text: "Und alles Volk, das im Tor war, samt den Ältesten sprachen: Wir sind Zeugen. Der HERR mache das Weib, das in dein Haus kommt, wie Rahel und Lea, die beide das Haus Israels gebaut haben; und wachse sehr in Ephratha und werde gepriesen zu Bethlehem." },
+          { number: 12, text: "Und dein Haus werde wie das Haus des Perez, den Thamar dem Juda gebar, von dem Samen, den dir der HERR geben wird von dieser Dirne." },
+          { number: 13, text: "Also nahm Boas die Ruth, daß sie sein Weib ward. Und da er zu ihr einging, gab ihr der HERR, daß sie schwanger ward und gebar einen Sohn." },
+          { number: 14, text: "Da sprachen die Weiber zu Naemi: Gelobt sei der HERR, der dir nicht hat lassen abgehen einen Erben zu dieser Zeit, daß sein Name in Israel bliebe." },
+          { number: 15, text: "Der wird dich erquicken und dein Alter versorgen. Denn deine Schwiegertochter, die dich geliebt hat, hat ihn geboren, welche dir besser ist als sieben Söhne." },
+          { number: 16, text: "Und Naemi nahm das Kind und legte es auf ihren Schoß und ward seine Wärterin." },
+          { number: 17, text: "Und ihre Nachbarinnen gaben ihm einen Namen und sprachen: Naemi ist ein Kind geboren; und hießen ihn Obed. Der ist der Vater Isais, welcher ist Davids Vater." },
+          { number: 18, text: "Dies ist das Geschlecht des Perez: Perez zeugte Hezron;" },
+          { number: 19, text: "Hezron zeugte Ram; Ram zeugte Amminadab;" },
+          { number: 20, text: "Amminadab zeugte Nahesson; Nahesson zeugte Salma;" },
+          { number: 21, text: "Salma zeugte Boas; Boas zeugte Obed;" },
+          { number: 22, text: "Obed zeugte Isai; Isai zeugte David." }
+        ]
+      }
+    ]
+  };
