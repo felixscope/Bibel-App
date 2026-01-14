@@ -1,11 +1,11 @@
 "use client";
 
+import { useRef } from "react";
 import clsx from "clsx";
 
 interface VerseTextProps {
   number: number;
   text: string;
-  isFirst?: boolean;
   highlight?: "yellow" | "green" | "blue" | "pink" | "orange" | null;
   hasNote?: boolean;
   isBookmarked?: boolean;
@@ -16,26 +16,40 @@ interface VerseTextProps {
 export function VerseText({
   number,
   text,
-  isFirst = false,
   highlight = null,
   hasNote = false,
   isBookmarked = false,
   isSelected = false,
   onSelect,
 }: VerseTextProps) {
-  // Illuminierte Initiale für den ersten Vers
-  const renderText = () => {
-    if (isFirst && text.length > 0) {
-      const firstChar = text[0];
-      const restText = text.slice(1);
-      return (
-        <>
-          <span className="drop-cap">{firstChar}</span>
-          {restText}
-        </>
-      );
+  const touchStartPos = useRef<{ x: number; y: number } | null>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    const touch = e.touches[0];
+    touchStartPos.current = { x: touch.clientX, y: touch.clientY };
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!touchStartPos.current) return;
+
+    const touch = e.changedTouches[0];
+    const deltaX = Math.abs(touch.clientX - touchStartPos.current.x);
+    const deltaY = Math.abs(touch.clientY - touchStartPos.current.y);
+
+    // Nur auslösen wenn der Finger sich weniger als 10px bewegt hat (kein Scroll)
+    if (deltaX < 10 && deltaY < 10) {
+      e.preventDefault();
+      onSelect?.(number, text);
     }
-    return text;
+
+    touchStartPos.current = null;
+  };
+
+  const handleClick = (e: React.MouseEvent) => {
+    // Auf Touch-Geräten wird handleTouchEnd verwendet
+    if ("ontouchstart" in window) return;
+    e.stopPropagation();
+    onSelect?.(number, text);
   };
 
   return (
@@ -45,16 +59,15 @@ export function VerseText({
         highlight && `verse-highlight verse-highlight-${highlight}`,
         isSelected && "verse-selected",
       )}
-      onClick={(e) => {
-        e.stopPropagation();
-        onSelect?.(number, text);
-      }}
+      onClick={handleClick}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
       {/* Versnummer */}
       <sup className="verse-number">{number}</sup>
 
       {/* Verstext */}
-      <span className="bible-text">{renderText()}</span>
+      <span className="bible-text">{text}</span>
 
       {/* Indikatoren */}
       {(hasNote || isBookmarked) && (

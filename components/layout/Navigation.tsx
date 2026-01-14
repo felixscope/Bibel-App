@@ -57,6 +57,9 @@ const navItems = [
 export function Navigation() {
   const pathname = usePathname();
 
+  // Auf der Lesen-Seite keine Mobile Bottom-Nav anzeigen
+  const isReadingPage = pathname.startsWith("/lesen/");
+
   return (
     <>
       {/* Desktop Sidebar */}
@@ -110,7 +113,8 @@ export function Navigation() {
         </div>
       </aside>
 
-      {/* Mobile Bottom Navigation - zeigt 4 wichtigste Items */}
+      {/* Mobile Bottom Navigation - zeigt 4 wichtigste Items (nicht auf Lesen-Seite) */}
+      {!isReadingPage && (
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[var(--bg-elevated)] border-t border-[var(--border)] z-50 safe-area-inset-bottom">
         <div className="flex justify-around items-center h-16">
           {navItems.filter(item =>
@@ -142,6 +146,7 @@ export function Navigation() {
           })}
         </div>
       </nav>
+      )}
     </>
   );
 }

@@ -146,16 +146,17 @@ export function VerseActionBar({
     }
   };
 
-  if (selectedCount === 0 || !mounted) return null;
+  if (!mounted) return null;
 
   const actionBar = (
     <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 20 }}
-        className="fixed bottom-24 md:bottom-8 left-4 right-4 mx-auto max-w-md z-[9998]"
-      >
+      {selectedCount > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 20 }}
+          className="fixed bottom-6 md:bottom-8 left-4 right-4 mx-auto max-w-md z-[9998]"
+        >
         <div className="bg-[var(--bg-elevated)] border border-[var(--border)] rounded-2xl shadow-lg p-3">
           {/* Header */}
           <div className="flex items-center justify-between mb-3">
@@ -290,6 +291,7 @@ export function VerseActionBar({
           </div>
         </div>
       </motion.div>
+      )}
     </AnimatePresence>
   );
 

@@ -112,12 +112,11 @@ function ChapterContent({
 
         {/* Bibeltext */}
         <div className="bible-text leading-relaxed text-[var(--text-primary)]">
-          {verses.map((verse, index) => (
+          {verses.map((verse) => (
             <VerseText
               key={verse.number}
               number={verse.number}
               text={verse.text}
-              isFirst={index === 0}
               highlight={highlightMap.get(verse.number) || null}
               hasNote={noteVerses.has(verse.number)}
               isBookmarked={bookmarkVerses.has(verse.number)}

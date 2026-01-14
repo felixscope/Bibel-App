@@ -7,12 +7,12 @@ import clsx from "clsx";
 
 type FontSize = "sm" | "md" | "lg" | "xl" | "2xl";
 
-const fontSizeLabels: Record<FontSize, string> = {
-  sm: "Klein",
-  md: "Normal",
-  lg: "Groß",
-  xl: "Sehr groß",
-  "2xl": "Riesig",
+const fontSizeConfig: Record<FontSize, { label: string; short: string }> = {
+  sm: { label: "Klein", short: "S" },
+  md: { label: "Normal", short: "M" },
+  lg: { label: "Groß", short: "L" },
+  xl: { label: "Sehr groß", short: "XL" },
+  "2xl": { label: "Riesig", short: "2X" },
 };
 
 export default function EinstellungenPage() {
@@ -66,19 +66,20 @@ export default function EinstellungenPage() {
             <h3 className="font-medium text-[var(--text-primary)] mb-3">
               Schriftgröße
             </h3>
-            <div className="grid grid-cols-5 gap-2">
+            <div className="flex gap-2">
               {(["sm", "md", "lg", "xl", "2xl"] as FontSize[]).map((size) => (
                 <button
                   key={size}
                   onClick={() => setFontSize(size)}
                   className={clsx(
-                    "py-2.5 px-2 rounded-lg text-sm font-medium transition-colors",
+                    "flex-1 py-2.5 px-1 rounded-lg text-xs sm:text-sm font-medium transition-colors min-w-0",
                     mounted && fontSize === size
                       ? "bg-[var(--accent)] text-white"
                       : "bg-[var(--bg-secondary)] text-[var(--text-secondary)] hover:bg-[var(--bg-hover)]"
                   )}
                 >
-                  {fontSizeLabels[size]}
+                  <span className="sm:hidden">{fontSizeConfig[size].short}</span>
+                  <span className="hidden sm:inline">{fontSizeConfig[size].label}</span>
                 </button>
               ))}
             </div>
