@@ -4,13 +4,16 @@ import { createContext, useContext, useEffect, useState, ReactNode } from "react
 
 type Theme = "light" | "dark" | "system";
 type FontSize = "sm" | "md" | "lg" | "xl" | "2xl";
+type FontFamily = "system" | "serif" | "modern" | "classic";
 
 interface ThemeContextType {
   theme: Theme;
   resolvedTheme: "light" | "dark";
   fontSize: FontSize;
+  fontFamily: FontFamily;
   setTheme: (theme: Theme) => void;
   setFontSize: (size: FontSize) => void;
+  setFontFamily: (family: FontFamily) => void;
   mounted: boolean;
 }
 
@@ -31,6 +34,7 @@ interface ThemeProviderProps {
 export function ThemeProvider({ children }: ThemeProviderProps) {
   const [theme, setThemeState] = useState<Theme>("system");
   const [fontSize, setFontSizeState] = useState<FontSize>("md");
+  const [fontFamily, setFontFamilyState] = useState<FontFamily>("system");
   const [resolvedTheme, setResolvedTheme] = useState<"light" | "dark">("light");
   const [mounted, setMounted] = useState(false);
 
@@ -38,9 +42,11 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   useEffect(() => {
     const savedTheme = localStorage.getItem("bibel-theme") as Theme | null;
     const savedFontSize = localStorage.getItem("bibel-font-size") as FontSize | null;
+    const savedFontFamily = localStorage.getItem("bibel-font-family") as FontFamily | null;
 
     if (savedTheme) setThemeState(savedTheme);
     if (savedFontSize) setFontSizeState(savedFontSize);
+    if (savedFontFamily) setFontFamilyState(savedFontFamily);
 
     setMounted(true);
   }, []);
@@ -86,6 +92,17 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     root.classList.add(`font-size-${fontSize}`);
   }, [fontSize, mounted]);
 
+  // Apply font family class
+  useEffect(() => {
+    if (!mounted) return;
+    const root = document.documentElement;
+
+    // Remove all font family classes
+    root.classList.remove("font-family-system", "font-family-serif", "font-family-modern", "font-family-classic");
+    // Add current
+    root.classList.add(`font-family-${fontFamily}`);
+  }, [fontFamily, mounted]);
+
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
     localStorage.setItem("bibel-theme", newTheme);
@@ -96,6 +113,11 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     localStorage.setItem("bibel-font-size", newSize);
   };
 
+  const setFontFamily = (newFamily: FontFamily) => {
+    setFontFamilyState(newFamily);
+    localStorage.setItem("bibel-font-family", newFamily);
+  };
+
   // Always provide the context, but mark if not mounted yet
   return (
     <ThemeContext.Provider
@@ -103,8 +125,10 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
         theme,
         resolvedTheme,
         fontSize,
+        fontFamily,
         setTheme,
         setFontSize,
+        setFontFamily,
         mounted,
       }}
     >

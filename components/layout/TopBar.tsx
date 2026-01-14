@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "@/components/providers/ThemeProvider";
@@ -14,6 +14,7 @@ interface TopBarProps {
 }
 
 type FontSize = "sm" | "md" | "lg" | "xl" | "2xl";
+type FontFamily = "system" | "serif" | "modern" | "classic";
 
 const fontSizeLabels: Record<FontSize, string> = {
   sm: "Klein",
@@ -23,12 +24,34 @@ const fontSizeLabels: Record<FontSize, string> = {
   "2xl": "Riesig",
 };
 
+const fontFamilyLabels: Record<FontFamily, { name: string; desc: string }> = {
+  system: { name: "System", desc: "Apple SF / Clean" },
+  modern: { name: "Modern", desc: "Sleek & Contemporary" },
+  serif: { name: "Serif", desc: "Elegant Klassisch" },
+  classic: { name: "Klassisch", desc: "Traditionell" },
+};
+
 export function TopBar({ currentBookId, currentChapter }: TopBarProps) {
-  const { theme, setTheme, resolvedTheme, fontSize, setFontSize, mounted } = useTheme();
+  const { theme, setTheme, resolvedTheme, fontSize, setFontSize, fontFamily, setFontFamily, mounted } = useTheme();
   const [showFontSettings, setShowFontSettings] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const isDark = resolvedTheme === "dark";
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    if (!showFontSettings) return;
+
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setShowFontSettings(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [showFontSettings]);
 
   // Keyboard shortcut for search (Cmd+K or Ctrl+K)
   useEffect(() => {
@@ -80,69 +103,84 @@ export function TopBar({ currentBookId, currentChapter }: TopBarProps) {
             </svg>
           </Link>
 
-          {/* Schriftgröße */}
-          <div className="relative">
+          {/* Schrifteinstellungen */}
+          <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setShowFontSettings(!showFontSettings)}
               className={clsx(
                 "p-2.5 rounded-lg transition-colors",
                 showFontSettings ? "bg-[var(--bg-hover)]" : "hover:bg-[var(--bg-hover)]"
               )}
-              title="Schriftgröße"
+              title="Schrifteinstellungen"
             >
-              <svg className="w-5 h-5 text-[var(--text-secondary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h10.5" />
-              </svg>
+              <span className="text-base font-semibold text-[var(--text-secondary)]">Aa</span>
             </button>
 
             {/* Font Settings Dropdown */}
             <AnimatePresence>
               {showFontSettings && mounted && (
-                <>
-                  {/* Backdrop */}
-                  <div
-                    className="fixed inset-0 z-40"
-                    onClick={() => setShowFontSettings(false)}
-                  />
-
-                  <motion.div
-                    initial={{ opacity: 0, y: -8, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: -8, scale: 0.95 }}
-                    transition={{ duration: 0.15 }}
-                    className="absolute right-0 top-full mt-2 w-48 bg-[var(--bg-elevated)] border border-[var(--border)] rounded-xl shadow-lg z-50 overflow-hidden"
-                  >
-                    <div className="p-3 border-b border-[var(--border)]">
-                      <p className="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wide">
-                        Schriftgröße
-                      </p>
-                    </div>
-                    <div className="p-2">
+                <motion.div
+                  initial={{ opacity: 0, y: -8, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -8, scale: 0.95 }}
+                  transition={{ duration: 0.15 }}
+                  className="absolute right-0 top-full mt-2 w-56 bg-[var(--bg-elevated)] border border-[var(--border)] rounded-xl shadow-lg z-50 overflow-hidden"
+                >
+                  {/* Schriftgröße */}
+                  <div className="p-3 border-b border-[var(--border)]">
+                    <p className="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wide mb-2">
+                      Schriftgröße
+                    </p>
+                    <div className="flex gap-1">
                       {(["sm", "md", "lg", "xl", "2xl"] as FontSize[]).map((size) => (
                         <button
                           key={size}
-                          onClick={() => {
-                            setFontSize(size);
-                            setShowFontSettings(false);
-                          }}
+                          onClick={() => setFontSize(size)}
                           className={clsx(
-                            "w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors",
+                            "flex-1 py-1.5 rounded-lg text-xs font-medium transition-colors",
                             fontSize === size
-                              ? "bg-[var(--accent-bg)] text-[var(--accent)]"
-                              : "text-[var(--text-primary)] hover:bg-[var(--bg-hover)]"
+                              ? "bg-[var(--accent)] text-white"
+                              : "bg-[var(--bg-secondary)] text-[var(--text-secondary)] hover:bg-[var(--bg-hover)]"
                           )}
+                          title={fontSizeLabels[size]}
                         >
-                          <span>{fontSizeLabels[size]}</span>
-                          {fontSize === size && (
-                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                            </svg>
-                          )}
+                          {size === "sm" ? "S" : size === "md" ? "M" : size === "lg" ? "L" : size === "xl" ? "XL" : "2X"}
                         </button>
                       ))}
                     </div>
-                  </motion.div>
-                </>
+                  </div>
+
+                  {/* Schriftart */}
+                  <div className="p-2">
+                    <p className="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wide px-2 mb-1">
+                      Schriftart
+                    </p>
+                    {(["system", "modern", "serif", "classic"] as FontFamily[]).map((family) => (
+                      <button
+                        key={family}
+                        onClick={() => setFontFamily(family)}
+                        className={clsx(
+                          "w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors",
+                          fontFamily === family
+                            ? "bg-[var(--accent-bg)] text-[var(--accent)]"
+                            : "text-[var(--text-primary)] hover:bg-[var(--bg-hover)]"
+                        )}
+                      >
+                        <div>
+                          <span className="font-medium">{fontFamilyLabels[family].name}</span>
+                          <span className="text-xs text-[var(--text-muted)] ml-2">
+                            {fontFamilyLabels[family].desc}
+                          </span>
+                        </div>
+                        {fontFamily === family && (
+                          <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                          </svg>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </motion.div>
               )}
             </AnimatePresence>
           </div>

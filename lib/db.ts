@@ -208,6 +208,33 @@ export async function getAllBookmarks(): Promise<Bookmark[]> {
   return db.bookmarks.orderBy("createdAt").reverse().toArray();
 }
 
+export async function deleteBookmarksForVerses(
+  bookId: string,
+  chapter: number,
+  verses: number[]
+): Promise<void> {
+  // Finde und lösche alle Lesezeichen, die die angegebenen Verse enthalten
+  const bookmarks = await db.bookmarks
+    .where("[bookId+chapter]")
+    .equals([bookId, chapter])
+    .toArray();
+
+  const idsToDelete: number[] = [];
+  for (const bookmark of bookmarks) {
+    // Prüfe ob mindestens ein Vers des Lesezeichens in der Auswahl ist
+    for (let v = bookmark.verseStart; v <= bookmark.verseEnd; v++) {
+      if (verses.includes(v)) {
+        if (bookmark.id) idsToDelete.push(bookmark.id);
+        break;
+      }
+    }
+  }
+
+  if (idsToDelete.length > 0) {
+    await db.bookmarks.bulkDelete(idsToDelete);
+  }
+}
+
 // ==================== UTILITY ====================
 
 export function getVerseKey(bookId: string, chapter: number, verse: number): string {

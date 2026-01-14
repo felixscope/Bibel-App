@@ -204,6 +204,11 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                   placeholder="Suche in der Bibel..."
                   className="flex-1 bg-transparent text-[var(--text-primary)] placeholder:text-[var(--text-muted)] text-lg outline-none"
                 />
+                {!query && (
+                  <span className="hidden sm:inline text-xs text-[var(--text-muted)]/50 font-mono">
+                    ⌘K
+                  </span>
+                )}
                 {query && (
                   <button
                     onClick={() => setQuery("")}

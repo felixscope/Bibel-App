@@ -9,6 +9,7 @@ import {
   addHighlightsForVerses,
   removeHighlightsForVerses,
   addBookmark,
+  deleteBookmarksForVerses,
   type Highlight,
 } from "@/lib/db";
 import { getBookById } from "@/lib/types";
@@ -108,9 +109,17 @@ export function VerseActionBar({
 
   const handleBookmark = async () => {
     if (!verseRange) return;
+    const verses = getSelectedVerseNumbers();
 
-    await addBookmark(bookId, chapter, verseRange.start, verseRange.end);
-    showToast("Lesezeichen gespeichert", "bookmark");
+    // Toggle: Wenn bereits gemerkt, dann löschen
+    if (versesAreBookmarked) {
+      await deleteBookmarksForVerses(bookId, chapter, verses);
+      showToast("Lesezeichen entfernt", "remove");
+    } else {
+      await addBookmark(bookId, chapter, verseRange.start, verseRange.end);
+      showToast("Lesezeichen gespeichert", "bookmark");
+    }
+
     onHighlightChange?.();
     clearSelection();
   };

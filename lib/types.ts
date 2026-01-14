@@ -163,9 +163,16 @@ export const BIBLE_BOOKS = {
   ],
 } as const;
 
-export function getBookById(id: string) {
+export type BibleBookMeta = {
+  id: string;
+  name: string;
+  shortName: string;
+  chapters: number;
+};
+
+export function getBookById(id: string): BibleBookMeta | undefined {
   const allBooks = [...BIBLE_BOOKS.old, ...BIBLE_BOOKS.new];
-  return allBooks.find((book) => book.id === id);
+  return allBooks.find((book) => book.id === id) as BibleBookMeta | undefined;
 }
 
 export function getBookIndex(id: string): number {
