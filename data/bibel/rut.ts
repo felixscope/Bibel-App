@@ -1,8 +1,5 @@
-// Rut – Einheitsübersetzung
-// Mit Fußnoten
-
-export const ruth = {
-  id: "ruth",
+export const rut = {
+  id: "rut",
   name: "Rut",
   shortName: "Rut",
   testament: "old" as const,

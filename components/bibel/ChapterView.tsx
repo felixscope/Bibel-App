@@ -117,6 +117,7 @@ function ChapterContent({
               key={verse.number}
               number={verse.number}
               text={verse.text}
+              footnotes={verse.footnotes}
               highlight={highlightMap.get(verse.number) || null}
               hasNote={noteVerses.has(verse.number)}
               isBookmarked={bookmarkVerses.has(verse.number)}

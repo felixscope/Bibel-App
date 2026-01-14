@@ -2,6 +2,7 @@
 export interface Verse {
   number: number;
   text: string;
+  footnotes?: string[];
 }
 
 export interface Chapter {

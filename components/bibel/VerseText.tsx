@@ -1,11 +1,13 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import clsx from "clsx";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface VerseTextProps {
   number: number;
   text: string;
+  footnotes?: string[];
   highlight?: "yellow" | "green" | "blue" | "pink" | "orange" | null;
   hasNote?: boolean;
   isBookmarked?: boolean;
@@ -16,6 +18,7 @@ interface VerseTextProps {
 export function VerseText({
   number,
   text,
+  footnotes,
   highlight = null,
   hasNote = false,
   isBookmarked = false,
@@ -23,6 +26,8 @@ export function VerseText({
   onSelect,
 }: VerseTextProps) {
   const touchStartPos = useRef<{ x: number; y: number } | null>(null);
+  const [showFootnote, setShowFootnote] = useState(false);
+  const footnoteRef = useRef<HTMLSpanElement>(null);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     const touch = e.touches[0];
@@ -52,6 +57,14 @@ export function VerseText({
     onSelect?.(number, text);
   };
 
+  const handleFootnoteClick = (e: React.MouseEvent | React.TouchEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setShowFootnote(!showFootnote);
+  };
+
+  const hasFootnotes = footnotes && footnotes.length > 0;
+
   return (
     <span
       className={clsx(
@@ -68,6 +81,54 @@ export function VerseText({
 
       {/* Verstext */}
       <span className="bible-text">{text}</span>
+
+      {/* Fußnoten-Indikator */}
+      {hasFootnotes && (
+        <span
+          ref={footnoteRef}
+          className="relative inline"
+        >
+          <sup
+            className="footnote-marker ml-0.5 cursor-pointer text-[var(--accent)] hover:text-[var(--accent-hover)] transition-colors select-none"
+            onClick={handleFootnoteClick}
+            onTouchEnd={handleFootnoteClick}
+          >
+            *
+          </sup>
+
+          {/* Fußnoten-Popup */}
+          <AnimatePresence>
+            {showFootnote && (
+              <motion.div
+                initial={{ opacity: 0, y: -5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -5 }}
+                transition={{ duration: 0.15 }}
+                className="absolute left-0 bottom-full mb-2 z-[9999] w-72 sm:w-80 p-3 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border)] shadow-lg"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="text-xs text-[var(--text-muted)] mb-1.5 font-medium">
+                  Fußnote zu Vers {number}
+                </div>
+                {footnotes?.map((note, index) => (
+                  <p
+                    key={index}
+                    className="text-sm text-[var(--text-secondary)] leading-relaxed"
+                  >
+                    {note}
+                  </p>
+                ))}
+                <button
+                  className="mt-2 text-xs text-[var(--accent)] hover:underline"
+                  onClick={() => setShowFootnote(false)}
+                >
+                  Schließen
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </span>
+      )}
 
       {/* Indikatoren */}
       {(hasNote || isBookmarked) && (
