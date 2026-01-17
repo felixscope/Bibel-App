@@ -6,6 +6,7 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { VerseText } from "./VerseText";
 import { VerseActionBar } from "./VerseActionBar";
 import { NoteModal } from "./NoteModal";
+import { BookIntroduction } from "./BookIntroduction";
 import { SelectionProvider, useSelection } from "@/components/providers/SelectionProvider";
 import {
   getHighlightsForChapter,
@@ -22,6 +23,7 @@ interface ChapterViewProps {
   bookName: string;
   chapterNumber: number;
   verses: Verse[];
+  introduction?: string;
 }
 
 function ChapterContent({
@@ -29,6 +31,7 @@ function ChapterContent({
   bookName,
   chapterNumber,
   verses,
+  introduction,
 }: ChapterViewProps) {
   const { toggleVerse, isSelected, clearSelection, setContext } = useSelection();
   const [isNoteModalOpen, setIsNoteModalOpen] = useState(false);
@@ -110,6 +113,11 @@ function ChapterContent({
           </div>
         </header>
 
+        {/* Bucheinleitung - nur bei Kapitel 1 */}
+        {chapterNumber === 1 && introduction && (
+          <BookIntroduction introduction={introduction} bookName={bookName} />
+        )}
+
         {/* Bibeltext */}
         <div className="bible-text leading-relaxed text-[var(--text-primary)]">
           {verses.map((verse) => (
@@ -117,6 +125,7 @@ function ChapterContent({
               key={verse.number}
               number={verse.number}
               text={verse.text}
+              heading={verse.heading}
               footnotes={verse.footnotes}
               highlight={highlightMap.get(verse.number) || null}
               hasNote={noteVerses.has(verse.number)}

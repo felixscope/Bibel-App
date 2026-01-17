@@ -1,19 +1,12 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef, useMemo } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { getBookById } from "@/lib/types";
-
-// Importiere verfügbare Bibeldaten
-import { genesis } from "@/data/bibel/genesis";
-import { ruth } from "@/data/bibel/ruth";
-
-const bibleData: Record<string, typeof genesis> = {
-  genesis,
-  ruth,
-};
+import { getBookById, BIBLE_BOOKS, Book } from "@/lib/types";
+import { loadBook } from "@/lib/bible-loader";
+import { useTranslation } from "@/components/providers/TranslationProvider";
 
 interface SearchResult {
   bookId: string;
@@ -34,12 +27,33 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
   const [mounted, setMounted] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+  const [loadedBooks, setLoadedBooks] = useState<Map<string, Book>>(new Map());
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+  const { translation: translationId } = useTranslation();
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Load NT books when overlay opens
+  useEffect(() => {
+    if (isOpen && loadedBooks.size === 0) {
+      const loadNTBooks = async () => {
+        const books = new Map<string, Book>();
+        // Load only NT books
+        for (const book of BIBLE_BOOKS.new) {
+          const loaded = await loadBook(translationId, book.id);
+          if (loaded) {
+            books.set(book.id, loaded);
+          }
+        }
+        setLoadedBooks(books);
+      };
+      loadNTBooks();
+    }
+  }, [isOpen, translationId, loadedBooks.size]);
 
   // Auto-focus input when opened
   useEffect(() => {
@@ -66,15 +80,15 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
     }
   }, [isOpen, onClose]);
 
-  // Search function - optimized for speed
+  // Search function - uses loaded books
   const searchBible = useCallback((searchQuery: string): SearchResult[] => {
-    if (searchQuery.length < 2) return [];
+    if (searchQuery.length < 2 || loadedBooks.size === 0) return [];
 
     const normalizedQuery = searchQuery.toLowerCase().trim();
     const searchResults: SearchResult[] = [];
-    const maxResults = 50; // Limit for performance
+    const maxResults = 50;
 
-    for (const [bookId, bookData] of Object.entries(bibleData)) {
+    for (const [bookId, bookData] of loadedBooks) {
       if (searchResults.length >= maxResults) break;
 
       const book = getBookById(bookId);
@@ -105,13 +119,15 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
     }
 
     return searchResults;
-  }, []);
+  }, [loadedBooks]);
 
   // Live search with debounce
   useEffect(() => {
+    setIsSearching(true);
     const timer = setTimeout(() => {
       setResults(searchBible(query));
-    }, 100); // 100ms debounce for snappy feel
+      setIsSearching(false);
+    }, 150);
 
     return () => clearTimeout(timer);
   }, [query, searchBible]);
@@ -239,10 +255,22 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
 
               {/* Results */}
               <div className="max-h-[60vh] overflow-y-auto">
-                {query.length < 2 ? (
+                {loadedBooks.size === 0 ? (
+                  <div className="p-8 text-center">
+                    <p className="text-[var(--text-muted)]">
+                      Lade Bibeltexte...
+                    </p>
+                  </div>
+                ) : query.length < 2 ? (
                   <div className="p-8 text-center">
                     <p className="text-[var(--text-muted)]">
                       Gib mindestens 2 Zeichen ein...
+                    </p>
+                  </div>
+                ) : isSearching ? (
+                  <div className="p-8 text-center">
+                    <p className="text-[var(--text-muted)]">
+                      Suche...
                     </p>
                   </div>
                 ) : results.length === 0 ? (

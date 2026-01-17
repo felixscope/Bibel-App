@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 interface VerseTextProps {
   number: number;
   text: string;
+  heading?: string;
   footnotes?: string[];
   highlight?: "yellow" | "green" | "blue" | "pink" | "orange" | null;
   hasNote?: boolean;
@@ -18,6 +19,7 @@ interface VerseTextProps {
 export function VerseText({
   number,
   text,
+  heading,
   footnotes,
   highlight = null,
   hasNote = false,
@@ -66,18 +68,28 @@ export function VerseText({
   const hasFootnotes = footnotes && footnotes.length > 0;
 
   return (
-    <span
-      className={clsx(
-        "verse-interactive relative inline",
-        highlight && `verse-highlight verse-highlight-${highlight}`,
-        isSelected && "verse-selected",
+    <>
+      {/* Abschnittsüberschrift */}
+      {heading && (
+        <span className="block mt-6 mb-3 text-center">
+          <span className="text-sm font-medium text-[var(--text-muted)] tracking-wide">
+            {heading}
+          </span>
+        </span>
       )}
-      onClick={handleClick}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-    >
-      {/* Versnummer */}
-      <sup className="verse-number">{number}</sup>
+
+      <span
+        className={clsx(
+          "verse-interactive relative inline",
+          highlight && `verse-highlight verse-highlight-${highlight}`,
+          isSelected && "verse-selected",
+        )}
+        onClick={handleClick}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
+        {/* Versnummer */}
+        <sup className="verse-number">{number}</sup>
 
       {/* Verstext */}
       <span className="bible-text">{text}</span>
@@ -148,8 +160,9 @@ export function VerseText({
         </span>
       )}
 
-      {/* Leerzeichen nach dem Vers */}
-      {" "}
-    </span>
+        {/* Leerzeichen nach dem Vers */}
+        {" "}
+      </span>
+    </>
   );
 }

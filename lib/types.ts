@@ -2,6 +2,7 @@
 export interface Verse {
   number: number;
   text: string;
+  heading?: string;
   footnotes?: string[];
 }
 
@@ -14,9 +15,37 @@ export interface Book {
   id: string;
   name: string;
   shortName: string;
-  chapters: Chapter[];
   testament: "old" | "new";
+  introduction?: string;
+  chapters: Chapter[];
 }
+
+// Übersetzungen
+export const TRANSLATIONS = {
+  einheitsuebersetzung: {
+    id: "einheitsuebersetzung",
+    name: "Einheitsübersetzung",
+    shortName: "EÜ",
+    year: 1980,
+    folder: "Einheitsuebersetzung_1980",
+  },
+  neue: {
+    id: "neue",
+    name: "Neue Evangelistische",
+    shortName: "NeÜ",
+    year: 2015,
+    folder: "NeÜ_2015",
+  },
+  elberfelder: {
+    id: "elberfelder",
+    name: "Elberfelder",
+    shortName: "ELB",
+    year: 2006,
+    folder: "Elberfelder_2006",
+  },
+} as const;
+
+export type TranslationId = keyof typeof TRANSLATIONS;
 
 export interface BibleTranslation {
   id: string;

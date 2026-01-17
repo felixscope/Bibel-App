@@ -9,15 +9,6 @@ import { getAllNotes, deleteNote, updateNote, type Note } from "@/lib/db";
 import { getBookById } from "@/lib/types";
 import { useToast } from "@/components/providers/ToastProvider";
 
-// Importiere verfügbare Bibeldaten
-import { genesis } from "@/data/bibel/genesis";
-import { ruth } from "@/data/bibel/ruth";
-
-const bibleData: Record<string, typeof genesis> = {
-  genesis,
-  ruth,
-};
-
 export default function NotizenPage() {
   const notes = useLiveQuery(() => getAllNotes());
   const [editingNote, setEditingNote] = useState<Note | null>(null);
@@ -35,34 +26,13 @@ export default function NotizenPage() {
     return notes.filter((note) => {
       const book = getBookById(note.bookId);
       const bookName = book?.name || note.bookId;
-      const verseText = getVerseText(note) || "";
 
       return (
         note.content.toLowerCase().includes(query) ||
-        bookName.toLowerCase().includes(query) ||
-        verseText.toLowerCase().includes(query)
+        bookName.toLowerCase().includes(query)
       );
     });
   }, [notes, searchQuery]);
-
-  // Funktion um den Verstext für eine Notiz zu holen
-  function getVerseText(note: Note): string | null {
-    const bookData = bibleData[note.bookId];
-    if (!bookData) return null;
-
-    const chapter = bookData.chapters.find(c => c.number === note.chapter);
-    if (!chapter) return null;
-
-    const verses: string[] = [];
-    for (let v = note.verseStart; v <= note.verseEnd; v++) {
-      const verse = chapter.verses.find(vs => vs.number === v);
-      if (verse) {
-        verses.push(verse.text);
-      }
-    }
-
-    return verses.length > 0 ? verses.join(" ") : null;
-  }
 
   const handleEdit = (note: Note) => {
     setEditingNote(note);
@@ -194,7 +164,7 @@ export default function NotizenPage() {
               Wähle einen Vers aus und tippe auf "Notiz"
             </p>
             <Link
-              href="/lesen/genesis/1"
+              href="/lesen/matthew/1"
               className="inline-flex items-center gap-2 px-3 py-1.5 text-sm rounded-lg bg-[var(--accent)] text-white hover:bg-[var(--accent-hover)] transition-colors"
             >
               Zur Bibel
@@ -260,16 +230,6 @@ export default function NotizenPage() {
                       </Link>
                     </div>
                   </div>
-
-                  {/* Verstext - kompakt */}
-                  {(() => {
-                    const verseText = getVerseText(note);
-                    return verseText ? (
-                      <p className="text-[11px] text-[var(--text-muted)] italic mb-2 line-clamp-2">
-                        "{verseText}"
-                      </p>
-                    ) : null;
-                  })()}
 
                   {/* Notiz-Inhalt */}
                   <p className="text-sm text-[var(--text-primary)] whitespace-pre-wrap line-clamp-3">

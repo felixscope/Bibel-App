@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "@/components/providers/ThemeProvider";
 import { BookSelector } from "@/components/bibel/BookSelector";
 import { SearchOverlay } from "@/components/bibel/SearchOverlay";
+import { TranslationSelector } from "@/components/bibel/TranslationSelector";
 import clsx from "clsx";
 
 interface TopBarProps {
@@ -73,11 +74,19 @@ export function TopBar({ currentBookId, currentChapter }: TopBarProps) {
   return (
     <header className="sticky top-0 z-30 bg-[var(--bg-primary)]/90 backdrop-blur-md border-b border-[var(--border)]">
       <div className="max-w-4xl mx-auto px-4 py-2.5 flex items-center justify-between gap-2">
-        {/* Buchauswahl */}
-        <BookSelector
-          currentBookId={currentBookId}
-          currentChapter={currentChapter}
-        />
+        {/* Linke Seite: Übersetzung + Buch */}
+        <div className="flex items-center gap-2">
+          {/* Übersetzungsauswahl */}
+          <TranslationSelector />
+
+          <span className="text-[var(--text-muted)]">|</span>
+
+          {/* Buchauswahl */}
+          <BookSelector
+            currentBookId={currentBookId}
+            currentChapter={currentChapter}
+          />
+        </div>
 
         {/* Rechte Icons */}
         <div className="flex items-center gap-1">

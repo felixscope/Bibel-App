@@ -12,9 +12,12 @@ interface BookSelectorProps {
   currentChapter?: number;
 }
 
+// TEMPORÄR: AT deaktiviert bis Dateien korrigiert sind
+const AT_TEMPORARILY_DISABLED = true;
+
 export function BookSelector({ currentBookId, currentChapter }: BookSelectorProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeTestament, setActiveTestament] = useState<"old" | "new">("old");
+  const [activeTestament, setActiveTestament] = useState<"old" | "new">("new"); // Default: NT
   const [selectedBook, setSelectedBook] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
 
@@ -89,13 +92,16 @@ export function BookSelector({ currentBookId, currentChapter }: BookSelectorProp
             {!selectedBook && (
               <div className="flex gap-2 p-4 border-b border-[var(--border)]">
                 <button
-                  onClick={() => setActiveTestament("old")}
+                  onClick={() => !AT_TEMPORARILY_DISABLED && setActiveTestament("old")}
+                  disabled={AT_TEMPORARILY_DISABLED}
                   className={clsx(
                     "flex-1 py-2.5 px-4 rounded-lg font-medium transition-colors text-sm",
+                    AT_TEMPORARILY_DISABLED && "opacity-50 cursor-not-allowed",
                     activeTestament === "old"
                       ? "bg-[var(--accent)] text-white"
                       : "bg-[var(--bg-secondary)] text-[var(--text-secondary)] hover:bg-[var(--bg-hover)]"
                   )}
+                  title={AT_TEMPORARILY_DISABLED ? "Altes Testament wird noch vorbereitet" : undefined}
                 >
                   Altes Testament
                 </button>
