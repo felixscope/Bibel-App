@@ -67,16 +67,59 @@ export function VerseText({
 
   const hasFootnotes = footnotes && footnotes.length > 0;
 
-  return (
-    <>
-      {/* Abschnittsüberschrift */}
-      {heading && (
-        <span className="block mt-6 mb-3 text-center">
-          <span className="text-sm font-medium text-[var(--text-muted)] tracking-wide">
+  // Text mit Schrägstrichen in Zeilen aufteilen für poetische Darstellung
+  const formatText = (inputText: string) => {
+    // Prüfen ob Schrägstriche vorhanden sind
+    if (!inputText.includes(" / ")) {
+      return inputText;
+    }
+
+    // Text an " / " aufteilen und als separate Zeilen rendern
+    const lines = inputText.split(" / ");
+    return lines.map((line, index) => (
+      <span key={index}>
+        {line}
+        {index < lines.length - 1 && <br />}
+      </span>
+    ));
+  };
+
+  // Heading parsen: "Hauptüberschrift | Abschnittsüberschrift" oder nur eine Überschrift
+  const renderHeading = () => {
+    if (!heading) return null;
+
+    const parts = heading.split(" | ");
+
+    if (parts.length === 2) {
+      // Beide Überschriften vorhanden
+      return (
+        <span className="block mt-8 mb-4">
+          {/* Hauptüberschrift (h2-Style) */}
+          <span className="block text-lg font-bold text-[var(--text-primary)] mb-2">
+            {parts[0].trim()}
+          </span>
+          {/* Abschnittsüberschrift (h4-Style) */}
+          <span className="block text-base font-semibold text-[var(--text-secondary)]">
+            {parts[1].trim()}
+          </span>
+        </span>
+      );
+    } else {
+      // Nur eine Überschrift - als Abschnittsüberschrift behandeln
+      return (
+        <span className="block mt-6 mb-3">
+          <span className="block text-base font-semibold text-[var(--text-secondary)]">
             {heading}
           </span>
         </span>
-      )}
+      );
+    }
+  };
+
+  return (
+    <>
+      {/* Überschriften */}
+      {renderHeading()}
 
       <span
         className={clsx(
@@ -92,7 +135,7 @@ export function VerseText({
         <sup className="verse-number">{number}</sup>
 
       {/* Verstext */}
-      <span className="bible-text">{text}</span>
+      <span className="bible-text">{formatText(text)}</span>
 
       {/* Fußnoten-Indikator */}
       {hasFootnotes && (
