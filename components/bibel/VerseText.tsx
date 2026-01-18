@@ -29,6 +29,7 @@ export function VerseText({
 }: VerseTextProps) {
   const touchStartPos = useRef<{ x: number; y: number } | null>(null);
   const touchStartTime = useRef<number>(0);
+  const scrollStartY = useRef<number>(0);
   const [showFootnote, setShowFootnote] = useState(false);
   const footnoteRef = useRef<HTMLSpanElement>(null);
 
@@ -36,6 +37,7 @@ export function VerseText({
     const touch = e.touches[0];
     touchStartPos.current = { x: touch.clientX, y: touch.clientY };
     touchStartTime.current = Date.now();
+    scrollStartY.current = window.scrollY;
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
@@ -45,10 +47,13 @@ export function VerseText({
     const deltaX = Math.abs(touch.clientX - touchStartPos.current.x);
     const deltaY = Math.abs(touch.clientY - touchStartPos.current.y);
     const touchDuration = Date.now() - touchStartTime.current;
+    const scrollDelta = Math.abs(window.scrollY - scrollStartY.current);
 
-    // Nur bei absolutem Stillstand: 0px Bewegung UND < 150ms Dauer
-    // Verhindert jegliches versehentliches Markieren beim Scrollen
-    if (deltaX === 0 && deltaY === 0 && touchDuration < 150) {
+    // Nur bei sehr kurzer, präziser Berührung ohne Scrollen
+    // - Max 1px Touch-Bewegung
+    // - Max 120ms Dauer (schneller Tap)
+    // - KEIN Scrollen (scrollDelta === 0)
+    if (deltaX <= 1 && deltaY <= 1 && touchDuration < 120 && scrollDelta === 0) {
       e.preventDefault();
       onSelect?.(number, text);
     }
