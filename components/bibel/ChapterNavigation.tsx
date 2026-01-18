@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
@@ -21,6 +21,36 @@ export function ChapterNavigation({
   const router = useRouter();
   const touchStartX = useRef<number | null>(null);
   const touchStartY = useRef<number | null>(null);
+  const [showNavButtons, setShowNavButtons] = useState(false);
+  const [isNearBottom, setIsNearBottom] = useState(false);
+
+  // Scroll-Listener für Auto-Hide Navigation
+  useEffect(() => {
+    let scrollTimeout: NodeJS.Timeout;
+
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const scrollHeight = document.documentElement.scrollHeight;
+      const clientHeight = window.innerHeight;
+      const distanceFromBottom = scrollHeight - (scrollTop + clientHeight);
+
+      // Zeige Buttons wenn nahe am Ende (weniger als 500px vom Ende)
+      setIsNearBottom(distanceFromBottom < 500);
+
+      // Zeige Buttons kurz beim Scrollen
+      setShowNavButtons(true);
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        setShowNavButtons(false);
+      }, 1500);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      clearTimeout(scrollTimeout);
+    };
+  }, []);
 
   // Swipe Navigation für Mobile
   useEffect(() => {
@@ -114,41 +144,54 @@ export function ChapterNavigation({
         </motion.div>
       </nav>
 
-      {/* Mobile: Größere Indikatoren an den Seiten */}
-      <div className="md:hidden fixed inset-y-0 left-0 w-12 flex items-center justify-start pointer-events-none z-30">
-        {hasPrev && (
+      {/* Mobile: Funktionale Navigation an den Seiten */}
+      {hasPrev && (
+        <Link
+          href={`/lesen/${bookId}/${currentChapter - 1}`}
+          className="md:hidden fixed inset-y-0 left-0 w-16 flex items-center justify-start z-30 pl-1"
+        >
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.4 }}
-            className="ml-2"
+            whileTap={{ scale: 1.1, opacity: 0.8 }}
+            className="p-2 rounded-full bg-[var(--bg-elevated)]/80 backdrop-blur-sm"
           >
-            <svg className="w-6 h-6 text-[var(--text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <svg className="w-6 h-6 text-[var(--text-primary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
             </svg>
           </motion.div>
-        )}
-      </div>
-      <div className="md:hidden fixed inset-y-0 right-0 w-12 flex items-center justify-end pointer-events-none z-30">
-        {hasNext && (
+        </Link>
+      )}
+
+      {hasNext && (
+        <Link
+          href={`/lesen/${bookId}/${currentChapter + 1}`}
+          className="md:hidden fixed inset-y-0 right-0 w-16 flex items-center justify-end z-30 pr-2"
+        >
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.4 }}
-            className="mr-2"
+            whileTap={{ scale: 1.1, opacity: 0.8 }}
+            className="p-2 rounded-full bg-[var(--bg-elevated)]/80 backdrop-blur-sm"
           >
-            <svg className="w-6 h-6 text-[var(--text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <svg className="w-6 h-6 text-[var(--text-primary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
             </svg>
           </motion.div>
-        )}
-      </div>
+        </Link>
+      )}
 
-      {/* Mobile: Navigation unten */}
+      {/* Mobile: Navigation unten - nur bei Scroll-Ende oder schnellem Scrollen */}
       <nav className="md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-40">
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.3 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{
+            opacity: showNavButtons || isNearBottom ? 1 : 0,
+            y: showNavButtons || isNearBottom ? 0 : 20
+          }}
+          transition={{ duration: 0.2 }}
           className="flex items-center gap-3 bg-[var(--bg-elevated)]/95 backdrop-blur-md border border-[var(--border)] rounded-full shadow-lg px-2 py-2"
+          style={{ pointerEvents: showNavButtons || isNearBottom ? 'auto' : 'none' }}
         >
           {/* Vorheriges Kapitel */}
           {hasPrev ? (

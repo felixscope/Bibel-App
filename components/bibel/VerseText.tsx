@@ -28,12 +28,14 @@ export function VerseText({
   onSelect,
 }: VerseTextProps) {
   const touchStartPos = useRef<{ x: number; y: number } | null>(null);
+  const touchStartTime = useRef<number>(0);
   const [showFootnote, setShowFootnote] = useState(false);
   const footnoteRef = useRef<HTMLSpanElement>(null);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     const touch = e.touches[0];
     touchStartPos.current = { x: touch.clientX, y: touch.clientY };
+    touchStartTime.current = Date.now();
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
@@ -42,15 +44,17 @@ export function VerseText({
     const touch = e.changedTouches[0];
     const deltaX = Math.abs(touch.clientX - touchStartPos.current.x);
     const deltaY = Math.abs(touch.clientY - touchStartPos.current.y);
+    const touchDuration = Date.now() - touchStartTime.current;
 
-    // Nur auslösen wenn der Finger sich weniger als 5px bewegt hat (sehr präzise)
-    // Dies verhindert versehentliches Markieren beim Scrollen
-    if (deltaX < 5 && deltaY < 5) {
+    // Nur bei sehr präzisem Tap: < 2px Bewegung UND < 200ms Dauer
+    // Dies verhindert versehentliches Markieren beim Scrollen komplett
+    if (deltaX < 2 && deltaY < 2 && touchDuration < 200) {
       e.preventDefault();
       onSelect?.(number, text);
     }
 
     touchStartPos.current = null;
+    touchStartTime.current = 0;
   };
 
   const handleClick = (e: React.MouseEvent) => {
@@ -94,7 +98,7 @@ export function VerseText({
     if (parts.length === 2) {
       // Beide Überschriften vorhanden
       return (
-        <span className="block mt-8 mb-4">
+        <span className="block mt-8 mb-6">
           {/* Hauptüberschrift (h2-Style) */}
           <span className="block text-xl md:text-2xl font-bold text-[var(--text-primary)] mb-3">
             {parts[0].trim()}
@@ -108,7 +112,7 @@ export function VerseText({
     } else {
       // Nur eine Überschrift - als Abschnittsüberschrift behandeln
       return (
-        <span className="block mt-6 mb-3">
+        <span className="block mt-6 mb-4">
           <span className="block text-lg md:text-xl font-semibold text-[var(--text-secondary)]">
             {heading}
           </span>
@@ -160,7 +164,7 @@ export function VerseText({
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -5 }}
                 transition={{ duration: 0.15 }}
-                className="absolute left-0 bottom-full mb-2 z-[9999] w-72 sm:w-80 p-3 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border)] shadow-lg"
+                className="fixed left-1/2 -translate-x-1/2 bottom-20 z-[9999] w-[calc(100vw-2rem)] max-w-md p-4 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border)] shadow-2xl"
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="text-xs text-[var(--text-muted)] mb-1.5 font-medium">
