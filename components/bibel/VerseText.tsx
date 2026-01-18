@@ -46,9 +46,9 @@ export function VerseText({
     const deltaY = Math.abs(touch.clientY - touchStartPos.current.y);
     const touchDuration = Date.now() - touchStartTime.current;
 
-    // Nur bei sehr präzisem Tap: < 2px Bewegung UND < 200ms Dauer
-    // Dies verhindert versehentliches Markieren beim Scrollen komplett
-    if (deltaX < 2 && deltaY < 2 && touchDuration < 200) {
+    // Nur bei absolutem Stillstand: 0px Bewegung UND < 150ms Dauer
+    // Verhindert jegliches versehentliches Markieren beim Scrollen
+    if (deltaX === 0 && deltaY === 0 && touchDuration < 150) {
       e.preventDefault();
       onSelect?.(number, text);
     }

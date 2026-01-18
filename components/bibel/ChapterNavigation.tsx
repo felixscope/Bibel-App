@@ -27,6 +27,8 @@ export function ChapterNavigation({
   // Scroll-Listener für Auto-Hide Navigation
   useEffect(() => {
     let scrollTimeout: NodeJS.Timeout;
+    let lastScrollTop = window.scrollY;
+    let lastScrollTime = Date.now();
 
     const handleScroll = () => {
       const scrollTop = window.scrollY;
@@ -37,12 +39,23 @@ export function ChapterNavigation({
       // Zeige Buttons wenn nahe am Ende (weniger als 500px vom Ende)
       setIsNearBottom(distanceFromBottom < 500);
 
-      // Zeige Buttons kurz beim Scrollen
-      setShowNavButtons(true);
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(() => {
-        setShowNavButtons(false);
-      }, 1500);
+      // Berechne Scroll-Geschwindigkeit
+      const now = Date.now();
+      const timeDelta = now - lastScrollTime;
+      const scrollDelta = Math.abs(scrollTop - lastScrollTop);
+      const scrollSpeed = timeDelta > 0 ? scrollDelta / timeDelta : 0;
+
+      // Zeige Buttons NUR bei rasantem Scrollen (> 2px pro ms)
+      if (scrollSpeed > 2) {
+        setShowNavButtons(true);
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          setShowNavButtons(false);
+        }, 1500);
+      }
+
+      lastScrollTop = scrollTop;
+      lastScrollTime = now;
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
