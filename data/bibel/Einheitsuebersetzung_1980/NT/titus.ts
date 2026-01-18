@@ -2,28 +2,28 @@ import { Book } from "@/lib/types";
 
 export const titus: Book = {
   id: "titus", name: "Titus", shortName: "Tit", testament: "new",
-  introduction: "",
+  introduction: `Titus gehörte neben Timotheus zu den engsten Mitarbeitern des Apostels Paulus, wie vor allem der Galater- und der 2. Korintherbrief zeigen (Gal 2,3; 2 Kor 2,13; 7,6.13; 8,6.16.23; 12,18). Nach Tit 1,5 übertrug ihm Paulus die Verantwortung für die Kirche von Kreta. Nach alter Überlieferung soll er bis zu seinem Lebensende als Bischof dieser Insel gewirkt haben. Der Brief an Titus hat amtlichen Charakter; das Persönliche tritt zurück. Nach dem Eingangsgruß (1,1-4) werden zunächst die Aufgaben des Titus in Kreta genannt: Er soll geeignete Vorsteher für die Christengemeinden einsetzen (1,5-9) und die Irrlehre bekämpfen (1,10-16). Dann wird er ermahnt, in Übereinstimmung mit der »gesunden Lehre« die einzelnen Stände an ihre Pflichten zu erinnern (2,1-10). Es gilt, der in Jesus Christus sichtbar gewordenen Gnade Gottes zu entsprechen (2,11-15). Anschließend werden unter Hinweis auf die Taufe grundlegende Pflichten im politischen und mitmenschlichen Bereich genannt (3,1-8). Es folgt eine erneute Warnung vor Irrlehrern (3,9-11). Persönliche Aufträge, Segenswünsche und Grüße beschließen den Brief (3,12-15).`,
   chapters: [
     { number: 1, verses: [
-      { number: 1, text: "Paulus, Knecht Gottes und Apostel Jesu Christi, berufen, um die Auserwählten Gottes zum Glauben und zur Erkenntnis der wahren Gottesverehrung zu führen,", heading: "TODO: Add heading" },
+      { number: 1, text: "Paulus, Knecht Gottes und Apostel Jesu Christi, berufen, um die Auserwählten Gottes zum Glauben und zur Erkenntnis der wahren Gottesverehrung zu führen,", heading: "Bekenntnis, Anschrift und Gruß: 1,1-4", footnotes: ["1 Tim 2,4; 2 Tim 3,7"] },
       { number: 2, text: "in der Hoffnung auf das ewige Leben, das der wahrhaftige Gott schon vor ewigen Zeiten verheißen hat;" },
       { number: 3, text: "jetzt aber hat er zur vorherbestimmten Zeit sein Wort offenbart in der Verkündigung, die mir durch den Auftrag Gottes, unseres Retters, anvertraut ist.", footnotes: ["1 Tim 2,6; 6,15; Tit 2,10; 1 Tim 4,10; 1,1; 2,3; 3,4"] },
       { number: 4, text: "An Titus, seinen echten Sohn aufgrund des gemeinsamen Glaubens: Gnade und Friede von Gott, dem Vater, und Christus Jesus, unserem Retter.", footnotes: ["2,13; 3,6; 2 Tim 1,10; 2 Petr 1,1.11; 3,18"] },
-      { number: 5, text: "Ich habe dich in Kreta deswegen zurückgelassen, damit du das, was noch zu tun ist, zu Ende führst und in den einzelnen Städten Älteste einsetzt, wie ich dir aufgetragen habe.", footnotes: ["Apg 14,23; 1 Tim 3,2-4"] },
+      { number: 5, text: "Ich habe dich in Kreta deswegen zurückgelassen, damit du das, was noch zu tun ist, zu Ende führst und in den einzelnen Städten Älteste einsetzt, wie ich dir aufgetragen habe.", heading: "Die Aufgaben des Titus: 1,5 - 3,11 | Einsetzung geeigneter Vorsteher: 1,5-9", footnotes: ["Apg 14,23; 1 Tim 3,2-4"] },
       { number: 6, text: "Ein Ältester soll unbescholten und nur einmal verheiratet sein. Seine Kinder sollen gläubig sein; man soll ihnen nicht nachsagen können, sie seien liederlich und ungehorsam.", footnotes: ["Apg 20,17.28; 1 Petr 5,2f", "6f: Zu «Ältester» und «Bischof» vgl. die Anmerkung zu 1 Tim 3,1. Zu «nur einmal verheiratet» vgl. die Anmerkung zu 1 Tim 3,2."] },
       { number: 7, text: "Denn ein Bischof muss unbescholten sein, weil er das Haus Gottes verwaltet; er darf nicht überheblich und jähzornig sein, kein Trinker, nicht gewalttätig oder habgierig." },
       { number: 8, text: "Er soll vielmehr das Gute lieben, er soll gastfreundlich sein, besonnen, gerecht, fromm und beherrscht." },
       { number: 9, text: "Er muss ein Mann sein, der sich an das wahre Wort der Lehre hält; dann kann er mit der gesunden Lehre die Gemeinde ermahnen und die Gegner widerlegen.", footnotes: ["2,1.10; 1 Tim 1,10; 4,6; 6,3; 2 Tim 1,13; 4,3"] },
-      { number: 10, text: "Denn es gibt viele Ungehorsame, Schwätzer und Schwindler, besonders unter denen, die aus dem Judentum kommen." },
+      { number: 10, text: "Denn es gibt viele Ungehorsame, Schwätzer und Schwindler, besonders unter denen, die aus dem Judentum kommen.", heading: "Bekämpfung der Irrlehrer: 1,10-16" },
       { number: 11, text: "Diese Menschen muss man zum Schweigen bringen, denn aus übler Gewinnsucht zerstören sie ganze Familien mit ihren falschen Lehren." },
       { number: 12, text: "Einer von ihnen hat als ihr eigener Prophet gesagt: Alle Kreter sind Lügner und faule Bäuche, gefährliche Tiere.", footnotes: ["Das zitierte Wort des «Propheten» ist im Griechischen ein Hexameter, der dem Dichterphilosophen Epimenides (6. Jh. v. Chr.) zugeschrieben wird."] },
       { number: 13, text: "Das ist ein wahres Wort. Darum weise sie streng zurecht, damit ihr Glaube wieder gesund wird", footnotes: ["Das ist ein wahres Wort, wörtlich: Dieses Zeugnis ist wahr."] },
       { number: 14, text: "und sie sich nicht mehr an jüdische Fabeleien halten und an Gebote von Menschen, die sich von der Wahrheit abwenden.", footnotes: ["1 Tim 1,4; 4,7; 2 Tim 2,16"] },
       { number: 15, text: "Für die Reinen ist alles rein; für die Unreinen und Ungläubigen aber ist nichts rein, sogar ihr Denken und ihr Gewissen sind unrein.", footnotes: ["Mt 15,11; Mk 7,15"] },
-      { number: 16, text: "Sie beteuern, Gott zu kennen, durch ihr Tun aber verleugnen sie ihn; es sind abscheuliche und unbelehrbare Menschen, die zu nichts Gutem taugen.", footnotes: ["1 Tim 2,4; 2 Tim 3,7", "2 Tim 3,5"] }
-    ] }},
+      { number: 16, text: "Sie beteuern, Gott zu kennen, durch ihr Tun aber verleugnen sie ihn; es sind abscheuliche und unbelehrbare Menschen, die zu nichts Gutem taugen.", footnotes: ["2 Tim 3,5"] },
+    ] },
     { number: 2, verses: [
-      { number: 1, text: "Du aber verkünde, was der gesunden Lehre entspricht.", heading: "TODO: Add heading" },
+      { number: 1, text: "Du aber verkünde, was der gesunden Lehre entspricht.", heading: "Anweisungen für einzelne Stände: 2,1-10", footnotes: ["1,9; 2,10; 1 Tim 1,10; 4,6; 6,3; 2 Tim 1,13; 4,3"] },
       { number: 2, text: "Die älteren Männer sollen nüchtern sein, achtbar, besonnen, stark im Glauben, in der Liebe, in der Ausdauer.", footnotes: ["stark im Glauben, wörtlich: gesund im Glauben."] },
       { number: 3, text: "Ebenso seien die älteren Frauen würdevoll in ihrem Verhalten, nicht verleumderisch und nicht trunksüchtig; sie müssen fähig sein, das Gute zu lehren,", footnotes: ["1 Petr 3,1-5"] },
       { number: 4, text: "damit sie die jungen Frauen dazu anhalten können, ihre Männer und Kinder zu lieben," },
@@ -33,14 +33,14 @@ export const titus: Book = {
       { number: 8, text: "mit gesunden, unanfechtbaren Worten; so wird der Gegner beschämt und kann nichts Schlechtes über uns sagen." },
       { number: 9, text: "Die Sklaven sollen ihren Herren gehorchen, ihnen in allem gefällig sein, nicht widersprechen,", footnotes: ["(9f) 1 Tim 6,1f; 1 Petr 2,18"] },
       { number: 10, text: "nichts veruntreuen; sie sollen zuverlässig und treu sein, damit sie in allem der Lehre Gottes, unseres Retters, Ehre machen.", footnotes: ["1,3; 3,4; 1 Tim 1,1; 2,3; 4,10"] },
-      { number: 11, text: "Denn die Gnade Gottes ist erschienen, um alle Menschen zu retten.", footnotes: ["3,4", "11-14: Hier und in 3,3-7 werden Formulierungen aus der urchristlichen Taufliturgie aufgenommen. Als Beginn einer liturgischen Lesung wird folgende Fassung vorgeschlagen: Erschienen ist die Gnade Gottes."] },
+      { number: 11, text: "Denn die Gnade Gottes ist erschienen, um alle Menschen zu retten.", heading: "Gnade und christliches Leben: 2,11-15", footnotes: ["3,4", "11-14: Hier und in 3,3-7 werden Formulierungen aus der urchristlichen Taufliturgie aufgenommen. Als Beginn einer liturgischen Lesung wird folgende Fassung vorgeschlagen: Erschienen ist die Gnade Gottes."] },
       { number: 12, text: "Sie erzieht uns dazu, uns von der Gottlosigkeit und den irdischen Begierden loszusagen und besonnen, gerecht und fromm in dieser Welt zu leben," },
       { number: 13, text: "während wir auf die selige Erfüllung unserer Hoffnung warten: auf das Erscheinen der Herrlichkeit unseres großen Gottes und Retters Christus Jesus.", footnotes: ["1,4", "Andere Übersetzungsmöglichkeit: der Herrlichkeit des großen Gottes und unseres Retters Christus Jesus."] },
-      { number: 14, text: "Er hat sich für uns hingegeben, um uns [von aller Schuld zu erlösen] und [sich ein reines Volk zu schaffen, das ihm als sein besonderes Eigentum gehört] und voll Eifer danach strebt, das Gute zu tun.", footnotes: ["1,9; 2,10; 1 Tim 1,10; 4,6; 6,3; 2 Tim 1,13; 4,3", "Ez 37,23; Ps 130,8; Ex 19,5; Dtn 14,2"] },
-      { number: 15, text: "So sollst du mit allem Nachdruck lehren, ermahnen und zurechtweisen. Niemand soll dich gering achten." }
-    ] }},
+      { number: 14, text: "Er hat sich für uns hingegeben, um uns von aller Schuld zu erlösen und sich ein reines Volk zu schaffen, das ihm als sein besonderes Eigentum gehört und voll Eifer danach strebt, das Gute zu tun.", footnotes: ["Ez 37,23; Ps 130,8; Ex 19,5; Dtn 14,2"] },
+      { number: 15, text: "So sollst du mit allem Nachdruck lehren, ermahnen und zurechtweisen. Niemand soll dich gering achten." },
+    ] },
     { number: 3, verses: [
-      { number: 1, text: "Erinnere sie daran, sich den Herrschern und Machthabern unterzuordnen und ihnen zu gehorchen. Sie sollen immer bereit sein, Gutes zu tun,", heading: "TODO: Add heading", footnotes: ["Röm 13,1-7; 1 Petr 2,13-17"] },
+      { number: 1, text: "Erinnere sie daran, sich den Herrschern und Machthabern unterzuordnen und ihnen zu gehorchen. Sie sollen immer bereit sein, Gutes zu tun,", heading: "Die Pflichten der Getauften im sozialen Bereich: 3,1-8", footnotes: ["Röm 13,1-7; 1 Petr 2,13-17"] },
       { number: 2, text: "sollen niemand schmähen, nicht streitsüchtig sein, sondern freundlich und gütig zu allen Menschen." },
       { number: 3, text: "Denn auch wir waren früher unverständig und ungehorsam; wir gingen in die Irre, waren Sklaven aller möglichen Begierden und Leidenschaften, lebten in Bosheit und Neid, waren verhasst und hassten einander." },
       { number: 4, text: "Als aber die Güte und Menschenliebe Gottes, unseres Retters, erschien,", footnotes: ["2,11; 1,3"] },
@@ -48,13 +48,13 @@ export const titus: Book = {
       { number: 6, text: "Ihn hat er in reichem Maß über uns ausgegossen durch Jesus Christus, unseren Retter,", footnotes: ["1,4"] },
       { number: 7, text: "damit wir durch seine Gnade gerecht gemacht werden und das ewige Leben erben, das wir erhoffen." },
       { number: 8, text: "Dieses Wort ist glaubwürdig, und ich will, dass du dafür eintrittst, damit alle, die zum Glauben an Gott gekommen sind, sich nach Kräften bemühen, das Gute zu tun. So ist es gut und für alle Menschen nützlich." },
-      { number: 9, text: "Lass dich nicht ein auf törichte Auseinandersetzungen und Erörterungen über Geschlechterreihen, auf Streit und Gezänk über das Gesetz; sie sind nutzlos und vergeblich.", footnotes: ["1 Tim 1,4"] },
+      { number: 9, text: "Lass dich nicht ein auf törichte Auseinandersetzungen und Erörterungen über Geschlechterreihen, auf Streit und Gezänk über das Gesetz; sie sind nutzlos und vergeblich.", heading: "Erneute Warnung vor Irrlehrern: 3,9-11", footnotes: ["1 Tim 1,4"] },
       { number: 10, text: "Wenn du einen Sektierer einmal und ein zweites Mal ermahnt hast, so meide ihn.", footnotes: ["Mt 18,15-17"] },
       { number: 11, text: "Du weißt, ein solcher Mensch ist auf dem verkehrten Weg; er sündigt und spricht sich selbst das Urteil." },
-      { number: 12, text: "Sobald ich Artemas oder Tychikus zu dir schicke, komm rasch zu mir nach Nikopolis; denn ich habe mich entschlossen, dort den Winter zu verbringen.", footnotes: ["2 Tim 4,12"] },
+      { number: 12, text: "Sobald ich Artemas oder Tychikus zu dir schicke, komm rasch zu mir nach Nikopolis; denn ich habe mich entschlossen, dort den Winter zu verbringen.", heading: "Der Schluss des Briefes: persönliche Mitteilungen und Grüße: 3,12-15", footnotes: ["2 Tim 4,12"] },
       { number: 13, text: "Den gesetzeskundigen Zenas und den Apollos statte für die Weiterreise gut aus, damit ihnen nichts fehlt." },
       { number: 14, text: "Auch unsere Leute sollen lernen, nach Kräften Gutes zu tun, wo es nötig ist, damit ihr Leben nicht ohne Frucht bleibt." },
-      { number: 15, text: "Es grüßen dich alle, die bei mir sind. Grüße alle, die uns durch den Glauben in Liebe verbunden sind. Die Gnade sei mit euch allen!" }
-    ] }}
-  ]
+      { number: 15, text: "Es grüßen dich alle, die bei mir sind. Grüße alle, die uns durch den Glauben in Liebe verbunden sind. Die Gnade sei mit euch allen!" },
+    ] },
+  ],
 };

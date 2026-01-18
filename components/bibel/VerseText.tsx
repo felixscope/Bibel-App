@@ -43,8 +43,9 @@ export function VerseText({
     const deltaX = Math.abs(touch.clientX - touchStartPos.current.x);
     const deltaY = Math.abs(touch.clientY - touchStartPos.current.y);
 
-    // Nur auslösen wenn der Finger sich weniger als 10px bewegt hat (kein Scroll)
-    if (deltaX < 10 && deltaY < 10) {
+    // Nur auslösen wenn der Finger sich weniger als 5px bewegt hat (sehr präzise)
+    // Dies verhindert versehentliches Markieren beim Scrollen
+    if (deltaX < 5 && deltaY < 5) {
       e.preventDefault();
       onSelect?.(number, text);
     }
@@ -95,11 +96,11 @@ export function VerseText({
       return (
         <span className="block mt-8 mb-4">
           {/* Hauptüberschrift (h2-Style) */}
-          <span className="block text-lg font-bold text-[var(--text-primary)] mb-2">
+          <span className="block text-xl md:text-2xl font-bold text-[var(--text-primary)] mb-3">
             {parts[0].trim()}
           </span>
           {/* Abschnittsüberschrift (h4-Style) */}
-          <span className="block text-base font-semibold text-[var(--text-secondary)]">
+          <span className="block text-lg md:text-xl font-semibold text-[var(--text-secondary)]">
             {parts[1].trim()}
           </span>
         </span>
@@ -108,7 +109,7 @@ export function VerseText({
       // Nur eine Überschrift - als Abschnittsüberschrift behandeln
       return (
         <span className="block mt-6 mb-3">
-          <span className="block text-base font-semibold text-[var(--text-secondary)]">
+          <span className="block text-lg md:text-xl font-semibold text-[var(--text-secondary)]">
             {heading}
           </span>
         </span>
@@ -144,7 +145,7 @@ export function VerseText({
           className="relative inline"
         >
           <sup
-            className="footnote-marker ml-0.5 cursor-pointer text-[var(--accent)] hover:text-[var(--accent-hover)] transition-colors select-none"
+            className="footnote-marker ml-1 px-1.5 py-0.5 cursor-pointer text-[var(--accent)] hover:text-[var(--accent-hover)] transition-colors select-none text-base"
             onClick={handleFootnoteClick}
             onTouchEnd={handleFootnoteClick}
           >
@@ -174,8 +175,16 @@ export function VerseText({
                   </p>
                 ))}
                 <button
-                  className="mt-2 text-xs text-[var(--accent)] hover:underline"
-                  onClick={() => setShowFootnote(false)}
+                  className="mt-3 px-3 py-2 w-full text-sm text-[var(--accent)] hover:bg-[var(--accent-bg)] rounded-lg transition-colors font-medium"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowFootnote(false);
+                  }}
+                  onTouchEnd={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    setShowFootnote(false);
+                  }}
                 >
                   Schließen
                 </button>

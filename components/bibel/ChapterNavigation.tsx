@@ -114,33 +114,86 @@ export function ChapterNavigation({
         </motion.div>
       </nav>
 
-      {/* Mobile: Nur kleine Indikatoren an den Seiten */}
-      <div className="md:hidden fixed inset-y-0 left-0 w-8 flex items-center justify-start pointer-events-none z-30">
+      {/* Mobile: Größere Indikatoren an den Seiten */}
+      <div className="md:hidden fixed inset-y-0 left-0 w-12 flex items-center justify-start pointer-events-none z-30">
         {hasPrev && (
           <motion.div
             initial={{ opacity: 0 }}
-            animate={{ opacity: 0.3 }}
-            className="ml-1"
+            animate={{ opacity: 0.4 }}
+            className="ml-2"
           >
-            <svg className="w-4 h-4 text-[var(--text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="w-6 h-6 text-[var(--text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
             </svg>
           </motion.div>
         )}
       </div>
-      <div className="md:hidden fixed inset-y-0 right-0 w-8 flex items-center justify-end pointer-events-none z-30">
+      <div className="md:hidden fixed inset-y-0 right-0 w-12 flex items-center justify-end pointer-events-none z-30">
         {hasNext && (
           <motion.div
             initial={{ opacity: 0 }}
-            animate={{ opacity: 0.3 }}
-            className="mr-1"
+            animate={{ opacity: 0.4 }}
+            className="mr-2"
           >
-            <svg className="w-4 h-4 text-[var(--text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="w-6 h-6 text-[var(--text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
             </svg>
           </motion.div>
         )}
       </div>
+
+      {/* Mobile: Navigation unten */}
+      <nav className="md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-40">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.3 }}
+          className="flex items-center gap-3 bg-[var(--bg-elevated)]/95 backdrop-blur-md border border-[var(--border)] rounded-full shadow-lg px-2 py-2"
+        >
+          {/* Vorheriges Kapitel */}
+          {hasPrev ? (
+            <Link
+              href={`/lesen/${bookId}/${currentChapter - 1}`}
+              className="flex items-center justify-center w-11 h-11 rounded-full bg-[var(--bg-secondary)] hover:bg-[var(--bg-hover)] active:scale-95 transition-all"
+            >
+              <svg className="w-5 h-5 text-[var(--text-primary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+              </svg>
+            </Link>
+          ) : (
+            <div className="w-11 h-11 flex items-center justify-center rounded-full bg-[var(--bg-secondary)]/40 opacity-30">
+              <svg className="w-5 h-5 text-[var(--text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+              </svg>
+            </div>
+          )}
+
+          {/* Kapitelanzeige */}
+          <div className="px-3 py-1">
+            <span className="text-sm font-medium text-[var(--text-primary)]">
+              {currentChapter} / {totalChapters}
+            </span>
+          </div>
+
+          {/* Nächstes Kapitel */}
+          {hasNext ? (
+            <Link
+              href={`/lesen/${bookId}/${currentChapter + 1}`}
+              className="flex items-center justify-center w-11 h-11 rounded-full bg-[var(--bg-secondary)] hover:bg-[var(--bg-hover)] active:scale-95 transition-all"
+            >
+              <svg className="w-5 h-5 text-[var(--text-primary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+              </svg>
+            </Link>
+          ) : (
+            <div className="w-11 h-11 flex items-center justify-center rounded-full bg-[var(--bg-secondary)]/40 opacity-30">
+              <svg className="w-5 h-5 text-[var(--text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+              </svg>
+            </div>
+          )}
+        </motion.div>
+      </nav>
     </>
   );
 }

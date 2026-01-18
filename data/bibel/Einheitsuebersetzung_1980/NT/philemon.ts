@@ -2,17 +2,17 @@ import { Book } from "@/lib/types";
 
 export const philemon: Book = {
   id: "philemon", name: "Philemon", shortName: "Phlm", testament: "new",
-  introduction: "",
+  introduction: `Der kleine Brief hat einen ganz persönlichen Anlass. Der Sklave Onesimus war seinem Herrn Philemon entlaufen, der in Kolossä wohnte. Er kam auf seiner Flucht zu Paulus, der im Gefängnis saß, vermutlich in Ephesus. Paulus gewann Onesimus für den christlichen Glauben und Onesimus war ihm in mancherlei Hinsicht nützlich (vgl. VV. 11 und 20). Der Apostel schickte den Sklaven zu Philemon zurück, dessen Haus einer christlichen Gemeinde als Versammlungsort diente. Der Brief, geschrieben um 55 n. Chr., sollte Philemon bewegen, dem Sklaven Onesimus zu verzeihen und ihn als christlichen Bruder aufzunehmen. Die Bedeutung des Briefs liegt darin, dass er einen Beitrag zur Lösung des bedrückenden Sklavenproblems in der christlichen Gemeinde darstellt. Gleichzeitig ist er als persönliches Dokument des Menschen Paulus von hohem Wert.`,
   chapters: [
     { number: 1, verses: [
-      { number: 1, text: "Paulus, Gefangener Christi Jesu, und der Bruder Timotheus an unseren geliebten Mitarbeiter Philemon,", heading: "TODO: Add heading" },
+      { number: 1, text: "Paulus, Gefangener Christi Jesu, und der Bruder Timotheus an unseren geliebten Mitarbeiter Philemon,", heading: "Anschrift und Gruß: 1-3" },
       { number: 2, text: "an die Schwester Aphia, an Archippus, unseren Mitstreiter, und an die Gemeinde in deinem Haus:", footnotes: ["Kol 4,17"] },
       { number: 3, text: "Gnade sei mit euch und Friede von Gott, unserem Vater, und dem Herrn Jesus Christus.", footnotes: ["Röm 1,7"] },
-      { number: 4, text: "Ich danke meinem Gott jedes Mal, wenn ich in meinen Gebeten an dich denke." },
+      { number: 4, text: "Ich danke meinem Gott jedes Mal, wenn ich in meinen Gebeten an dich denke.", heading: "Dankgebet des Apostels: 4-7" },
       { number: 5, text: "Denn ich höre von deinem Glauben an Jesus, den Herrn, und von deiner Liebe zu allen Heiligen." },
       { number: 6, text: "Ich wünsche, dass unser gemeinsamer Glaube in dir wirkt und du all das Gute in uns erkennst, das auf Christus gerichtet ist." },
       { number: 7, text: "Es hat mir viel Freude und Trost bereitet, dass durch dich, Bruder, und durch deine Liebe die Heiligen ermutigt worden sind." },
-      { number: 8, text: "Obwohl ich durch Christus volle Freiheit habe, dir zu befehlen, was du tun sollst," },
+      { number: 8, text: "Obwohl ich durch Christus volle Freiheit habe, dir zu befehlen, was du tun sollst,", heading: "Fürsprache für Onesimus: 8-20" },
       { number: 9, text: "ziehe ich es um der Liebe willen vor, dich zu bitten. Ich, Paulus, ein alter Mann, der jetzt für Christus Jesus im Kerker liegt," },
       { number: 10, text: "ich bitte dich für mein Kind Onesimus, dem ich im Gefängnis zum Vater geworden bin.", footnotes: ["1 Kor 4,15; Kol 4,9"] },
       { number: 11, text: "Früher konntest du ihn zu nichts gebrauchen, doch jetzt ist er dir und mir recht nützlich." },
@@ -25,11 +25,11 @@ export const philemon: Book = {
       { number: 18, text: "Wenn er dich aber geschädigt hat oder dir etwas schuldet, setz das auf meine Rechnung!" },
       { number: 19, text: "Ich, Paulus, schreibe mit eigener Hand: Ich werde es bezahlen - um nicht davon zu reden, dass du dich selbst mir schuldest.", footnotes: ["1 Kor 16,21"] },
       { number: 20, text: "Ja, Bruder, um des Herrn willen möchte ich von dir einen Nutzen haben. Erfreue mein Herz; wir gehören beide zu Christus." },
-      { number: 21, text: "Ich schreibe dir im Vertrauen auf deinen Gehorsam und weiß, dass du noch mehr tun wirst, als ich gesagt habe." },
+      { number: 21, text: "Ich schreibe dir im Vertrauen auf deinen Gehorsam und weiß, dass du noch mehr tun wirst, als ich gesagt habe.", heading: "Grüße und Segen: 21-25" },
       { number: 22, text: "Bereite zugleich eine Unterkunft für mich vor! Denn ich hoffe, dass ich euch durch eure Gebete wiedergeschenkt werde." },
       { number: 23, text: "Es grüßen dich Epaphras, der mit mir um Christi Jesu willen im Gefängnis ist,", footnotes: ["Kol 4,7-14"] },
       { number: 24, text: "sowie Markus, Aristarch, Demas und Lukas, meine Mitarbeiter." },
-      { number: 25, text: "Die Gnade Jesu Christi, des Herrn, sei mit eurem Geist!", footnotes: ["Gal 6,18"] }
-    ] }}
-  ]
+      { number: 25, text: "Die Gnade Jesu Christi, des Herrn, sei mit eurem Geist!", footnotes: ["Gal 6,18"] },
+    ] },
+  ],
 };

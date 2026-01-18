@@ -54,22 +54,6 @@ export function TranslationSelector() {
           </svg>
         </button>
 
-        {/* Info Icon for Vorwort */}
-        <button
-          onClick={handleVorwortClick}
-          className="p-1 rounded-full hover:bg-[var(--bg-secondary)] transition-colors text-[var(--text-muted)] hover:text-[var(--text-primary)]"
-          title="Vorwort zur Übersetzung"
-        >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-        </button>
-
         {/* Dropdown Menu */}
         <AnimatePresence>
           {isOpen && (
