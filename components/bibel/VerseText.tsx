@@ -118,7 +118,7 @@ export function VerseText({
 
   return (
     <>
-      {/* Überschriften */}
+      {/* Überschriften - vor dem Vers */}
       {renderHeading()}
 
       <span
@@ -134,8 +134,8 @@ export function VerseText({
         {/* Versnummer */}
         <sup className="verse-number">{number}</sup>
 
-      {/* Verstext */}
-      <span className="bible-text">{formatText(text)}</span>
+        {/* Verstext */}
+        <span className="bible-text">{formatText(text)}</span>
 
       {/* Fußnoten-Indikator */}
       {hasFootnotes && (
