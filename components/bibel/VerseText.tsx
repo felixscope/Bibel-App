@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import clsx from "clsx";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -30,10 +30,25 @@ export function VerseText({
   const touchStartPos = useRef<{ x: number; y: number } | null>(null);
   const touchStartTime = useRef<number>(0);
   const scrollStartY = useRef<number>(0);
+  const pendingTap = useRef<NodeJS.Timeout | null>(null);
   const [showFootnote, setShowFootnote] = useState(false);
   const footnoteRef = useRef<HTMLSpanElement>(null);
 
+  // Cleanup pending tap bei Unmount
+  useEffect(() => {
+    return () => {
+      if (pendingTap.current) {
+        clearTimeout(pendingTap.current);
+      }
+    };
+  }, []);
+
   const handleTouchStart = (e: React.TouchEvent) => {
+    // Pending tap abbrechen, falls vorhanden
+    if (pendingTap.current) {
+      clearTimeout(pendingTap.current);
+      pendingTap.current = null;
+    }
     const touch = e.touches[0];
     touchStartPos.current = { x: touch.clientX, y: touch.clientY };
     touchStartTime.current = Date.now();
@@ -48,18 +63,28 @@ export function VerseText({
     const deltaY = Math.abs(touch.clientY - touchStartPos.current.y);
     const touchDuration = Date.now() - touchStartTime.current;
     const scrollDelta = Math.abs(window.scrollY - scrollStartY.current);
-
-    // Nur bei sehr kurzer, präziser Berührung ohne Scrollen
-    // - Max 1px Touch-Bewegung
-    // - Max 120ms Dauer (schneller Tap)
-    // - KEIN Scrollen (scrollDelta === 0)
-    if (deltaX <= 1 && deltaY <= 1 && touchDuration < 120 && scrollDelta === 0) {
-      e.preventDefault();
-      onSelect?.(number, text);
-    }
+    const capturedScrollY = window.scrollY;
 
     touchStartPos.current = null;
     touchStartTime.current = 0;
+
+    // Grundlegende Bedingungen für einen potenziellen Tap:
+    // - Max 2px Touch-Bewegung
+    // - Max 200ms Dauer
+    // - Kein Scrollen während der Berührung
+    if (deltaX <= 2 && deltaY <= 2 && touchDuration < 200 && scrollDelta === 0) {
+      e.preventDefault();
+
+      // Verzögerte Bestätigung: Warten, ob Momentum-Scrolling einsetzt
+      pendingTap.current = setTimeout(() => {
+        const finalScrollDelta = Math.abs(window.scrollY - capturedScrollY);
+        // Nur wenn auch nach der Verzögerung kein Scrollen stattfand
+        if (finalScrollDelta === 0) {
+          onSelect?.(number, text);
+        }
+        pendingTap.current = null;
+      }, 80);
+    }
   };
 
   const handleClick = (e: React.MouseEvent) => {
