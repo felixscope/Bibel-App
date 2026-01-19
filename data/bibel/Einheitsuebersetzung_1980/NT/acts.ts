@@ -136,7 +136,7 @@ export const acts: Book = {
       { number: 24, text: "Als sie das hörten, erhoben sie einmütig ihre Stimme zu Gott und sprachen: Herr, du hast den Himmel, die Erde und das Meer geschaffen und alles, was dazugehört;", footnotes: ["Ps 146,6; Ex 20,11"] },
       { number: 25, text: "du hast durch den Mund unseres Vaters David, deines Knechtes, durch den Heiligen Geist gesagt: Warum toben die Völker, / warum machen die Nationen vergebliche Pläne?", footnotes: ["Ps 2,1f"] },
       { number: 26, text: "Die Könige der Erde stehen auf / und die Herrscher haben sich verbündet / gegen den Herrn und seinen Gesalbten." },
-      { number: 27, text: "Wahrhaftig, verbündet haben sich in dieser Stadt gegen deinen heiligen Knecht Jesus, den du gesalbt hast, Herodes und Pontius Pilatus mit den Heiden und den Stämmen Israels,", footnotes: ["Ps 2,2; Lk 23,12f", "Der hier erwähnte Herodes ist Herodes Antipas, ein Sohn Herodes" des Großen, der von 4 v. Chr. bis 39 n. Chr. Tetrarch von Galiläa und Peräa war (vgl. die Anmerkung zu Lk 3,1)."] },
+      { number: 27, text: "Wahrhaftig, verbündet haben sich in dieser Stadt gegen deinen heiligen Knecht Jesus, den du gesalbt hast, Herodes und Pontius Pilatus mit den Heiden und den Stämmen Israels,", footnotes: ["Ps 2,2; Lk 23,12f", "Der hier erwähnte Herodes ist Herodes Antipas, ein Sohn Herodes' des Großen, der von 4 v. Chr. bis 39 n. Chr. Tetrarch von Galiläa und Peräa war (vgl. die Anmerkung zu Lk 3,1)."] },
       { number: 28, text: "um alles auszuführen, was deine Hand und dein Wille im voraus bestimmt haben." },
       { number: 29, text: "Doch jetzt, Herr, sieh auf ihre Drohungen und gib deinen Knechten die Kraft, mit allem Freimut dein Wort zu verkünden." },
       { number: 30, text: "Streck deine Hand aus, damit Heilungen und Zeichen und Wunder geschehen durch den Namen deines heiligen Knechtes Jesus." },
@@ -444,7 +444,7 @@ export const acts: Book = {
       { number: 30, text: "Das taten sie auch und schickten ihre Gaben durch Barnabas und Saulus an die Ältesten." },
     ] },
     { number: 12, verses: [
-      { number: 1, text: "Um jene Zeit ließ der König Herodes einige aus der Gemeinde verhaften und misshandeln.", heading: "Die Hinrichtung des Jakobus und die Verhaftung des Petrus: 12,1-5", footnotes: ["Es handelt sich um Herodes Agrippa I., einen Enkel Herodes" des Großen, dem 38 n. Chr. von Kaiser Kaligula die Tetrarchie des Philippus übertragen wurde (vgl. die Anmerkung zu Lk 3,1f) und der von 41 bis 44 König von ganz Palästina war."] },
+      { number: 1, text: "Um jene Zeit ließ der König Herodes einige aus der Gemeinde verhaften und misshandeln.", heading: "Die Hinrichtung des Jakobus und die Verhaftung des Petrus: 12,1-5", footnotes: ["Es handelt sich um Herodes Agrippa I., einen Enkel Herodes' des Großen, dem 38 n. Chr. von Kaiser Kaligula die Tetrarchie des Philippus übertragen wurde (vgl. die Anmerkung zu Lk 3,1f) und der von 41 bis 44 König von ganz Palästina war."] },
       { number: 2, text: "Jakobus, den Bruder des Johannes, ließ er mit dem Schwert hinrichten.", footnotes: ["Es ist der Apostel Jakobus, der Ältere."] },
       { number: 3, text: "Als er sah, dass es den Juden gefiel, ließ er auch Petrus festnehmen. Das geschah in den Tagen der Ungesäuerten Brote." },
       { number: 4, text: "Er nahm ihn also fest und warf ihn ins Gefängnis. Die Bewachung übertrug er vier Abteilungen von je vier Soldaten. Er beabsichtigte, ihn nach dem Paschafest dem Volk vorführen zu lassen." },
