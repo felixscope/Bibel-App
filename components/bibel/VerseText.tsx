@@ -28,63 +28,51 @@ export function VerseText({
   onSelect,
 }: VerseTextProps) {
   const touchStartPos = useRef<{ x: number; y: number } | null>(null);
-  const touchStartTime = useRef<number>(0);
-  const scrollStartY = useRef<number>(0);
-  const pendingTap = useRef<NodeJS.Timeout | null>(null);
+  const longPressTimer = useRef<NodeJS.Timeout | null>(null);
   const [showFootnote, setShowFootnote] = useState(false);
   const footnoteRef = useRef<HTMLSpanElement>(null);
 
-  // Cleanup pending tap bei Unmount
+  // Cleanup bei Unmount
   useEffect(() => {
     return () => {
-      if (pendingTap.current) {
-        clearTimeout(pendingTap.current);
+      if (longPressTimer.current) {
+        clearTimeout(longPressTimer.current);
       }
     };
   }, []);
 
   const handleTouchStart = (e: React.TouchEvent) => {
-    // Pending tap abbrechen, falls vorhanden
-    if (pendingTap.current) {
-      clearTimeout(pendingTap.current);
-      pendingTap.current = null;
-    }
     const touch = e.touches[0];
     touchStartPos.current = { x: touch.clientX, y: touch.clientY };
-    touchStartTime.current = Date.now();
-    scrollStartY.current = window.scrollY;
+
+    // Long-Press Timer starten (1 Sekunde)
+    longPressTimer.current = setTimeout(() => {
+      onSelect?.(number, text);
+      longPressTimer.current = null;
+    }, 1000);
   };
 
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (!touchStartPos.current) return;
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!touchStartPos.current || !longPressTimer.current) return;
 
-    const touch = e.changedTouches[0];
+    const touch = e.touches[0];
     const deltaX = Math.abs(touch.clientX - touchStartPos.current.x);
     const deltaY = Math.abs(touch.clientY - touchStartPos.current.y);
-    const touchDuration = Date.now() - touchStartTime.current;
-    const scrollDelta = Math.abs(window.scrollY - scrollStartY.current);
-    const capturedScrollY = window.scrollY;
 
-    touchStartPos.current = null;
-    touchStartTime.current = 0;
-
-    // Grundlegende Bedingungen für einen potenziellen Tap:
-    // - Max 2px Touch-Bewegung
-    // - Max 200ms Dauer
-    // - Kein Scrollen während der Berührung
-    if (deltaX <= 2 && deltaY <= 2 && touchDuration < 200 && scrollDelta === 0) {
-      e.preventDefault();
-
-      // Verzögerte Bestätigung: Warten, ob Momentum-Scrolling einsetzt
-      pendingTap.current = setTimeout(() => {
-        const finalScrollDelta = Math.abs(window.scrollY - capturedScrollY);
-        // Nur wenn auch nach der Verzögerung kein Scrollen stattfand
-        if (finalScrollDelta === 0) {
-          onSelect?.(number, text);
-        }
-        pendingTap.current = null;
-      }, 80);
+    // Bei Bewegung > 10px: Timer abbrechen (Scrollen erkannt)
+    if (deltaX > 10 || deltaY > 10) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
     }
+  };
+
+  const handleTouchEnd = () => {
+    // Timer abbrechen - kurze Taps machen nichts
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
+    }
+    touchStartPos.current = null;
   };
 
   const handleClick = (e: React.MouseEvent) => {
@@ -164,6 +152,7 @@ export function VerseText({
         )}
         onClick={handleClick}
         onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
         {/* Versnummer */}
