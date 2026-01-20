@@ -161,6 +161,13 @@ export const BIBLE_BOOKS = {
     { id: "haggai", name: "Haggai", shortName: "Hag", chapters: 2 },
     { id: "zechariah", name: "Sacharja", shortName: "Sach", chapters: 14 },
     { id: "malachi", name: "Maleachi", shortName: "Mal", chapters: 3 },
+    { id: "tobit", name: "Tobit", shortName: "Tob", chapters: 14 },
+    { id: "judith", name: "Judit", shortName: "Jdt", chapters: 16 },
+    { id: "wisdom", name: "Weisheit", shortName: "Weish", chapters: 19 },
+    { id: "sirach", name: "Sirach", shortName: "Sir", chapters: 50 },
+    { id: "baruch", name: "Baruch", shortName: "Bar", chapters: 6 },
+    { id: "1maccabees", name: "1. Makkabäer", shortName: "1.Makk", chapters: 16 },
+    { id: "2maccabees", name: "2. Makkabäer", shortName: "2.Makk", chapters: 15 },
   ],
   new: [
     { id: "matthew", name: "Matthäus", shortName: "Mt", chapters: 28 },

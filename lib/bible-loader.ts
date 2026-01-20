@@ -46,14 +46,7 @@ export async function loadBook(
     return null;
   }
 
-  // TEMPORÄR: Nur NT-Bücher laden bis AT-Dateien korrigiert sind
-  if (testament === "old") {
-    console.warn(`AT book ${bookId} temporarily disabled - files need to be fixed`);
-    return null;
-  }
-
-  // Da wir AT-Bücher oben blockieren, ist dies immer "NT"
-  const folder = "NT";
+  const folder = testament === "old" ? "AT" : "NT";
 
   try {
     const module = await import(

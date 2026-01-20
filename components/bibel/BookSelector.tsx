@@ -12,8 +12,7 @@ interface BookSelectorProps {
   currentChapter?: number;
 }
 
-// TEMPORÄR: AT deaktiviert bis Dateien korrigiert sind
-const AT_TEMPORARILY_DISABLED = true;
+const AT_TEMPORARILY_DISABLED = false;
 
 export function BookSelector({ currentBookId, currentChapter }: BookSelectorProps) {
   const [isOpen, setIsOpen] = useState(false);

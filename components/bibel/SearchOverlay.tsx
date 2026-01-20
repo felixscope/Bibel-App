@@ -37,13 +37,13 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
     setMounted(true);
   }, []);
 
-  // Load NT books when overlay opens
+  // Load all books when overlay opens
   useEffect(() => {
     if (isOpen && loadedBooks.size === 0) {
-      const loadNTBooks = async () => {
+      const loadAllBooks = async () => {
         const books = new Map<string, Book>();
-        // Load only NT books
-        for (const book of BIBLE_BOOKS.new) {
+        // Load both AT and NT books
+        for (const book of [...BIBLE_BOOKS.old, ...BIBLE_BOOKS.new]) {
           const loaded = await loadBook(translationId, book.id);
           if (loaded) {
             books.set(book.id, loaded);
@@ -51,7 +51,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
         }
         setLoadedBooks(books);
       };
-      loadNTBooks();
+      loadAllBooks();
     }
   }, [isOpen, translationId, loadedBooks.size]);
 
