@@ -1,19 +1,19 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { useLiveQuery } from "dexie-react-hooks";
+import { useSupabaseLiveQuery } from "@/hooks/useSupabaseLiveQuery";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { MainLayout } from "@/components/layout/MainLayout";
-import { getAllNotes, deleteNote, updateNote, type Note } from "@/lib/db";
+import { getAllNotes, deleteNote, updateNote, type Note } from "@/lib/db/index";
 import { getBookById } from "@/lib/types";
 import { useToast } from "@/components/providers/ToastProvider";
 
 export default function NotizenPage() {
-  const notes = useLiveQuery(() => getAllNotes());
+  const notes = useSupabaseLiveQuery(() => getAllNotes());
   const [editingNote, setEditingNote] = useState<Note | null>(null);
   const [editContent, setEditContent] = useState("");
-  const [deleteConfirm, setDeleteConfirm] = useState<number | null>(null);
+  const [deleteConfirm, setDeleteConfirm] = useState<string | number | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const { showToast } = useToast();
 
@@ -47,7 +47,7 @@ export default function NotizenPage() {
     showToast("Notiz gespeichert", "check");
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string | number) => {
     await deleteNote(id);
     setDeleteConfirm(null);
     showToast("Notiz gelöscht", "remove");

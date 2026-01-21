@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useCallback, ReactNode } from "react";
+import React, { createContext, useContext, useState, useCallback, ReactNode, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -64,9 +64,9 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
   const [mounted, setMounted] = useState(false);
 
-  if (typeof window !== "undefined" && !mounted) {
+  useEffect(() => {
     setMounted(true);
-  }
+  }, []);
 
   const showToast = useCallback((message: string, icon?: Toast["icon"]) => {
     const id = Date.now();

@@ -2,7 +2,7 @@ import Dexie, { type EntityTable } from "dexie";
 
 // Datentypen
 export interface Highlight {
-  id?: number;
+  id?: string | number; // string for Supabase UUID, number for Dexie
   bookId: string;
   chapter: number;
   verse: number;
@@ -11,7 +11,7 @@ export interface Highlight {
 }
 
 export interface Note {
-  id?: number;
+  id?: string | number; // string for Supabase UUID, number for Dexie
   bookId: string;
   chapter: number;
   verseStart: number;
@@ -22,7 +22,7 @@ export interface Note {
 }
 
 export interface Bookmark {
-  id?: number;
+  id?: string | number; // string for Supabase UUID, number for Dexie
   bookId: string;
   chapter: number;
   verseStart: number;
@@ -146,17 +146,25 @@ export async function addNote(
 }
 
 export async function updateNote(
-  id: number,
+  id: string | number,
   content: string
 ): Promise<void> {
-  await db.notes.update(id, {
-    content,
-    updatedAt: new Date(),
-  });
+  if (typeof id === 'number') {
+    await db.notes.update(id, {
+      content,
+      updatedAt: new Date(),
+    });
+  } else {
+    throw new Error("Numeric ID required for Dexie operations");
+  }
 }
 
-export async function deleteNote(id: number): Promise<void> {
-  await db.notes.delete(id);
+export async function deleteNote(id: string | number): Promise<void> {
+  if (typeof id === 'number') {
+    await db.notes.delete(id);
+  } else {
+    throw new Error("Numeric ID required for Dexie operations");
+  }
 }
 
 export async function getNotesForChapter(
@@ -190,8 +198,12 @@ export async function addBookmark(
   });
 }
 
-export async function deleteBookmark(id: number): Promise<void> {
-  await db.bookmarks.delete(id);
+export async function deleteBookmark(id: string | number): Promise<void> {
+  if (typeof id === 'number') {
+    await db.bookmarks.delete(id);
+  } else {
+    throw new Error("Numeric ID required for Dexie operations");
+  }
 }
 
 export async function getBookmarksForChapter(
@@ -224,7 +236,9 @@ export async function deleteBookmarksForVerses(
     // Prüfe ob mindestens ein Vers des Lesezeichens in der Auswahl ist
     for (let v = bookmark.verseStart; v <= bookmark.verseEnd; v++) {
       if (verses.includes(v)) {
-        if (bookmark.id) idsToDelete.push(bookmark.id);
+        if (bookmark.id && typeof bookmark.id === 'number') {
+          idsToDelete.push(bookmark.id);
+        }
         break;
       }
     }

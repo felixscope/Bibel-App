@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Playfair_Display, DM_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import { AuthProvider } from "@/components/providers/AuthProvider";
 import { ToastProvider } from "@/components/providers/ToastProvider";
 import { TranslationProvider } from "@/components/providers/TranslationProvider";
 
@@ -65,13 +66,16 @@ export default function RootLayout({
       </head>
       <body
         className={`${cormorant.variable} ${playfair.variable} ${dmSans.variable} antialiased`}
+        suppressHydrationWarning
       >
         <ThemeProvider>
-          <TranslationProvider>
-            <ToastProvider>
-              {children}
-            </ToastProvider>
-          </TranslationProvider>
+          <ToastProvider>
+            <AuthProvider>
+              <TranslationProvider>
+                {children}
+              </TranslationProvider>
+            </AuthProvider>
+          </ToastProvider>
         </ThemeProvider>
       </body>
     </html>

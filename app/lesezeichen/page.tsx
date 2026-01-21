@@ -2,18 +2,18 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useLiveQuery } from "dexie-react-hooks";
+import { useSupabaseLiveQuery } from "@/hooks/useSupabaseLiveQuery";
 import { motion, AnimatePresence } from "framer-motion";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { TopBar } from "@/components/layout/TopBar";
-import { getAllBookmarks, deleteBookmark, type Bookmark } from "@/lib/db";
+import { getAllBookmarks, deleteBookmark, type Bookmark } from "@/lib/db/index";
 import { getBookById } from "@/lib/types";
 
 export default function LesezeichenPage() {
-  const bookmarks = useLiveQuery(() => getAllBookmarks());
-  const [deletingId, setDeletingId] = useState<number | null>(null);
+  const bookmarks = useSupabaseLiveQuery(() => getAllBookmarks());
+  const [deletingId, setDeletingId] = useState<string | number | null>(null);
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string | number) => {
     setDeletingId(id);
     await deleteBookmark(id);
     setDeletingId(null);
@@ -125,7 +125,7 @@ export default function LesezeichenPage() {
                                 </div>
                               </Link>
                               <button
-                                onClick={() => bookmark.id && handleDelete(bookmark.id)}
+                                onClick={() => bookmark.id && handleDelete(bookmark.id as string | number)}
                                 disabled={deletingId === bookmark.id}
                                 className="p-2 rounded-lg opacity-0 group-hover:opacity-100 hover:bg-[var(--bg-secondary)] transition-all"
                                 title="Löschen"

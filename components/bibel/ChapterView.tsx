@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
-import { useLiveQuery } from "dexie-react-hooks";
+import { useSupabaseLiveQuery } from "@/hooks/useSupabaseLiveQuery";
 import { VerseText } from "./VerseText";
 import { VerseActionBar } from "./VerseActionBar";
 import { NoteModal } from "./NoteModal";
@@ -15,7 +15,7 @@ import {
   type Highlight,
   type Note,
   type Bookmark,
-} from "@/lib/db";
+} from "@/lib/db/index";
 import type { Verse } from "@/lib/types";
 
 interface ChapterViewProps {
@@ -42,18 +42,18 @@ function ChapterContent({
     setContext(bookId, chapterNumber);
   }, [bookId, chapterNumber, setContext]);
 
-  // Load data from IndexedDB with live updates
-  const highlights = useLiveQuery(
+  // Load data with live updates (works with both Dexie and Supabase)
+  const highlights = useSupabaseLiveQuery(
     () => getHighlightsForChapter(bookId, chapterNumber),
     [bookId, chapterNumber, refreshKey]
   );
 
-  const notes = useLiveQuery(
+  const notes = useSupabaseLiveQuery(
     () => getNotesForChapter(bookId, chapterNumber),
     [bookId, chapterNumber, refreshKey]
   );
 
-  const bookmarks = useLiveQuery(
+  const bookmarks = useSupabaseLiveQuery(
     () => getBookmarksForChapter(bookId, chapterNumber),
     [bookId, chapterNumber, refreshKey]
   );

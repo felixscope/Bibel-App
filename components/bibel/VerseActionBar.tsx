@@ -11,7 +11,7 @@ import {
   addBookmark,
   deleteBookmarksForVerses,
   type Highlight,
-} from "@/lib/db";
+} from "@/lib/db/index";
 import { getBookById } from "@/lib/types";
 import clsx from "clsx";
 

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSelection } from "@/components/providers/SelectionProvider";
-import { addNote, updateNote, deleteNote, type Note } from "@/lib/db";
+import { addNote, updateNote, deleteNote, type Note } from "@/lib/db/index";
 import { getBookById } from "@/lib/types";
 
 interface NoteModalProps {
