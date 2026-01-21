@@ -158,7 +158,9 @@ export async function deleteBookmark(id: string | number): Promise<void> {
   if (authed) {
     return supabaseAdapter.deleteBookmark(id);
   }
-  return dexieDb.deleteBookmark(id);
+  // DexieDB expects numeric IDs
+  const numericId = typeof id === 'string' ? parseInt(id, 10) : id;
+  return dexieDb.deleteBookmark(numericId);
 }
 
 export async function getBookmarksForChapter(
