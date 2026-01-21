@@ -7,6 +7,7 @@ import { useTheme } from "@/components/providers/ThemeProvider";
 import { BookSelector } from "@/components/bibel/BookSelector";
 import { SearchOverlay } from "@/components/bibel/SearchOverlay";
 import { TranslationSelector } from "@/components/bibel/TranslationSelector";
+import { UserMenuButton } from "@/components/layout/UserMenuButton";
 import clsx from "clsx";
 
 interface TopBarProps {
@@ -211,6 +212,9 @@ export function TopBar({ currentBookId, currentChapter }: TopBarProps) {
               </svg>
             )}
           </button>
+
+          {/* User Menu */}
+          <UserMenuButton />
         </div>
       </div>
 

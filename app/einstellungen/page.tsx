@@ -1,8 +1,14 @@
 "use client";
 
+import { useState } from "react";
+import Link from "next/link";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { TopBar } from "@/components/layout/TopBar";
 import { useTheme } from "@/components/providers/ThemeProvider";
+import { useAuth } from "@/components/providers/AuthProvider";
+import { EditProfileModal } from "@/components/settings/EditProfileModal";
+import { ChangePasswordModal } from "@/components/settings/ChangePasswordModal";
+import { DeleteAccountModal } from "@/components/settings/DeleteAccountModal";
 import clsx from "clsx";
 
 type FontSize = "sm" | "md" | "lg" | "xl" | "2xl";
@@ -17,6 +23,20 @@ const fontSizeConfig: Record<FontSize, { label: string; short: string }> = {
 
 export default function EinstellungenPage() {
   const { theme, setTheme, fontSize, setFontSize, mounted } = useTheme();
+  const { user, profile } = useAuth();
+  const [showEditProfile, setShowEditProfile] = useState(false);
+  const [showChangePassword, setShowChangePassword] = useState(false);
+  const [showDeleteAccount, setShowDeleteAccount] = useState(false);
+
+  // Format date for "Mitglied seit"
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("de-DE", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
 
   return (
     <MainLayout>
@@ -54,6 +74,83 @@ export default function EinstellungenPage() {
               ))}
             </div>
           </div>
+        </section>
+
+        {/* Konto */}
+        <section className="mb-8">
+          <h2 className="text-sm font-medium text-[var(--text-muted)] uppercase tracking-wide mb-4">
+            Konto
+          </h2>
+
+          {user ? (
+            <>
+              {/* Profil-Card */}
+              <div className="card mb-4">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <h3 className="font-medium text-[var(--text-primary)] mb-1">
+                      {profile?.display_name || "Kein Name"}
+                    </h3>
+                    <p className="text-sm text-[var(--text-secondary)]">
+                      {user.email}
+                    </p>
+                    {user.created_at && (
+                      <p className="text-xs text-[var(--text-muted)] mt-2">
+                        Mitglied seit {formatDate(user.created_at)}
+                      </p>
+                    )}
+                  </div>
+                  <button
+                    onClick={() => setShowEditProfile(true)}
+                    className="text-sm font-medium text-[var(--accent)] hover:underline ml-4 flex-shrink-0"
+                  >
+                    Bearbeiten
+                  </button>
+                </div>
+              </div>
+
+              {/* Sicherheit-Card */}
+              <div className="card mb-4">
+                <h3 className="font-medium text-[var(--text-primary)] mb-3">
+                  Sicherheit
+                </h3>
+                <button
+                  onClick={() => setShowChangePassword(true)}
+                  className="w-full px-4 py-2.5 bg-[var(--bg-secondary)] border border-[var(--border)] rounded-lg text-sm font-medium text-[var(--text-primary)] hover:bg-[var(--bg-hover)] transition-colors"
+                >
+                  Passwort ändern
+                </button>
+              </div>
+
+              {/* Gefahrenzone-Card */}
+              <div className="card border-red-200 dark:border-red-900/30">
+                <h3 className="font-medium text-red-600 dark:text-red-400 mb-2">
+                  Gefahrenzone
+                </h3>
+                <p className="text-sm text-[var(--text-secondary)] mb-3">
+                  Lösche dein Konto permanent. Diese Aktion kann nicht rückgängig gemacht werden.
+                </p>
+                <button
+                  onClick={() => setShowDeleteAccount(true)}
+                  className="w-full px-4 py-2.5 bg-[var(--bg-secondary)] border border-red-300 dark:border-red-900/50 rounded-lg text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                >
+                  Konto löschen
+                </button>
+              </div>
+            </>
+          ) : (
+            <div className="card">
+              <p className="text-[var(--text-secondary)] mb-4">
+                Melde dich an, um deine Notizen, Lesezeichen und Highlights zu synchronisieren.
+              </p>
+              <Link
+                href="/auth/login"
+                className="inline-flex px-4 py-2.5 bg-[var(--accent)] text-white rounded-lg font-medium hover:bg-[var(--accent-hover)] transition-all hover:-translate-y-0.5 hover:shadow-md"
+              >
+                Jetzt anmelden
+              </Link>
+            </div>
+          )}
         </section>
 
         {/* Schriftgröße */}
@@ -109,6 +206,20 @@ export default function EinstellungenPage() {
           </div>
         </section>
       </div>
+
+      {/* Modals */}
+      <EditProfileModal
+        isOpen={showEditProfile}
+        onClose={() => setShowEditProfile(false)}
+      />
+      <ChangePasswordModal
+        isOpen={showChangePassword}
+        onClose={() => setShowChangePassword(false)}
+      />
+      <DeleteAccountModal
+        isOpen={showDeleteAccount}
+        onClose={() => setShowDeleteAccount(false)}
+      />
     </MainLayout>
   );
 }
