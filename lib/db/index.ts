@@ -104,7 +104,9 @@ export async function updateNote(id: string | number, content: string): Promise<
   if (authed) {
     return supabaseAdapter.updateNote(id, content);
   }
-  return dexieDb.updateNote(id, content);
+  // DexieDB expects numeric IDs
+  const numericId = typeof id === 'string' ? parseInt(id, 10) : id;
+  return dexieDb.updateNote(numericId, content);
 }
 
 export async function deleteNote(id: string | number): Promise<void> {
@@ -112,7 +114,9 @@ export async function deleteNote(id: string | number): Promise<void> {
   if (authed) {
     return supabaseAdapter.deleteNote(id);
   }
-  return dexieDb.deleteNote(id);
+  // DexieDB expects numeric IDs
+  const numericId = typeof id === 'string' ? parseInt(id, 10) : id;
+  return dexieDb.deleteNote(numericId);
 }
 
 export async function getNotesForChapter(
