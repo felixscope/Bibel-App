@@ -76,7 +76,7 @@ export function TopBar({ currentBookId, currentChapter }: TopBarProps) {
     <header className="sticky top-0 z-30 bg-[var(--bg-primary)]/90 backdrop-blur-md border-b border-[var(--border)]">
       <div className="max-w-4xl mx-auto px-4 py-2.5 flex items-center justify-between gap-2">
         {/* Linke Seite: Übersetzung + Buch */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-1 min-w-0">
           {/* Übersetzungsauswahl */}
           <TranslationSelector />
 
@@ -90,7 +90,7 @@ export function TopBar({ currentBookId, currentChapter }: TopBarProps) {
         </div>
 
         {/* Rechte Icons */}
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1 flex-shrink-0">
           {/* Suche */}
           <button
             onClick={() => setShowSearch(true)}

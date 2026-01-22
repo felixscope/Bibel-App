@@ -84,27 +84,35 @@ export function VerseActionBar({
 
   const versesAreBookmarked = isBookmarked();
 
-  const handleHighlight = async (color: Highlight["color"]) => {
+  const handleHighlight = async (color: Highlight["color"], e: React.MouseEvent | React.TouchEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
     const verses = getSelectedVerseNumbers();
     if (verses.length === 0) return;
 
-    // Check if all selected verses already have this color
-    const allHaveSameColor = verses.every(
-      (v) => currentHighlights.get(v) === color
-    );
+    try {
+      // Check if all selected verses already have this color
+      const allHaveSameColor = verses.every(
+        (v) => currentHighlights.get(v) === color
+      );
 
-    if (allHaveSameColor) {
-      // Remove highlights
-      await removeHighlightsForVerses(bookId, chapter, verses);
-      showToast("Markierung entfernt", "remove");
-    } else {
-      // Add highlights
-      await addHighlightsForVerses(bookId, chapter, verses, color);
-      showToast("Markiert", "highlight");
+      if (allHaveSameColor) {
+        // Remove highlights
+        await removeHighlightsForVerses(bookId, chapter, verses);
+        showToast("Markierung entfernt", "remove");
+      } else {
+        // Add highlights
+        await addHighlightsForVerses(bookId, chapter, verses, color);
+        showToast("Markiert", "highlight");
+      }
+
+      onHighlightChange?.();
+      clearSelection();
+    } catch (error) {
+      console.error("Error highlighting verses:", error);
+      showToast("Fehler beim Markieren", "remove");
     }
-
-    onHighlightChange?.();
-    clearSelection();
   };
 
   const handleBookmark = async () => {
@@ -189,9 +197,13 @@ export function VerseActionBar({
             {HIGHLIGHT_COLORS.map((color) => (
               <button
                 key={color}
-                onClick={() => handleHighlight(color)}
+                onClick={(e) => handleHighlight(color, e)}
+                onTouchEnd={(e) => {
+                  e.preventDefault();
+                  handleHighlight(color, e);
+                }}
                 className={clsx(
-                  "w-7 h-7 rounded-full border-2 transition-all hover:scale-110",
+                  "w-8 h-8 rounded-full border-2 transition-all hover:scale-110 active:scale-95 touch-manipulation",
                   COLOR_CLASSES[color],
                   selectedColor === color && "ring-2 ring-offset-2 ring-[var(--accent)] scale-110"
                 )}

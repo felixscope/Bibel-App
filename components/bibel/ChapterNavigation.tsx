@@ -157,43 +157,6 @@ export function ChapterNavigation({
         </motion.div>
       </nav>
 
-      {/* Mobile: Funktionale Navigation an den Seiten */}
-      {hasPrev && (
-        <Link
-          href={`/lesen/${bookId}/${currentChapter - 1}`}
-          className="md:hidden fixed inset-y-0 left-0 w-16 flex items-center justify-start z-30 pl-1"
-        >
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.4 }}
-            whileTap={{ scale: 1.1, opacity: 0.8 }}
-            className="p-2 rounded-full bg-[var(--bg-elevated)]/80 backdrop-blur-sm"
-          >
-            <svg className="w-6 h-6 text-[var(--text-primary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-            </svg>
-          </motion.div>
-        </Link>
-      )}
-
-      {hasNext && (
-        <Link
-          href={`/lesen/${bookId}/${currentChapter + 1}`}
-          className="md:hidden fixed inset-y-0 right-0 w-16 flex items-center justify-end z-30 pr-2"
-        >
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.4 }}
-            whileTap={{ scale: 1.1, opacity: 0.8 }}
-            className="p-2 rounded-full bg-[var(--bg-elevated)]/80 backdrop-blur-sm"
-          >
-            <svg className="w-6 h-6 text-[var(--text-primary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-            </svg>
-          </motion.div>
-        </Link>
-      )}
-
       {/* Mobile: Navigation unten - nur bei Scroll-Ende oder schnellem Scrollen */}
       <nav className="md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-40">
         <motion.div
