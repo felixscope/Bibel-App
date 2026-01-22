@@ -255,6 +255,8 @@ def escape_string(s: str) -> str:
     """Escape a string for TypeScript."""
     # Escape backslashes first
     s = s.replace('\\', '\\\\')
+    # Escape double quotes
+    s = s.replace('"', '\\"')
     # Escape backticks
     s = s.replace('`', '\\`')
     # Escape ${
@@ -265,10 +267,15 @@ def generate_typescript(book: Dict, output_path: str) -> None:
     """Generate TypeScript file from book data."""
 
     # Start building the TypeScript content
+    # Add underscore prefix if book ID starts with a digit (for valid TypeScript identifiers)
+    export_name = book["id"]
+    if export_name[0].isdigit():
+        export_name = '_' + export_name
+
     lines = [
         'import { Book } from "@/lib/types";',
         '',
-        f'export const {book["id"]}: Book = {{',
+        f'export const {export_name}: Book = {{',
         f'  id: "{book["id"]}", name: "{book["name"]}", shortName: "{book["shortName"]}", testament: "{book["testament"]}",',
     ]
 

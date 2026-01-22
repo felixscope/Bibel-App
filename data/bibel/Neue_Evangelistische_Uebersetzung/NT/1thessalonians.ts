@@ -1,6 +1,6 @@
 import { Book } from "@/lib/types";
 
-export const 1thessalonians: Book = {
+export const _1thessalonians: Book = {
   id: "1thessalonians", name: "1. Thessalonicher", shortName: "1Thess", testament: "new",
   introduction: `Eine junge Gemeinde startet durch
 

@@ -1,6 +1,6 @@
 import { Book } from "@/lib/types";
 
-export const 2john: Book = {
+export const _2john: Book = {
   id: "2john", name: "2. Johannes", shortName: "2Joh", testament: "new",
   introduction: `Gastfreundschaft und ihre Grenzen
 

@@ -1,6 +1,6 @@
 import { Book } from "@/lib/types";
 
-export const 2corinthians: Book = {
+export const _2corinthians: Book = {
   id: "2corinthians", name: "2. Korinther", shortName: "2Kor", testament: "new",
   introduction: `Von Gott bevollmächtigt, von Christus gesandt
 

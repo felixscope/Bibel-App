@@ -651,7 +651,7 @@ Das Matthäus-Evangelium beginnt mit dem Geschlechtsregister von Jesus, um seine
       { number: 19, text: "Und auch das versichere ich euch: Wenn zwei von euch hier auf der Erde eins werden über irgendeine Sache, die sie erbitten wollen, dann wird sie ihnen von meinem Vater im Himmel gegeben werden." },
       { number: 20, text: "Denn wo zwei oder drei in meinem Namen zusammenkommen, da bin ich in ihrer Mitte.“" },
       { number: 21, text: "Dann kam Petrus zu Jesus und fragte: „Herr, wie oft darf mein Bruder gegen mich sündigen, und ich muss ihm vergeben? Siebenmal?“" },
-      { number: 22, text: "„Nein“, antwortete Jesus, „nicht siebenmal, sondern siebenundsiebzig Mal.", footnotes: ["siebenundsiebzig Mal. Andere übersetzen mit Einfügung eines zweiten „mal": siebzig mal siebenmal. Siehe aber das biblische Gegenstück der Zahl in 1. Mose 4,24."] },
+      { number: 22, text: "„Nein“, antwortete Jesus, „nicht siebenmal, sondern siebenundsiebzig Mal.", footnotes: ["siebenundsiebzig Mal. Andere übersetzen mit Einfügung eines zweiten „mal\": siebzig mal siebenmal. Siehe aber das biblische Gegenstück der Zahl in 1. Mose 4,24."] },
       { number: 23, text: "Deshalb ist es mit der Himmelsherrschaft wie mit einem König, der von seinen Dienern Rechenschaft verlangte." },
       { number: 24, text: "Gleich am Anfang brachte man einen zu ihm, der ihm zehntausend Talente* schuldete.", footnotes: ["Talente. Größte damalige Geldeinheit. 1 Talent = 6000 Denare = Arbeitslohn für 20 Jahre Arbeit. 10.000 Talente wäre also eine Schuld von 200.000 Jahren Arbeit."] },
       { number: 25, text: "Und weil er nicht zahlen konnte, befahl der Herr, ihn mit seiner Frau, den Kindern und seinem ganzen Besitz zu verkaufen, um die Schuld zu begleichen." },

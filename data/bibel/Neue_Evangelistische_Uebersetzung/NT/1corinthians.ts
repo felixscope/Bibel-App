@@ -1,6 +1,6 @@
 import { Book } from "@/lib/types";
 
-export const 1corinthians: Book = {
+export const _1corinthians: Book = {
   id: "1corinthians", name: "1. Korinther", shortName: "1Kor", testament: "new",
   introduction: `Liebe, die gelebt werden muss
 
@@ -59,7 +59,7 @@ In dieser Zeit, es wird im Jahr 54 n.Chr. gewesen sein, schrieb Paulus einen ers
       { number: 13, text: "Und davon reden wir auch, aber nicht in Worten, wie sie menschliche Weisheit lehrt, sondern in Worten, wie sie der Geist lehrt. Geistlichen Menschen erklären wir geistliche Sachen." },
       { number: 14, text: "Ein natürlicher Mensch kann nicht erfassen, was vom Geist Gottes kommt. Er hält es für Unsinn und kann nichts damit anfangen, weil es geistlich beurteilt werden muss." },
       { number: 15, text: "Doch ein geistlicher Mensch kann das alles richtig beurteilen. Er selbst aber bleibt allen anderen ein Rätsel." },
-      { number: 16, text: "Denn „wer kennt schon die Gedanken des Herrn, dass er ihn belehren könnte?"* Aber wir haben die Gedanken des Christus.", footnotes: ["Nach Jesaja 40,13f"] },
+      { number: 16, text: "Denn „wer kennt schon die Gedanken des Herrn, dass er ihn belehren könnte?\"* Aber wir haben die Gedanken des Christus.", footnotes: ["Nach Jesaja 40,13f"] },
     ] },
     { number: 3, verses: [
       { number: 1, text: "Zu euch, Brüder, konnte ich bisher aber nicht so sprechen, wie zu geisterfüllten Menschen. Denn in Bezug auf Christus wart ihr noch wie Kinder, die ihren eigenen Wünschen folgen.", heading: "Einer ist so notwendig wie der andere" },
@@ -424,7 +424,7 @@ In dieser Zeit, es wird im Jahr 54 n.Chr. gewesen sein, schrieb Paulus einen ers
       { number: 29, text: "Was haben sonst die davon, die sogar die Todestaufe* auf sich nehmen? Wenn Tote überhaupt nicht auferweckt werden, warum sind die Gläubigen dann zu dieser Taufe bereit?", footnotes: ["Todestaufe. Wörtlich: Sich in Bezug auf die Toten taufen lassen.Gemeint ist vielleicht das Martyrium.Das passt am besten in den Zusammenhang, und auch Jesus hat den Begriff Taufe so gebraucht (Lukas 12,50; Markus 10,39)."] },
       { number: 30, text: "Und warum sind auch wir stündlich in Gefahr?" },
       { number: 31, text: "Täglich sehe ich dem Tod ins Auge, Geschwister; das ist die Wahrheit, so gewiss ihr durch Christus Jesus, unseren Herrn, die Ursache meines Ruhmes seid." },
-      { number: 32, text: "Was hätte ich davon, dass ich in Ephesus als Mensch mit Bestien gekämpft habe? Wenn Tote nicht auferweckt werden, dann „lasst uns essen und trinken, denn morgen sind wir tot"*.", footnotes: ["Sprichwort nach Jesaja 22,13."] },
+      { number: 32, text: "Was hätte ich davon, dass ich in Ephesus als Mensch mit Bestien gekämpft habe? Wenn Tote nicht auferweckt werden, dann „lasst uns essen und trinken, denn morgen sind wir tot\"*.", footnotes: ["Sprichwort nach Jesaja 22,13."] },
       { number: 33, text: "Täuscht euch nicht! „Schlechter Umgang verdirbt gute Sitten.“", footnotes: ["Zum Sprichwort gewordenes Zitat des Athener Komödiendichters Menander (um 270 v.Chr.)."] },
       { number: 34, text: "Werdet wieder richtig nüchtern und hört auf zu sündigen! Denn zu eurer Schande muss ich sagen: Einige von euch kennen Gott wirklich nicht." },
       { number: 35, text: "Es wird aber jemand fragen: „Wie werden denn die Toten auferweckt, und was für einen Körper werden sie dann haben?“", heading: "Die Lehre von der Auferstehung des Körpers" },

@@ -1,6 +1,6 @@
 import { Book } from "@/lib/types";
 
-export const 2timothy: Book = {
+export const _2timothy: Book = {
   id: "2timothy", name: "2. Timotheus", shortName: "2Tim", testament: "new",
   introduction: `Abschiedsbotschaft eines Apostels
 
@@ -85,7 +85,7 @@ Paulus war mit Ketten gefesselt (2,9), als er diesen letzten Brief an Timotheus 
       { number: 7, text: "Ich habe den guten Kampf gekämpft, das Ziel erreicht und den Glauben unversehrt bewahrt." },
       { number: 8, text: "Jetzt liegt der Ehrenkranz für mich bereit, die Gerechtigkeit, die der Herr als gerechter Richter mir an jenem großen Tag zuerkennen wird – aber nicht nur mir, sondern auch allen anderen, die sich auf sein sichtbares Wiederkommen freuen." },
       { number: 9, text: "Beeile dich und komm so bald wie möglich zu mir!", heading: "Persönliches" },
-      { number: 10, text: "Denn Demas hat mich verlassen und ist nach Thessalonich* gegangen. Ihm war diese Welt lieber. Kreszens ging nach Galatien* und Titus nach Dalmatien*.", footnotes: ["Thessalonich. Bedeutendste Stadt Mazedoniens, etwa 200.000 Einwohner, Hauptstadt des zweiten mazedonischen Bezirks, wichtiger Seehafen. Heute: Thessaloniki.", "„Galatien" ist der Name einer Landschaft im nördlichen Kleinasien. Die römische Provinz Galatien schloss aber seit einigen Jahrzehnten auch die südlicher liegenden Landschaften Pisidien, Phrygien und Lykaonien ein.", "Dalmatien. Römische Provinz im Gebirge nordöstlich der Adria."] },
+      { number: 10, text: "Denn Demas hat mich verlassen und ist nach Thessalonich* gegangen. Ihm war diese Welt lieber. Kreszens ging nach Galatien* und Titus nach Dalmatien*.", footnotes: ["Thessalonich. Bedeutendste Stadt Mazedoniens, etwa 200.000 Einwohner, Hauptstadt des zweiten mazedonischen Bezirks, wichtiger Seehafen. Heute: Thessaloniki.", "„Galatien\" ist der Name einer Landschaft im nördlichen Kleinasien. Die römische Provinz Galatien schloss aber seit einigen Jahrzehnten auch die südlicher liegenden Landschaften Pisidien, Phrygien und Lykaonien ein.", "Dalmatien. Römische Provinz im Gebirge nordöstlich der Adria."] },
       { number: 11, text: "Nur Lukas ist noch bei mir. Wenn du kommst, bring Markus mit,* denn ich könnte ihn hier gut gebrauchen.", footnotes: ["bring Markus mit. Wahrscheinlich hielt Markus sich noch in Kolossä auf, wohin er nach Aussage von Kolosser 4,10 kommen sollte."] },
       { number: 12, text: "Tychikus habe ich nach Ephesus geschickt.", footnotes: ["Tychikus war zuletzt in Kolossä gewesen und hatte dort Onesimus seinem Herrn zurückgebracht und den Kolosserbrief übergeben (Kolosser 4,7-9). Nun sollte er offenbar Timotheus in Ephesus ablösen."] },
       { number: 13, text: "Wenn du kommst, bring bitte den Mantel mit, den ich bei Karpus in Troas* liegen gelassen habe, auch die Schriftrollen, vor allem aber die Notizhefte*.", footnotes: ["Troas. Ein bedeutender Hafen im Nordwesten der römischen Provinz Asia, 20 km südlich von Troja.", "Notizhefte. Das waren zusammengeheftete Pergamentblätter, die Vorläufer für unsere Bücher."] },
