@@ -112,33 +112,33 @@ export function VerseText({
     if (hasFootnotes) {
       const asteriskPattern = /\*/g;
       const matches = [...processedText.matchAll(asteriskPattern)];
-      const numFootnotes = footnotes!.length;
-      const numAsterisks = matches.length;
 
-      if (numAsterisks > 0) {
+      if (matches.length > 0) {
         let lastIndex = 0;
 
         matches.forEach((match, idx) => {
-          // Text vor dem Stern
-          const beforeText = processedText.substring(lastIndex, match.index);
-          if (beforeText) {
-            parts.push(beforeText);
+          // Nur verarbeiten wenn es eine entsprechende Fußnote gibt
+          if (idx < footnotes!.length) {
+            // Text vor dem Stern
+            const beforeText = processedText.substring(lastIndex, match.index);
+            if (beforeText) {
+              parts.push(beforeText);
+            }
+
+            // Fußnoten-Marker (ersetze * durch klickbaren Marker mit *)
+            parts.push(
+              <sup
+                key={`footnote-${idx}`}
+                className="footnote-marker ml-0.5 px-1 py-0.5 cursor-pointer text-[var(--accent)] hover:text-[var(--accent-hover)] transition-colors select-none text-sm"
+                onClick={handleFootnoteClick(idx)}
+                onTouchEnd={handleFootnoteClick(idx)}
+              >
+                *
+              </sup>
+            );
+
+            lastIndex = match.index! + 1;
           }
-
-          // Fußnoten-Marker mit Nummer (ersetze * durch klickbare nummerierte Marker)
-          const footnoteNumber = idx + 1;
-          parts.push(
-            <sup
-              key={`footnote-${idx}`}
-              className="footnote-marker ml-0.5 px-0.5 cursor-pointer text-[var(--accent)] hover:text-[var(--accent-hover)] transition-colors select-none text-xs font-semibold"
-              onClick={handleFootnoteClick(idx)}
-              onTouchEnd={handleFootnoteClick(idx)}
-            >
-              {footnoteNumber}
-            </sup>
-          );
-
-          lastIndex = match.index! + 1;
         });
 
         // Restlichen Text
@@ -147,40 +147,6 @@ export function VerseText({
           parts.push(remainingText);
         }
 
-        // Wenn es mehr Fußnoten gibt als * im Text, füge die fehlenden Nummern am Ende hinzu
-        if (numFootnotes > numAsterisks) {
-          for (let i = numAsterisks; i < numFootnotes; i++) {
-            const footnoteNumber = i + 1;
-            parts.push(
-              <sup
-                key={`footnote-extra-${i}`}
-                className="footnote-marker ml-0.5 px-0.5 cursor-pointer text-[var(--accent)] hover:text-[var(--accent-hover)] transition-colors select-none text-xs font-semibold"
-                onClick={handleFootnoteClick(i)}
-                onTouchEnd={handleFootnoteClick(i)}
-              >
-                {footnoteNumber}
-              </sup>
-            );
-          }
-        }
-
-        return parts;
-      } else {
-        // Kein * im Text, aber Fußnoten vorhanden - füge nummerierte Marker am Ende hinzu
-        parts.push(processedText);
-        for (let i = 0; i < numFootnotes; i++) {
-          const footnoteNumber = i + 1;
-          parts.push(
-            <sup
-              key={`footnote-${i}`}
-              className="footnote-marker ml-0.5 px-0.5 cursor-pointer text-[var(--accent)] hover:text-[var(--accent-hover)] transition-colors select-none text-xs font-semibold"
-              onClick={handleFootnoteClick(i)}
-              onTouchEnd={handleFootnoteClick(i)}
-            >
-              {footnoteNumber}
-            </sup>
-          );
-        }
         return parts;
       }
     }
@@ -265,7 +231,7 @@ export function VerseText({
             onClick={(e) => e.stopPropagation()}
           >
             <div className="text-xs text-[var(--text-muted)] mb-1.5 font-medium">
-              Fußnote {activeFootnoteIndex + 1} zu Vers {number}
+              Fußnote zu Vers {number}
             </div>
             <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
               {footnotes[activeFootnoteIndex]}
