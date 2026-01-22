@@ -31,8 +31,7 @@ export function VerseText({
   const touchStartTime = useRef<number>(0);
   const scrollStartY = useRef<number>(0);
   const pendingTap = useRef<NodeJS.Timeout | null>(null);
-  const [showFootnote, setShowFootnote] = useState(false);
-  const footnoteRef = useRef<HTMLSpanElement>(null);
+  const footnoteRef = useRef<HTMLDivElement>(null);
 
   // Cleanup pending tap bei Unmount
   useEffect(() => {
@@ -94,29 +93,75 @@ export function VerseText({
     onSelect?.(number, text);
   };
 
-  const handleFootnoteClick = (e: React.MouseEvent | React.TouchEvent) => {
+  const [activeFootnoteIndex, setActiveFootnoteIndex] = useState<number | null>(null);
+
+  const handleFootnoteClick = (index: number) => (e: React.MouseEvent | React.TouchEvent) => {
     e.stopPropagation();
     e.preventDefault();
-    setShowFootnote(!showFootnote);
+    setActiveFootnoteIndex(activeFootnoteIndex === index ? null : index);
   };
 
   const hasFootnotes = footnotes && footnotes.length > 0;
 
-  // Text mit Schrägstrichen in Zeilen aufteilen für poetische Darstellung
+  // Text mit Fußnoten-Markern und Schrägstrichen formatieren
   const formatText = (inputText: string) => {
-    // Prüfen ob Schrägstriche vorhanden sind
-    if (!inputText.includes(" / ")) {
-      return inputText;
+    let processedText = inputText;
+    const parts: React.ReactNode[] = [];
+
+    // Zuerst Fußnoten-Marker verarbeiten
+    if (hasFootnotes) {
+      const asteriskPattern = /\*/g;
+      const matches = [...processedText.matchAll(asteriskPattern)];
+
+      if (matches.length > 0) {
+        let lastIndex = 0;
+
+        matches.forEach((match, idx) => {
+          if (idx < footnotes!.length) {
+            // Text vor dem Stern
+            const beforeText = processedText.substring(lastIndex, match.index);
+            if (beforeText) {
+              parts.push(beforeText);
+            }
+
+            // Fußnoten-Marker (ersetze * durch klickbaren Marker)
+            parts.push(
+              <sup
+                key={`footnote-${idx}`}
+                className="footnote-marker ml-0.5 px-1 py-0.5 cursor-pointer text-[var(--accent)] hover:text-[var(--accent-hover)] transition-colors select-none text-sm"
+                onClick={handleFootnoteClick(idx)}
+                onTouchEnd={handleFootnoteClick(idx)}
+              >
+                *
+              </sup>
+            );
+
+            lastIndex = match.index! + 1;
+          }
+        });
+
+        // Restlichen Text
+        const remainingText = processedText.substring(lastIndex);
+        if (remainingText) {
+          parts.push(remainingText);
+        }
+
+        return parts;
+      }
     }
 
-    // Text an " / " aufteilen und als separate Zeilen rendern
-    const lines = inputText.split(" / ");
-    return lines.map((line, index) => (
-      <span key={index}>
-        {line}
-        {index < lines.length - 1 && <br />}
-      </span>
-    ));
+    // Kein Fußnoten-Marker gefunden, prüfe auf Schrägstriche für poetische Darstellung
+    if (processedText.includes(" / ")) {
+      const lines = processedText.split(" / ");
+      return lines.map((line, index) => (
+        <span key={`line-${index}`}>
+          {line}
+          {index < lines.length - 1 && <br />}
+        </span>
+      ));
+    }
+
+    return processedText;
   };
 
   // Heading parsen: "Hauptüberschrift | Abschnittsüberschrift" oder nur eine Überschrift
@@ -172,60 +217,40 @@ export function VerseText({
         {/* Verstext */}
         <span className="bible-text">{formatText(text)}</span>
 
-      {/* Fußnoten-Indikator */}
-      {hasFootnotes && (
-        <span
-          ref={footnoteRef}
-          className="relative inline"
-        >
-          <sup
-            className="footnote-marker ml-1 px-1.5 py-0.5 cursor-pointer text-[var(--accent)] hover:text-[var(--accent-hover)] transition-colors select-none text-base"
-            onClick={handleFootnoteClick}
-            onTouchEnd={handleFootnoteClick}
+      {/* Fußnoten-Popup */}
+      {hasFootnotes && activeFootnoteIndex !== null && (
+        <AnimatePresence>
+          <motion.div
+            ref={footnoteRef}
+            initial={{ opacity: 0, y: -5 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -5 }}
+            transition={{ duration: 0.15 }}
+            className="fixed left-1/2 -translate-x-1/2 bottom-20 z-[9999] w-[calc(100vw-2rem)] max-w-md p-4 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border)] shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
           >
-            *
-          </sup>
-
-          {/* Fußnoten-Popup */}
-          <AnimatePresence>
-            {showFootnote && (
-              <motion.div
-                initial={{ opacity: 0, y: -5 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -5 }}
-                transition={{ duration: 0.15 }}
-                className="fixed left-1/2 -translate-x-1/2 bottom-20 z-[9999] w-[calc(100vw-2rem)] max-w-md p-4 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border)] shadow-2xl"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <div className="text-xs text-[var(--text-muted)] mb-1.5 font-medium">
-                  Fußnote zu Vers {number}
-                </div>
-                {footnotes?.map((note, index) => (
-                  <p
-                    key={index}
-                    className="text-sm text-[var(--text-secondary)] leading-relaxed"
-                  >
-                    {note}
-                  </p>
-                ))}
-                <button
-                  className="mt-3 px-3 py-2 w-full text-sm text-[var(--accent)] hover:bg-[var(--accent-bg)] rounded-lg transition-colors font-medium"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setShowFootnote(false);
-                  }}
-                  onTouchEnd={(e) => {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    setShowFootnote(false);
-                  }}
-                >
-                  Schließen
-                </button>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </span>
+            <div className="text-xs text-[var(--text-muted)] mb-1.5 font-medium">
+              Fußnote zu Vers {number}
+            </div>
+            <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
+              {footnotes[activeFootnoteIndex]}
+            </p>
+            <button
+              className="mt-3 px-3 py-2 w-full text-sm text-[var(--accent)] hover:bg-[var(--accent-bg)] rounded-lg transition-colors font-medium"
+              onClick={(e) => {
+                e.stopPropagation();
+                setActiveFootnoteIndex(null);
+              }}
+              onTouchEnd={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                setActiveFootnoteIndex(null);
+              }}
+            >
+              Schließen
+            </button>
+          </motion.div>
+        </AnimatePresence>
       )}
 
       {/* Indikatoren */}
