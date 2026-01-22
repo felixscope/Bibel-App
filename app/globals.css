@@ -234,10 +234,6 @@ body::before {
   -webkit-touch-callout: none;
 }
 
-.verse-interactive:hover {
-  background-color: var(--bg-hover);
-}
-
 /* ─────────────────────────────────────────────────────────────────────────────
    Buttons & Controls
    ───────────────────────────────────────────────────────────────────────────── */
