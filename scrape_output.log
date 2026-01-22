@@ -1,0 +1,138 @@
+Scraping all New Testament books...
+
+Scraping Matthäus (matthew)...
+URL: https://neue.derbibelvertrauen.de/mt.html
+✓ Extracted 28 chapters
+✓ Written to data/bibel/Neue_Evangelistische_Uebersetzung/NT/matthew.ts
+
+Scraping Markus (mark)...
+URL: https://neue.derbibelvertrauen.de/mk.html
+✓ Extracted 16 chapters
+✓ Written to data/bibel/Neue_Evangelistische_Uebersetzung/NT/mark.ts
+
+Scraping Lukas (luke)...
+URL: https://neue.derbibelvertrauen.de/lk.html
+✓ Extracted 24 chapters
+✓ Written to data/bibel/Neue_Evangelistische_Uebersetzung/NT/luke.ts
+
+Scraping Johannes (john)...
+URL: https://neue.derbibelvertrauen.de/jo.html
+✓ Extracted 21 chapters
+✓ Written to data/bibel/Neue_Evangelistische_Uebersetzung/NT/john.ts
+
+Scraping Apostelgeschichte (acts)...
+URL: https://neue.derbibelvertrauen.de/apg.html
+✓ Extracted 28 chapters
+✓ Written to data/bibel/Neue_Evangelistische_Uebersetzung/NT/acts.ts
+
+Scraping Römer (romans)...
+URL: https://neue.derbibelvertrauen.de/roe.html
+✓ Extracted 16 chapters
+✓ Written to data/bibel/Neue_Evangelistische_Uebersetzung/NT/romans.ts
+
+Scraping 1. Korinther (1corinthians)...
+URL: https://neue.derbibelvertrauen.de/1kor.html
+✓ Extracted 16 chapters
+✓ Written to data/bibel/Neue_Evangelistische_Uebersetzung/NT/1corinthians.ts
+
+Scraping 2. Korinther (2corinthians)...
+URL: https://neue.derbibelvertrauen.de/2kor.html
+✓ Extracted 13 chapters
+✓ Written to data/bibel/Neue_Evangelistische_Uebersetzung/NT/2corinthians.ts
+
+Scraping Galater (galatians)...
+URL: https://neue.derbibelvertrauen.de/gal.html
+✓ Extracted 6 chapters
+✓ Written to data/bibel/Neue_Evangelistische_Uebersetzung/NT/galatians.ts
+
+Scraping Epheser (ephesians)...
+URL: https://neue.derbibelvertrauen.de/eph.html
+✓ Extracted 6 chapters
+✓ Written to data/bibel/Neue_Evangelistische_Uebersetzung/NT/ephesians.ts
+
+Scraping Philipper (philippians)...
+URL: https://neue.derbibelvertrauen.de/phil.html
+✓ Extracted 4 chapters
+✓ Written to data/bibel/Neue_Evangelistische_Uebersetzung/NT/philippians.ts
+
+Scraping Kolosser (colossians)...
+URL: https://neue.derbibelvertrauen.de/kol.html
+✓ Extracted 4 chapters
+✓ Written to data/bibel/Neue_Evangelistische_Uebersetzung/NT/colossians.ts
+
+Scraping 1. Thessalonicher (1thessalonians)...
+URL: https://neue.derbibelvertrauen.de/1thes.html
+✓ Extracted 5 chapters
+✓ Written to data/bibel/Neue_Evangelistische_Uebersetzung/NT/1thessalonians.ts
+
+Scraping 2. Thessalonicher (2thessalonians)...
+URL: https://neue.derbibelvertrauen.de/2thes.html
+✓ Extracted 3 chapters
+✓ Written to data/bibel/Neue_Evangelistische_Uebersetzung/NT/2thessalonians.ts
+
+Scraping 1. Timotheus (1timothy)...
+URL: https://neue.derbibelvertrauen.de/1tim.html
+✓ Extracted 6 chapters
+✓ Written to data/bibel/Neue_Evangelistische_Uebersetzung/NT/1timothy.ts
+
+Scraping 2. Timotheus (2timothy)...
+URL: https://neue.derbibelvertrauen.de/2tim.html
+✓ Extracted 4 chapters
+✓ Written to data/bibel/Neue_Evangelistische_Uebersetzung/NT/2timothy.ts
+
+Scraping Titus (titus)...
+URL: https://neue.derbibelvertrauen.de/tit.html
+✓ Extracted 3 chapters
+✓ Written to data/bibel/Neue_Evangelistische_Uebersetzung/NT/titus.ts
+
+Scraping Philemon (philemon)...
+URL: https://neue.derbibelvertrauen.de/phm.html
+✓ Extracted 1 chapters
+✓ Written to data/bibel/Neue_Evangelistische_Uebersetzung/NT/philemon.ts
+
+Scraping Hebräer (hebrews)...
+URL: https://neue.derbibelvertrauen.de/hebr.html
+✓ Extracted 13 chapters
+✓ Written to data/bibel/Neue_Evangelistische_Uebersetzung/NT/hebrews.ts
+
+Scraping Jakobus (james)...
+URL: https://neue.derbibelvertrauen.de/jak.html
+✓ Extracted 5 chapters
+✓ Written to data/bibel/Neue_Evangelistische_Uebersetzung/NT/james.ts
+
+Scraping 1. Petrus (1peter)...
+URL: https://neue.derbibelvertrauen.de/1pt.html
+✓ Extracted 5 chapters
+✓ Written to data/bibel/Neue_Evangelistische_Uebersetzung/NT/1peter.ts
+
+Scraping 2. Petrus (2peter)...
+URL: https://neue.derbibelvertrauen.de/2pt.html
+✓ Extracted 3 chapters
+✓ Written to data/bibel/Neue_Evangelistische_Uebersetzung/NT/2peter.ts
+
+Scraping 1. Johannes (1john)...
+URL: https://neue.derbibelvertrauen.de/1jo.html
+✓ Extracted 5 chapters
+✓ Written to data/bibel/Neue_Evangelistische_Uebersetzung/NT/1john.ts
+
+Scraping 2. Johannes (2john)...
+URL: https://neue.derbibelvertrauen.de/2jo.html
+✓ Extracted 1 chapters
+✓ Written to data/bibel/Neue_Evangelistische_Uebersetzung/NT/2john.ts
+
+Scraping 3. Johannes (3john)...
+URL: https://neue.derbibelvertrauen.de/3jo.html
+✓ Extracted 1 chapters
+✓ Written to data/bibel/Neue_Evangelistische_Uebersetzung/NT/3john.ts
+
+Scraping Judas (jude)...
+URL: https://neue.derbibelvertrauen.de/jud.html
+✓ Extracted 1 chapters
+✓ Written to data/bibel/Neue_Evangelistische_Uebersetzung/NT/jude.ts
+
+Scraping Offenbarung (revelation)...
+URL: https://neue.derbibelvertrauen.de/off.html
+✓ Extracted 22 chapters
+✓ Written to data/bibel/Neue_Evangelistische_Uebersetzung/NT/revelation.ts
+
+✓ Done!

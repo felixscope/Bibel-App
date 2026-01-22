@@ -34,7 +34,7 @@ export const TRANSLATIONS = {
     name: "Neue Evangelistische",
     shortName: "NeÜ",
     year: 2015,
-    folder: "NeÜ_2015",
+    folder: "Neue_Evangelistische_Uebersetzung",
   },
   elberfelder: {
     id: "elberfelder",
