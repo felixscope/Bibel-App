@@ -102,17 +102,6 @@ export function TopBar({ currentBookId, currentChapter }: TopBarProps) {
             </svg>
           </button>
 
-          {/* Lesezeichen */}
-          <Link
-            href="/lesezeichen"
-            className="p-2.5 rounded-lg hover:bg-[var(--bg-hover)] transition-colors"
-            title="Lesezeichen"
-          >
-            <svg className="w-5 h-5 text-[var(--text-secondary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
-            </svg>
-          </Link>
-
           {/* Schrifteinstellungen */}
           <div className="relative" ref={dropdownRef}>
             <button
@@ -194,24 +183,6 @@ export function TopBar({ currentBookId, currentChapter }: TopBarProps) {
               )}
             </AnimatePresence>
           </div>
-
-          {/* Dark Mode Toggle */}
-          <button
-            onClick={toggleDarkMode}
-            className="p-2.5 rounded-lg hover:bg-[var(--bg-hover)] transition-colors"
-            title={isDark ? "Heller Modus" : "Dunkler Modus"}
-          >
-            {/* Zeige immer Mond-Icon bis mounted, dann basierend auf Theme */}
-            {!mounted || !isDark ? (
-              <svg className="w-5 h-5 text-[var(--text-secondary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
-              </svg>
-            ) : (
-              <svg className="w-5 h-5 text-[var(--text-secondary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
-              </svg>
-            )}
-          </button>
 
           {/* User Menu */}
           <UserMenuButton />
