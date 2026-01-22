@@ -148,6 +148,25 @@ export function VerseText({
         }
 
         return parts;
+      } else {
+        // Keine Sternchen im Text gefunden, aber Fußnoten vorhanden
+        // Füge automatisch Fußnoten-Marker am Ende hinzu
+        parts.push(processedText);
+
+        footnotes!.forEach((_, idx) => {
+          parts.push(
+            <sup
+              key={`footnote-${idx}`}
+              className="footnote-marker ml-0.5 px-1 py-0.5 cursor-pointer text-[var(--accent)] hover:text-[var(--accent-hover)] transition-colors select-none text-sm"
+              onClick={handleFootnoteClick(idx)}
+              onTouchEnd={handleFootnoteClick(idx)}
+            >
+              *
+            </sup>
+          );
+        });
+
+        return parts;
       }
     }
 

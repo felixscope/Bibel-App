@@ -9,13 +9,26 @@ import * as supabaseAdapter from "./supabase-adapter";
 
 // Check if user is authenticated
 async function isAuthenticated(): Promise<boolean> {
+  // Early return if Supabase is not configured
+  if (
+    typeof window === 'undefined' ||
+    !process.env.NEXT_PUBLIC_SUPABASE_URL ||
+    !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_URL === 'undefined' ||
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY === 'undefined'
+  ) {
+    // No logging needed - this is expected when running without Supabase
+    return false;
+  }
+
   try {
     const supabase = createClient();
     const {
       data: { session },
     } = await supabase.auth.getSession();
     return !!session;
-  } catch {
+  } catch (error) {
+    // Silently fall back to local storage
     return false;
   }
 }

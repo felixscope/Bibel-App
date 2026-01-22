@@ -47,22 +47,22 @@
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   Dark Mode – Mitternacht & Gold
+   Dark Mode – Mitternacht & Gold (Enhanced with dramatic contrast)
    ───────────────────────────────────────────────────────────────────────────── */
 .dark {
-  --bg-primary: #171412;
-  --bg-secondary: #231F1C;
-  --bg-elevated: #2A2523;
-  --bg-hover: #332E2A;
+  --bg-primary: #0A0807;        /* Deeper black for more drama */
+  --bg-secondary: #1A1614;      /* Adjusted for contrast */
+  --bg-elevated: #221E1B;       /* Elevated surfaces stand out more */
+  --bg-hover: #2A2522;          /* Stronger hover state */
 
   --text-primary: #F5F2ED;
   --text-secondary: #A8A29E;
   --text-muted: #6B6560;
 
-  --accent: #F59E0B;
-  --accent-hover: #D97706;
+  --accent: #F59E0B;            /* Golden amber */
+  --accent-hover: #FBBF24;      /* Lighter on hover for more glow */
   --accent-soft: #92400E;
-  --accent-bg: #292219;
+  --accent-bg: #2A2018;         /* Deeper accent background */
 
   --border: #3D3835;
   --border-strong: #524B45;
@@ -177,7 +177,9 @@ body::before {
 
 .dark .drop-cap {
   color: var(--accent);
-  text-shadow: 0 0 40px rgba(245, 158, 11, 0.3);
+  text-shadow:
+    0 0 40px rgba(245, 158, 11, 0.5),
+    0 0 80px rgba(245, 158, 11, 0.25);
 }
 
 /* Kapitelüberschrift */
@@ -188,21 +190,65 @@ body::before {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   Verse Highlighting – Handschrift-Stil
+   Verse Highlighting – Handschrift-Stil (Organic & Hand-drawn)
    ───────────────────────────────────────────────────────────────────────────── */
 .verse-highlight {
   position: relative;
-  border-radius: 2px;
-  padding: 0.05em 0.1em;
-  margin: 0 -0.1em;
-  transition: background-color 0.2s ease;
+  border-radius: 3px 2px 4px 2px; /* Irregular rounded corners */
+  padding: 0.1em 0.15em;
+  margin: 0 -0.15em;
+  transform: rotate(-0.3deg); /* Slight tilt for handwritten feel */
+  transition: all 0.2s ease;
 }
 
-.verse-highlight-yellow { background-color: var(--highlight-yellow); }
-.verse-highlight-green { background-color: var(--highlight-green); }
-.verse-highlight-blue { background-color: var(--highlight-blue); }
-.verse-highlight-pink { background-color: var(--highlight-pink); }
-.verse-highlight-orange { background-color: var(--highlight-orange); }
+/* Glow effect behind highlights */
+.verse-highlight::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  background: inherit;
+  opacity: 0.3;
+  filter: blur(4px);
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none; /* Don't block clicks */
+}
+
+/* Color-specific highlights with depth */
+.verse-highlight-yellow {
+  background-color: var(--highlight-yellow);
+  box-shadow:
+    inset 0 1px 2px rgba(234, 179, 8, 0.15),
+    0 0 8px rgba(234, 179, 8, 0.2);
+}
+
+.verse-highlight-green {
+  background-color: var(--highlight-green);
+  box-shadow:
+    inset 0 1px 2px rgba(34, 197, 94, 0.15),
+    0 0 8px rgba(34, 197, 94, 0.2);
+}
+
+.verse-highlight-blue {
+  background-color: var(--highlight-blue);
+  box-shadow:
+    inset 0 1px 2px rgba(59, 130, 246, 0.15),
+    0 0 8px rgba(59, 130, 246, 0.2);
+}
+
+.verse-highlight-pink {
+  background-color: var(--highlight-pink);
+  box-shadow:
+    inset 0 1px 2px rgba(236, 72, 153, 0.15),
+    0 0 8px rgba(236, 72, 153, 0.2);
+}
+
+.verse-highlight-orange {
+  background-color: var(--highlight-orange);
+  box-shadow:
+    inset 0 1px 2px rgba(249, 115, 22, 0.15),
+    0 0 8px rgba(249, 115, 22, 0.2);
+}
 
 /* Vers-Selektion */
 .verse-selected {
@@ -493,4 +539,33 @@ body::before {
   .nav-item {
     min-height: 48px;
   }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Dark Mode Enhancements – Glow & Depth Effects
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* Elevated cards with subtle glow border */
+.dark .card {
+  border-color: rgba(245, 158, 11, 0.1);
+  box-shadow:
+    0 0 0 1px rgba(245, 158, 11, 0.05),
+    var(--shadow-md);
+}
+
+/* Golden accent text with glow (only for specific elements, not buttons) */
+.dark .bible-text [class*="text-[var(--accent)]"],
+.dark .footnote-marker,
+.dark .accent-text {
+  text-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
+}
+
+/* Bible text with subtle shadow for better readability */
+.dark .bible-text {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* Enhanced paper texture in dark mode */
+.dark body::before {
+  opacity: 0.035; /* Slightly stronger texture */
 }
