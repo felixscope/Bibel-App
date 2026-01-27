@@ -246,7 +246,7 @@ export function VerseText({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -5 }}
             transition={{ duration: 0.15 }}
-            className="fixed left-1/2 -translate-x-1/2 bottom-20 z-[9999] w-[calc(100vw-2rem)] max-w-md p-4 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border)] shadow-2xl"
+            className="fixed left-0 right-0 top-1/2 -translate-y-1/2 mx-auto px-6 z-[9999] max-w-md p-4 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border)] shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="text-xs text-[var(--text-muted)] mb-1.5 font-medium">
