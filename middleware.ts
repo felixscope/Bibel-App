@@ -3,11 +3,17 @@ import { NextResponse, type NextRequest } from 'next/server'
 
 // Public routes that don't require authentication
 const publicRoutes = [
+  '/',
+  '/lesen',
+  '/suche',
+]
+
+// Auth routes - redirect logged-in users away from these
+const authRoutes = [
   '/auth/login',
   '/auth/register',
   '/auth/verify-email',
   '/auth/reset-password',
-  '/auth/callback',
 ]
 
 export async function middleware(request: NextRequest) {
@@ -15,18 +21,22 @@ export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname
 
   // Check if current route is public
-  const isPublicRoute = publicRoutes.some(route => path.startsWith(route))
+  const isPublicRoute = publicRoutes.some(route =>
+    route === '/' ? path === '/' : path.startsWith(route)
+  )
+
+  // Check if current route is an auth route
+  const isAuthRoute = authRoutes.some(route => path.startsWith(route))
 
   // Redirect to login if not authenticated and trying to access protected route
-  if (!user && !isPublicRoute) {
+  if (!user && !isPublicRoute && !isAuthRoute && !path.startsWith('/auth/callback')) {
     const redirectUrl = new URL('/auth/login', request.url)
-    // Store the original URL to redirect back after login
     redirectUrl.searchParams.set('redirectTo', path)
     return NextResponse.redirect(redirectUrl)
   }
 
-  // Redirect to app if authenticated and trying to access auth pages
-  if (user && isPublicRoute && path !== '/auth/callback') {
+  // Redirect logged-in users away from auth pages (login, register, etc.)
+  if (user && isAuthRoute) {
     return NextResponse.redirect(new URL('/', request.url))
   }
 

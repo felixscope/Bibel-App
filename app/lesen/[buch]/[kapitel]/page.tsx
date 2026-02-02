@@ -10,6 +10,7 @@ import { useTranslation } from "@/components/providers/TranslationProvider";
 import { loadBook } from "@/lib/bible-loader";
 import { getBookById, Book, Chapter } from "@/lib/types";
 import { motion } from "framer-motion";
+import { saveReadingPosition } from "@/lib/reading-history";
 
 interface PageProps {
   params: Promise<{
@@ -43,6 +44,8 @@ export default function LesenPage({ params }: PageProps) {
 
       if (book) {
         setBookData(book);
+        // Save reading position
+        saveReadingPosition(buch, book.name, chapterNum);
       } else {
         setError(true);
       }
@@ -54,7 +57,7 @@ export default function LesenPage({ params }: PageProps) {
     return () => {
       cancelled = true;
     };
-  }, [translation, buch]);
+  }, [translation, buch, chapterNum]);
 
   // Handle loading and errors
   if (!bookMeta) {

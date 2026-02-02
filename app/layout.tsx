@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { AuthProvider } from "@/components/providers/AuthProvider";
 import { ToastProvider } from "@/components/providers/ToastProvider";
 import { TranslationProvider } from "@/components/providers/TranslationProvider";
+import { Agentation } from "agentation";
 
 // Bibeltext – elegant, klassisch, hervorragende Lesbarkeit
 const cormorant = Cormorant_Garamond({
@@ -77,6 +78,7 @@ export default function RootLayout({
             </AuthProvider>
           </ToastProvider>
         </ThemeProvider>
+        {process.env.NODE_ENV === "development" && <Agentation />}
       </body>
     </html>
   );

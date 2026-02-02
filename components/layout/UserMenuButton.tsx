@@ -74,10 +74,13 @@ export function UserMenuButton() {
     return "?";
   };
 
-  // Loading state
+  // Loading state - show non-clickable loading indicator
   if (loading) {
     return (
-      <div className="w-9 h-9 rounded-full bg-[var(--bg-secondary)] animate-pulse" />
+      <div
+        className="w-9 h-9 rounded-full bg-[var(--bg-secondary)] animate-pulse"
+        title="Laden..."
+      />
     );
   }
 

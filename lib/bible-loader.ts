@@ -99,11 +99,6 @@ export function isBookAvailable(translationId: TranslationId, bookId: string): b
     return translationId === "einheitsuebersetzung";
   }
 
-  // NeÜ hat nur Neues Testament
-  if (translationId === "neue" && bookTestament[bookId] === "old") {
-    return false;
-  }
-
   return bookId in bookTestament;
 }
 

@@ -7,8 +7,19 @@ import { createClient } from "@/lib/supabase/client";
 import * as dexieDb from "../db";
 import * as supabaseAdapter from "./supabase-adapter";
 
-// Check if user is authenticated
+// Cache auth status to prevent race conditions between operations
+let cachedAuthStatus: boolean | null = null;
+let cacheTimestamp = 0;
+const CACHE_TTL = 5000; // 5 seconds
+
+// Check if user is authenticated (with caching)
 async function isAuthenticated(): Promise<boolean> {
+  // Return cached value if still valid
+  const now = Date.now();
+  if (cachedAuthStatus !== null && now - cacheTimestamp < CACHE_TTL) {
+    return cachedAuthStatus;
+  }
+
   // Early return if Supabase is not configured
   if (
     typeof window === 'undefined' ||
@@ -17,7 +28,8 @@ async function isAuthenticated(): Promise<boolean> {
     process.env.NEXT_PUBLIC_SUPABASE_URL === 'undefined' ||
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY === 'undefined'
   ) {
-    // No logging needed - this is expected when running without Supabase
+    cachedAuthStatus = false;
+    cacheTimestamp = now;
     return false;
   }
 
@@ -26,11 +38,21 @@ async function isAuthenticated(): Promise<boolean> {
     const {
       data: { session },
     } = await supabase.auth.getSession();
-    return !!session;
+    cachedAuthStatus = !!session?.user;
+    cacheTimestamp = now;
+    return cachedAuthStatus;
   } catch (error) {
     // Silently fall back to local storage
+    cachedAuthStatus = false;
+    cacheTimestamp = now;
     return false;
   }
+}
+
+// Clear cache when auth state changes (call this from AuthProvider)
+export function clearAuthCache(): void {
+  cachedAuthStatus = null;
+  cacheTimestamp = 0;
 }
 
 // ==================== HIGHLIGHTS ====================

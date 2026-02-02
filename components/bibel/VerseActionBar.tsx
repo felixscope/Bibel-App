@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { createPortal } from "react-dom";
 import { useSelection } from "@/components/providers/SelectionProvider";
 import { useToast } from "@/components/providers/ToastProvider";
+import { useAuth } from "@/components/providers/AuthProvider";
+import { LoginPromptModal } from "@/components/ui/LoginPromptModal";
 import {
   addHighlightsForVerses,
   removeHighlightsForVerses,
@@ -49,7 +51,9 @@ export function VerseActionBar({
   } = useSelection();
 
   const { showToast } = useToast();
+  const { user } = useAuth();
   const [mounted, setMounted] = useState(false);
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
 
   // Client-side only
   if (typeof window !== "undefined" && !mounted) {
@@ -91,6 +95,11 @@ export function VerseActionBar({
     const verses = getSelectedVerseNumbers();
     if (verses.length === 0) return;
 
+    if (!user) {
+      setShowLoginPrompt(true);
+      return;
+    }
+
     try {
       // Check if all selected verses already have this color
       const allHaveSameColor = verses.every(
@@ -117,6 +126,12 @@ export function VerseActionBar({
 
   const handleBookmark = async () => {
     if (!verseRange) return;
+
+    if (!user) {
+      setShowLoginPrompt(true);
+      return;
+    }
+
     const verses = getSelectedVerseNumbers();
 
     // Toggle: Wenn bereits gemerkt, dann löschen
@@ -231,7 +246,13 @@ export function VerseActionBar({
           {/* Aktions-Buttons */}
           <div className="flex items-center gap-2">
             <button
-              onClick={onOpenNoteModal}
+              onClick={() => {
+                if (!user) {
+                  setShowLoginPrompt(true);
+                  return;
+                }
+                onOpenNoteModal();
+              }}
               className="flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-lg bg-[var(--bg-secondary)] hover:bg-[var(--bg-hover)] transition-colors"
             >
               <svg
@@ -307,5 +328,13 @@ export function VerseActionBar({
     </AnimatePresence>
   );
 
-  return createPortal(actionBar, document.body);
+  return (
+    <>
+      {createPortal(actionBar, document.body)}
+      <LoginPromptModal
+        isOpen={showLoginPrompt}
+        onClose={() => setShowLoginPrompt(false)}
+      />
+    </>
+  );
 }

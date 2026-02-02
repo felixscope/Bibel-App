@@ -1,13 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import clsx from "clsx";
 
 const navItems = [
   {
-    href: "/",
+    href: "/lesen/matthew/1",
     label: "Lesen",
     icon: (
       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -67,8 +68,13 @@ export function Navigation() {
         {/* Logo */}
         <div className="p-6 border-b border-[var(--border)]">
           <Link href="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[var(--accent)] flex items-center justify-center">
-              <span className="text-white font-serif text-xl font-bold">B</span>
+            <div className="w-10 h-10 relative">
+              <Image
+                src="/bible-icon.png"
+                alt="Bibel"
+                fill
+                className="object-contain"
+              />
             </div>
             <div>
               <h1 className="chapter-title text-lg text-[var(--text-primary)]">Bibel</h1>
@@ -80,8 +86,10 @@ export function Navigation() {
         {/* Navigation Items */}
         <nav className="flex-1 p-4 space-y-1">
           {navItems.map((item) => {
-            const isActive = pathname === item.href ||
-              (item.href !== "/" && pathname.startsWith(item.href));
+            // Special handling for "Lesen" - match all /lesen/* routes
+            const isLesenRoute = item.label === "Lesen" && pathname.startsWith("/lesen/");
+            const isActive = isLesenRoute || pathname === item.href ||
+              (item.href !== "/lesen/matthew/1" && pathname.startsWith(item.href));
 
             return (
               <Link
@@ -118,10 +126,12 @@ export function Navigation() {
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[var(--bg-elevated)] border-t border-[var(--border)] z-50 safe-area-inset-bottom">
         <div className="flex justify-around items-center h-16">
           {navItems.filter(item =>
-            ["/", "/notizen", "/lesezeichen", "/einstellungen"].includes(item.href)
+            ["/lesen/matthew/1", "/notizen", "/lesezeichen", "/einstellungen"].includes(item.href)
           ).map((item) => {
-            const isActive = pathname === item.href ||
-              (item.href !== "/" && pathname.startsWith(item.href));
+            // Special handling for "Lesen" - match all /lesen/* routes
+            const isLesenRoute = item.label === "Lesen" && pathname.startsWith("/lesen/");
+            const isActive = isLesenRoute || pathname === item.href ||
+              (item.href !== "/lesen/matthew/1" && pathname.startsWith(item.href));
 
             return (
               <Link

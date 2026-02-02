@@ -28,7 +28,8 @@ export default function LoginPage() {
     try {
       await signIn(email, password);
       const redirectTo = searchParams.get("redirectTo") || "/";
-      router.push(redirectTo);
+      // Hard navigation to ensure middleware picks up the new session
+      window.location.href = redirectTo;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Anmeldung fehlgeschlagen");
     } finally {

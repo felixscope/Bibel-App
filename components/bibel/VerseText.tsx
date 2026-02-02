@@ -95,7 +95,7 @@ export function VerseText({
 
   const [activeFootnoteIndex, setActiveFootnoteIndex] = useState<number | null>(null);
 
-  const handleFootnoteClick = (index: number) => (e: React.MouseEvent | React.TouchEvent) => {
+  const handleFootnoteClick = (e: React.MouseEvent | React.TouchEvent, index: number) => {
     e.stopPropagation();
     e.preventDefault();
     setActiveFootnoteIndex(activeFootnoteIndex === index ? null : index);
@@ -105,74 +105,40 @@ export function VerseText({
 
   // Text mit Fußnoten-Markern und Schrägstrichen formatieren
   const formatText = (inputText: string) => {
-    let processedText = inputText;
     const parts: React.ReactNode[] = [];
 
     // Zuerst Fußnoten-Marker verarbeiten
     if (hasFootnotes) {
-      const asteriskPattern = /\*/g;
-      const matches = [...processedText.matchAll(asteriskPattern)];
+      // Split text by asterisks to create individual markers
+      const segments = inputText.split('*');
 
-      if (matches.length > 0) {
-        let lastIndex = 0;
-
-        matches.forEach((match, idx) => {
-          // Nur verarbeiten wenn es eine entsprechende Fußnote gibt
-          if (idx < footnotes!.length) {
-            // Text vor dem Stern
-            const beforeText = processedText.substring(lastIndex, match.index);
-            if (beforeText) {
-              parts.push(beforeText);
-            }
-
-            // Fußnoten-Marker (ersetze * durch klickbaren Marker mit *)
-            parts.push(
-              <sup
-                key={`footnote-${idx}`}
-                className="footnote-marker ml-0.5 px-1 py-0.5 cursor-pointer text-[var(--accent)] hover:text-[var(--accent-hover)] transition-colors select-none text-sm"
-                onClick={handleFootnoteClick(idx)}
-                onTouchEnd={handleFootnoteClick(idx)}
-              >
-                *
-              </sup>
-            );
-
-            lastIndex = match.index! + 1;
-          }
-        });
-
-        // Restlichen Text
-        const remainingText = processedText.substring(lastIndex);
-        if (remainingText) {
-          parts.push(remainingText);
+      segments.forEach((segment, index) => {
+        // Add text segment
+        if (segment) {
+          parts.push(segment);
         }
 
-        return parts;
-      } else {
-        // Keine Sternchen im Text gefunden, aber Fußnoten vorhanden
-        // Füge automatisch Fußnoten-Marker am Ende hinzu
-        parts.push(processedText);
-
-        footnotes!.forEach((_, idx) => {
+        // Add footnote marker between segments (except after last segment)
+        if (index < segments.length - 1 && index < footnotes.length) {
           parts.push(
             <sup
-              key={`footnote-${idx}`}
+              key={`fn-${index}`}
               className="footnote-marker ml-0.5 px-1 py-0.5 cursor-pointer text-[var(--accent)] hover:text-[var(--accent-hover)] transition-colors select-none text-sm"
-              onClick={handleFootnoteClick(idx)}
-              onTouchEnd={handleFootnoteClick(idx)}
+              onClick={(e) => handleFootnoteClick(e, index)}
+              onTouchEnd={(e) => handleFootnoteClick(e, index)}
             >
               *
             </sup>
           );
-        });
+        }
+      });
 
-        return parts;
-      }
+      return parts;
     }
 
     // Kein Fußnoten-Marker gefunden, prüfe auf Schrägstriche für poetische Darstellung
-    if (processedText.includes(" / ")) {
-      const lines = processedText.split(" / ");
+    if (inputText.includes(" / ")) {
+      const lines = inputText.split(" / ");
       return lines.map((line, index) => (
         <span key={`line-${index}`}>
           {line}
@@ -181,39 +147,35 @@ export function VerseText({
       ));
     }
 
-    return processedText;
+    return inputText;
   };
 
-  // Heading parsen: "Hauptüberschrift | Abschnittsüberschrift" oder nur eine Überschrift
+  // Heading parsen: Multiple Überschriften getrennt durch \n
   const renderHeading = () => {
     if (!heading) return null;
 
-    const parts = heading.split(" | ");
+    // Split by actual newlines (not escaped \n)
+    const headingLines = heading.split(/\n+/).map(line => line.trim()).filter(line => line);
 
-    if (parts.length === 2) {
-      // Beide Überschriften vorhanden
-      return (
-        <span className="block mt-8 mb-6">
-          {/* Hauptüberschrift (h2-Style) */}
-          <span className="block text-xl md:text-2xl font-bold text-[var(--text-primary)] mb-3">
-            {parts[0].trim()}
+    if (headingLines.length === 0) return null;
+
+    return (
+      <span className="block mt-8 mb-6 space-y-2">
+        {headingLines.map((line, index) => (
+          <span
+            key={index}
+            className={clsx(
+              "block",
+              index === 0
+                ? "text-xl md:text-2xl font-bold text-[var(--text-primary)]"
+                : "text-lg md:text-xl font-semibold text-[var(--text-secondary)]"
+            )}
+          >
+            {line}
           </span>
-          {/* Abschnittsüberschrift (h4-Style) */}
-          <span className="block text-lg md:text-xl font-semibold text-[var(--text-secondary)]">
-            {parts[1].trim()}
-          </span>
-        </span>
-      );
-    } else {
-      // Nur eine Überschrift - als Abschnittsüberschrift behandeln
-      return (
-        <span className="block mt-6 mb-4">
-          <span className="block text-lg md:text-xl font-semibold text-[var(--text-secondary)]">
-            {heading}
-          </span>
-        </span>
-      );
-    }
+        ))}
+      </span>
+    );
   };
 
   return (
@@ -252,9 +214,13 @@ export function VerseText({
             <div className="text-xs text-[var(--text-muted)] mb-1.5 font-medium">
               Fußnote zu Vers {number}
             </div>
-            <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
-              {footnotes[activeFootnoteIndex]}
-            </p>
+            <div className="space-y-3">
+              {footnotes[activeFootnoteIndex].split('\n\n').map((paragraph, idx) => (
+                <p key={idx} className="text-sm text-[var(--text-secondary)] leading-relaxed">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
             <button
               className="mt-3 px-3 py-2 w-full text-sm text-[var(--accent)] hover:bg-[var(--accent-bg)] rounded-lg transition-colors font-medium"
               onClick={(e) => {

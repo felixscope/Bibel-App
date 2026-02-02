@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { BIBLE_BOOKS } from "@/lib/types";
+import { useTranslation } from "@/components/providers/TranslationProvider";
 import clsx from "clsx";
 
 interface BookSelectorProps {
@@ -14,7 +15,19 @@ interface BookSelectorProps {
 
 const AT_TEMPORARILY_DISABLED = false;
 
+// Apokryphen - nur in Einheitsübersetzung verfügbar
+const APOCRYPHA_IDS = [
+  "tobit",
+  "judith",
+  "wisdom",
+  "sirach",
+  "baruch",
+  "1maccabees",
+  "2maccabees",
+];
+
 export function BookSelector({ currentBookId, currentChapter }: BookSelectorProps) {
+  const { translation } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [activeTestament, setActiveTestament] = useState<"old" | "new">("new"); // Default: NT
   const [selectedBook, setSelectedBook] = useState<string | null>(null);
@@ -28,7 +41,12 @@ export function BookSelector({ currentBookId, currentChapter }: BookSelectorProp
     (b) => b.id === currentBookId
   );
 
-  const books = activeTestament === "old" ? BIBLE_BOOKS.old : BIBLE_BOOKS.new;
+  // Filter Apokryphen aus, wenn NeÜ ausgewählt ist
+  const oldTestamentBooks = translation === "neue"
+    ? BIBLE_BOOKS.old.filter(book => !APOCRYPHA_IDS.includes(book.id))
+    : BIBLE_BOOKS.old;
+
+  const books = activeTestament === "old" ? oldTestamentBooks : BIBLE_BOOKS.new;
   const selectedBookData = books.find((b) => b.id === selectedBook);
 
   const closeModal = () => {

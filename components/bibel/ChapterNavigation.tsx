@@ -104,8 +104,8 @@ export function ChapterNavigation({
 
   return (
     <>
-      {/* Desktop: Dezente Navigation am unteren Rand */}
-      <nav className="hidden md:flex fixed bottom-4 left-1/2 -translate-x-1/2 z-40">
+      {/* Desktop: Dezente Navigation am unteren Rand - zentriert auf Content (mit Sidebar-Offset) */}
+      <nav className="hidden md:flex fixed bottom-4 left-[calc(50%+128px)] -translate-x-1/2 z-40">
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -188,8 +188,8 @@ export function ChapterNavigation({
           )}
 
           {/* Kapitelanzeige */}
-          <div className="px-3 py-1">
-            <span className="text-sm font-medium text-[var(--text-primary)]">
+          <div className="px-3 py-1 min-w-[80px] flex items-center justify-center">
+            <span className="text-sm font-medium text-[var(--text-primary)] whitespace-nowrap">
               {currentChapter} / {totalChapters}
             </span>
           </div>

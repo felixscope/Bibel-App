@@ -77,7 +77,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const toastContainer = mounted ? createPortal(
-    <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[10000] flex flex-col gap-2 pointer-events-none">
+    <div className="fixed top-6 left-1/2 md:left-[calc(50%+128px)] -translate-x-1/2 z-[10000] flex flex-col gap-2 pointer-events-none">
       <AnimatePresence mode="popLayout">
         {toasts.map((toast) => (
           <motion.div

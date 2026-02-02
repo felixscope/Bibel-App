@@ -39,3 +39,24 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Development tools
+*.py
+__pycache__/
+*.zip
+*.log
+.agents/
+.cursor/
+.opencode/
+.claude/
+
+# Temp files
+*.tmp
+*.html
+ruth.ts
+
+# Large image duplicates in root
+*.jpg
+*.png
+!public/*.jpg
+!public/*.png
