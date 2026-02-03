@@ -30,14 +30,14 @@ export function ContinueReading() {
         href={`/lesen/${lastPosition.bookId}/${lastPosition.chapter}`}
         className="block group"
       >
-        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/20
-                        hover:bg-white/15 transition-all duration-200 hover:-translate-y-0.5">
+        <div className="bg-bg-elevated rounded-2xl p-5 border border-border shadow-sm
+                        hover:shadow-md transition-all duration-200 hover:-translate-y-0.5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               {/* Book Icon */}
-              <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center">
                 <svg
-                  className="w-6 h-6 text-white/80"
+                  className="w-6 h-6 text-accent"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -52,18 +52,18 @@ export function ContinueReading() {
               </div>
 
               <div>
-                <p className="text-white/60 text-sm mb-0.5">Weiterlesen</p>
-                <p className="text-white font-medium text-lg">
+                <p className="text-text-muted text-sm mb-0.5">Weiterlesen</p>
+                <p className="text-text-primary font-medium text-lg">
                   {lastPosition.bookName} Kapitel {lastPosition.chapter}
                 </p>
               </div>
             </div>
 
             {/* Arrow */}
-            <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center
-                            group-hover:bg-white/20 transition-colors">
+            <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center
+                            group-hover:bg-accent/20 transition-colors">
               <svg
-                className="w-5 h-5 text-white/80 group-hover:translate-x-0.5 transition-transform"
+                className="w-5 h-5 text-accent group-hover:translate-x-0.5 transition-transform"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -87,8 +87,8 @@ export function ContinueReading() {
             <Link
               key={`${pos.bookId}-${pos.chapter}-${index}`}
               href={`/lesen/${pos.bookId}/${pos.chapter}`}
-              className="px-3 py-1.5 text-sm text-white/70 bg-white/5 hover:bg-white/10
-                         rounded-full border border-white/10 hover:border-white/20
+              className="px-3 py-1.5 text-sm text-text-secondary bg-bg-elevated hover:bg-bg-primary
+                         rounded-full border border-border hover:border-accent/30
                          transition-all duration-200"
             >
               {pos.bookName} {pos.chapter}

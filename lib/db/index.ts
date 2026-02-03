@@ -1,58 +1,28 @@
 /**
  * Unified database interface that automatically switches between
  * Dexie (local storage) and Supabase (cloud sync) based on auth status
+ *
+ * IMPORTANT: userId is passed from components (from useAuth hook) to avoid
+ * calling getSession() which can hang due to Supabase SSR issues.
  */
 
-import { createClient } from "@/lib/supabase/client";
 import * as dexieDb from "../db";
 import * as supabaseAdapter from "./supabase-adapter";
 
-// Cache auth status to prevent race conditions between operations
-let cachedAuthStatus: boolean | null = null;
-let cacheTimestamp = 0;
-const CACHE_TTL = 5000; // 5 seconds
+// Global auth state - set by AuthProvider, read by DB functions
+let globalUserId: string | null = null;
 
-// Check if user is authenticated (with caching)
-async function isAuthenticated(): Promise<boolean> {
-  // Return cached value if still valid
-  const now = Date.now();
-  if (cachedAuthStatus !== null && now - cacheTimestamp < CACHE_TTL) {
-    return cachedAuthStatus;
-  }
-
-  // Early return if Supabase is not configured
-  if (
-    typeof window === 'undefined' ||
-    !process.env.NEXT_PUBLIC_SUPABASE_URL ||
-    !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
-    process.env.NEXT_PUBLIC_SUPABASE_URL === 'undefined' ||
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY === 'undefined'
-  ) {
-    cachedAuthStatus = false;
-    cacheTimestamp = now;
-    return false;
-  }
-
-  try {
-    const supabase = createClient();
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
-    cachedAuthStatus = !!session?.user;
-    cacheTimestamp = now;
-    return cachedAuthStatus;
-  } catch (error) {
-    // Silently fall back to local storage
-    cachedAuthStatus = false;
-    cacheTimestamp = now;
-    return false;
-  }
+export function setGlobalUserId(userId: string | null): void {
+  globalUserId = userId;
 }
 
-// Clear cache when auth state changes (call this from AuthProvider)
-export function clearAuthCache(): void {
-  cachedAuthStatus = null;
-  cacheTimestamp = 0;
+export function getGlobalUserId(): string | null {
+  return globalUserId;
+}
+
+// Check if user is authenticated using global state (no async needed)
+function isAuthenticated(): boolean {
+  return !!globalUserId;
 }
 
 // ==================== HIGHLIGHTS ====================
@@ -63,7 +33,7 @@ export async function addHighlight(
   verse: number,
   color: dexieDb.Highlight["color"]
 ): Promise<void> {
-  const authed = await isAuthenticated();
+  const authed = isAuthenticated();
   if (authed) {
     return supabaseAdapter.addHighlight(bookId, chapter, verse, color);
   }
@@ -76,7 +46,7 @@ export async function addHighlightsForVerses(
   verses: number[],
   color: dexieDb.Highlight["color"]
 ): Promise<void> {
-  const authed = await isAuthenticated();
+  const authed = isAuthenticated();
   if (authed) {
     return supabaseAdapter.addHighlightsForVerses(bookId, chapter, verses, color);
   }
@@ -88,7 +58,7 @@ export async function removeHighlight(
   chapter: number,
   verse: number
 ): Promise<void> {
-  const authed = await isAuthenticated();
+  const authed = isAuthenticated();
   if (authed) {
     return supabaseAdapter.removeHighlight(bookId, chapter, verse);
   }
@@ -100,7 +70,7 @@ export async function removeHighlightsForVerses(
   chapter: number,
   verses: number[]
 ): Promise<void> {
-  const authed = await isAuthenticated();
+  const authed = isAuthenticated();
   if (authed) {
     return supabaseAdapter.removeHighlightsForVerses(bookId, chapter, verses);
   }
@@ -111,7 +81,7 @@ export async function getHighlightsForChapter(
   bookId: string,
   chapter: number
 ): Promise<dexieDb.Highlight[]> {
-  const authed = await isAuthenticated();
+  const authed = isAuthenticated();
   if (authed) {
     return supabaseAdapter.getHighlightsForChapter(bookId, chapter);
   }
@@ -127,7 +97,7 @@ export async function addNote(
   verseEnd: number,
   content: string
 ): Promise<void> {
-  const authed = await isAuthenticated();
+  const authed = isAuthenticated();
   if (authed) {
     return supabaseAdapter.addNote(bookId, chapter, verseStart, verseEnd, content);
   }
@@ -135,7 +105,7 @@ export async function addNote(
 }
 
 export async function updateNote(id: string | number, content: string): Promise<void> {
-  const authed = await isAuthenticated();
+  const authed = isAuthenticated();
   if (authed) {
     return supabaseAdapter.updateNote(id, content);
   }
@@ -145,7 +115,7 @@ export async function updateNote(id: string | number, content: string): Promise<
 }
 
 export async function deleteNote(id: string | number): Promise<void> {
-  const authed = await isAuthenticated();
+  const authed = isAuthenticated();
   if (authed) {
     return supabaseAdapter.deleteNote(id);
   }
@@ -158,7 +128,7 @@ export async function getNotesForChapter(
   bookId: string,
   chapter: number
 ): Promise<dexieDb.Note[]> {
-  const authed = await isAuthenticated();
+  const authed = isAuthenticated();
   if (authed) {
     return supabaseAdapter.getNotesForChapter(bookId, chapter);
   }
@@ -166,7 +136,7 @@ export async function getNotesForChapter(
 }
 
 export async function getAllNotes(): Promise<dexieDb.Note[]> {
-  const authed = await isAuthenticated();
+  const authed = isAuthenticated();
   if (authed) {
     return supabaseAdapter.getAllNotes();
   }
@@ -181,7 +151,7 @@ export async function addBookmark(
   verseStart: number,
   verseEnd: number
 ): Promise<void> {
-  const authed = await isAuthenticated();
+  const authed = isAuthenticated();
   if (authed) {
     return supabaseAdapter.addBookmark(bookId, chapter, verseStart, verseEnd);
   }
@@ -189,7 +159,7 @@ export async function addBookmark(
 }
 
 export async function deleteBookmark(id: string | number): Promise<void> {
-  const authed = await isAuthenticated();
+  const authed = isAuthenticated();
   if (authed) {
     return supabaseAdapter.deleteBookmark(id);
   }
@@ -202,7 +172,7 @@ export async function getBookmarksForChapter(
   bookId: string,
   chapter: number
 ): Promise<dexieDb.Bookmark[]> {
-  const authed = await isAuthenticated();
+  const authed = isAuthenticated();
   if (authed) {
     return supabaseAdapter.getBookmarksForChapter(bookId, chapter);
   }
@@ -210,7 +180,7 @@ export async function getBookmarksForChapter(
 }
 
 export async function getAllBookmarks(): Promise<dexieDb.Bookmark[]> {
-  const authed = await isAuthenticated();
+  const authed = isAuthenticated();
   if (authed) {
     return supabaseAdapter.getAllBookmarks();
   }
@@ -222,7 +192,7 @@ export async function deleteBookmarksForVerses(
   chapter: number,
   verses: number[]
 ): Promise<void> {
-  const authed = await isAuthenticated();
+  const authed = isAuthenticated();
   if (authed) {
     return supabaseAdapter.deleteBookmarksForVerses(bookId, chapter, verses);
   }

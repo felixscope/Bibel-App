@@ -134,17 +134,22 @@ export function VerseActionBar({
 
     const verses = getSelectedVerseNumbers();
 
-    // Toggle: Wenn bereits gemerkt, dann löschen
-    if (versesAreBookmarked) {
-      await deleteBookmarksForVerses(bookId, chapter, verses);
-      showToast("Lesezeichen entfernt", "remove");
-    } else {
-      await addBookmark(bookId, chapter, verseRange.start, verseRange.end);
-      showToast("Lesezeichen gespeichert", "bookmark");
-    }
+    try {
+      // Toggle: Wenn bereits gemerkt, dann löschen
+      if (versesAreBookmarked) {
+        await deleteBookmarksForVerses(bookId, chapter, verses);
+        showToast("Lesezeichen entfernt", "remove");
+      } else {
+        await addBookmark(bookId, chapter, verseRange.start, verseRange.end);
+        showToast("Lesezeichen gespeichert", "bookmark");
+      }
 
-    onHighlightChange?.();
-    clearSelection();
+      onHighlightChange?.();
+      clearSelection();
+    } catch (error) {
+      console.error("Error bookmarking verses:", error);
+      showToast("Fehler beim Speichern des Lesezeichens", "remove");
+    }
   };
 
   const handleCopy = async () => {

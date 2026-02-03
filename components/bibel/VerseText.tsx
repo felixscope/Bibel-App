@@ -31,6 +31,7 @@ export function VerseText({
   const touchStartTime = useRef<number>(0);
   const scrollStartY = useRef<number>(0);
   const pendingTap = useRef<NodeJS.Timeout | null>(null);
+  const touchActive = useRef<boolean>(false);
   const footnoteRef = useRef<HTMLDivElement>(null);
 
   // Cleanup pending tap bei Unmount
@@ -57,6 +58,8 @@ export function VerseText({
   const handleTouchEnd = (e: React.TouchEvent) => {
     if (!touchStartPos.current) return;
 
+    touchActive.current = true;
+
     const touch = e.changedTouches[0];
     const deltaX = Math.abs(touch.clientX - touchStartPos.current.x);
     const deltaY = Math.abs(touch.clientY - touchStartPos.current.y);
@@ -82,13 +85,16 @@ export function VerseText({
           onSelect?.(number, text);
         }
         pendingTap.current = null;
+        touchActive.current = false;
       }, 80);
+    } else {
+      touchActive.current = false;
     }
   };
 
   const handleClick = (e: React.MouseEvent) => {
-    // Auf Touch-Geräten wird handleTouchEnd verwendet
-    if ("ontouchstart" in window) return;
+    // Verhindere Click wenn Touch gerade aktiv ist
+    if (touchActive.current) return;
     e.stopPropagation();
     onSelect?.(number, text);
   };

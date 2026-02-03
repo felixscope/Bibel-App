@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 import { Profile } from "@/lib/supabase/types";
 import { useToast } from "./ToastProvider";
 import { migrateLocalDataToSupabase } from "@/lib/migrations/migrateToSupabase";
-import { clearAuthCache } from "@/lib/db/index";
+import { setGlobalUserId } from "@/lib/db/index";
 
 interface AuthContextType {
   user: User | null;
@@ -61,54 +61,37 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  // Initialize auth state
+  // Initialize auth state using onAuthStateChange only (getSession can hang)
   useEffect(() => {
     let mounted = true;
 
-    // Timeout fallback - don't stay loading forever (increased to 10 seconds)
-    const timeout = setTimeout(() => {
-      if (mounted && loading) {
-        console.warn("Auth loading timeout - forcing loading to false");
-        setLoading(false);
-      }
-    }, 10000);
-
-    // Get initial session
-    const getSession = async () => {
-      try {
-        console.log("Fetching session...");
-        const { data: { session }, error } = await supabase.auth.getSession();
-        if (error) {
-          console.error("Session error:", error);
-        }
-        if (!mounted) return;
-        console.log("Session loaded:", session?.user?.email ?? "no user");
-        setUser(session?.user ?? null);
-        if (session?.user) {
-          loadProfile(session.user.id);
-        }
-        setLoading(false);
-      } catch (error) {
-        console.error("Error getting session:", error);
-        if (mounted) setLoading(false);
-      }
-    };
-    getSession();
-
-    // Listen for auth changes
+    // onAuthStateChange fires INITIAL_SESSION immediately with current state
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (!mounted) return;
-      clearAuthCache(); // Clear DB auth cache on auth state change
+
+      console.log("Auth event:", event, session?.user?.email ?? "no user");
+
       setUser(session?.user ?? null);
+      setGlobalUserId(session?.user?.id ?? null);
+
       if (session?.user) {
         await loadProfile(session.user.id);
       } else {
         setProfile(null);
       }
+
       setLoading(false);
     });
+
+    // Fallback timeout in case onAuthStateChange never fires
+    const timeout = setTimeout(() => {
+      if (mounted && loading) {
+        console.warn("Auth timeout - no session");
+        setLoading(false);
+      }
+    }, 3000);
 
     return () => {
       mounted = false;

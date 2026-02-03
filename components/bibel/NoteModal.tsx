@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSelection } from "@/components/providers/SelectionProvider";
+import { useToast } from "@/components/providers/ToastProvider";
 import { addNote, updateNote, deleteNote, type Note } from "@/lib/db/index";
 import { getBookById } from "@/lib/types";
 
@@ -16,6 +17,7 @@ interface NoteModalProps {
 
 export function NoteModal({ isOpen, onClose, existingNote, onSaved }: NoteModalProps) {
   const { bookId, chapter, getVerseRange, clearSelection } = useSelection();
+  const { showToast } = useToast();
   const [content, setContent] = useState("");
   const [mounted, setMounted] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -53,11 +55,13 @@ export function NoteModal({ isOpen, onClose, existingNote, onSaved }: NoteModalP
       } else if (verseRange) {
         await addNote(bookId, chapter, verseRange.start, verseRange.end, content.trim());
       }
+      showToast("Notiz gespeichert", "check");
       onSaved?.();
       clearSelection();
       onClose();
     } catch (error) {
       console.error("Failed to save note:", error);
+      showToast("Fehler beim Speichern. Bist du angemeldet?", "remove");
     } finally {
       setIsSaving(false);
     }
@@ -69,10 +73,12 @@ export function NoteModal({ isOpen, onClose, existingNote, onSaved }: NoteModalP
     setIsSaving(true);
     try {
       await deleteNote(existingNote.id);
+      showToast("Notiz gelöscht", "remove");
       onSaved?.();
       onClose();
     } catch (error) {
       console.error("Failed to delete note:", error);
+      showToast("Fehler beim Löschen der Notiz", "remove");
     } finally {
       setIsSaving(false);
     }

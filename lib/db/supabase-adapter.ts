@@ -113,13 +113,15 @@ export async function removeHighlightsForVerses(
   const userId = await getCurrentUserId();
 
   for (const verse of verses) {
-    await supabase
+    const { error } = await supabase
       .from("highlights")
       .delete()
       .eq("user_id", userId)
       .eq("book_id", bookId)
       .eq("chapter", chapter)
       .eq("verse", verse);
+
+    if (error) throw error;
   }
 }
 
@@ -367,11 +369,13 @@ export async function deleteBookmarksForVerses(
 
   // Delete matching bookmarks
   if (idsToDelete.length > 0) {
-    await supabase
+    const { error } = await supabase
       .from("bookmarks")
       .delete()
       .in("id", idsToDelete)
       .eq("user_id", userId);
+
+    if (error) throw error;
   }
 }
 
