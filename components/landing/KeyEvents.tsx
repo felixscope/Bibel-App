@@ -86,7 +86,7 @@ export function KeyEvents() {
                 href={event.href}
                 className="group block rounded-2xl border border-border bg-bg-elevated/80 shadow-sm overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md"
               >
-                <div className="relative h-40 overflow-hidden">
+                <div className="relative h-40 w-full overflow-hidden">
                   <Image
                     src={event.imagePath}
                     alt={event.imageAlt}
