@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "@/components/providers/ThemeProvider";
 import { BookSelector } from "@/components/bibel/BookSelector";
@@ -40,6 +41,8 @@ export function TopBar({ currentBookId, currentChapter }: TopBarProps) {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const isDark = resolvedTheme === "dark";
+  const pathname = usePathname();
+  const isReadingPage = pathname.startsWith("/lesen/");
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -75,8 +78,21 @@ export function TopBar({ currentBookId, currentChapter }: TopBarProps) {
   return (
     <header className="sticky top-0 z-30 bg-[var(--bg-primary)]/90 backdrop-blur-md border-b border-[var(--border)]">
       <div className="max-w-4xl mx-auto px-4 py-2.5 flex items-center justify-between gap-2">
-        {/* Linke Seite: Übersetzung + Buch */}
+        {/* Linke Seite: Home (Mobile) + Übersetzung + Buch */}
         <div className="flex items-center gap-2 flex-1 min-w-0">
+          {/* Home Icon - nur auf Mobile Lese-Seiten */}
+          {isReadingPage && (
+            <Link
+              href="/"
+              className="md:hidden p-2.5 rounded-lg hover:bg-[var(--bg-hover)] transition-colors flex-shrink-0"
+              title="Zur Startseite"
+            >
+              <svg className="w-5 h-5 text-[var(--text-secondary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+              </svg>
+            </Link>
+          )}
+
           {/* Übersetzungsauswahl */}
           <TranslationSelector />
 
