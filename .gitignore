@@ -60,3 +60,5 @@ ruth.ts
 *.png
 !public/*.jpg
 !public/*.png
+!public/stories/*.jpg
+!public/stories/*.png
