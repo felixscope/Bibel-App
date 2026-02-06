@@ -9,6 +9,7 @@ import { DailyVerse } from "@/components/landing/DailyVerse";
 import { ContinueReading } from "@/components/landing/ContinueReading";
 import { FinalCTA } from "@/components/landing/FinalCTA";
 import { KeyEvents } from "@/components/landing/KeyEvents";
+import { Lebenslagen } from "@/components/landing/Lebenslagen";
 
 export default function LandingPage() {
   const { user } = useAuth();
@@ -116,9 +117,9 @@ export default function LandingPage() {
             className="max-w-3xl"
           >
             <p className="font-serif text-2xl md:text-3xl lg:text-4xl text-white leading-relaxed font-medium drop-shadow-lg">
-              &ldquo;Dann sagte Jesus wieder zu allen Leuten: Ich bin das Licht der
-              Welt! Wer mir folgt, wird nicht mehr in der Finsternis umherirren,
-              sondern wird das Licht haben, das zum Leben führt.&rdquo;
+              &ldquo;Ich bin das Licht der Welt. Wer mir folgt, wird nicht
+              mehr in der Finsternis umherirren, sondern wird das Licht haben,
+              das zum Leben führt.&rdquo;
             </p>
             <footer className="mt-6 text-white/80 text-lg md:text-xl font-display">
               — Johannes 8:12
@@ -195,6 +196,8 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      <Lebenslagen />
 
       <FinalCTA showLogin={!user} />
     </main>
