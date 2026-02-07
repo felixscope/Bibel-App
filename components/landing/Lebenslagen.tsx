@@ -106,7 +106,7 @@ export function Lebenslagen() {
             >
               <Link
                 href={`/lebenslagen/${item.id}`}
-                className={`group relative block rounded-2xl border border-border bg-gradient-to-br ${GRADIENT_MAP[item.icon] || ""} shadow-sm p-5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:border-accent/30 overflow-hidden`}
+                className={`group relative flex flex-col h-[180px] rounded-2xl border border-border bg-gradient-to-br ${GRADIENT_MAP[item.icon] || ""} shadow-sm p-5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:border-accent/30 overflow-hidden`}
               >
                 <div className={`w-10 h-10 rounded-xl bg-bg-elevated/80 flex items-center justify-center mb-3 ${ICON_COLOR_MAP[item.icon] || "text-accent"} transition-transform duration-300 group-hover:scale-110`}>
                   {ICON_MAP[item.icon] || null}
@@ -123,7 +123,7 @@ export function Lebenslagen() {
                 <p className="text-text-muted text-xs md:text-sm leading-snug">
                   {item.subtitle}
                 </p>
-                <span className="inline-block mt-3 text-accent text-xs md:text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                <span className="inline-block mt-auto text-accent text-xs md:text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
                   Entdecken →
                 </span>
               </Link>
