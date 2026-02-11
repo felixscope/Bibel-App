@@ -21,9 +21,12 @@ export function NoteModal({ isOpen, onClose, existingNote, onSaved }: NoteModalP
   const [content, setContent] = useState("");
   const [mounted, setMounted] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-
-  const book = getBookById(bookId);
-  const verseRange = getVerseRange();
+  // Capture verse context when modal opens to prevent losing it if selection clears
+  const [savedContext, setSavedContext] = useState<{
+    bookId: string;
+    chapter: number;
+    verseRange: { start: number; end: number };
+  } | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -32,28 +35,46 @@ export function NoteModal({ isOpen, onClose, existingNote, onSaved }: NoteModalP
   useEffect(() => {
     if (isOpen) {
       setContent(existingNote?.content || "");
+      // Save the current verse context when modal opens
+      if (!existingNote) {
+        const range = getVerseRange();
+        if (range) {
+          setSavedContext({ bookId, chapter, verseRange: range });
+        }
+      }
+    } else {
+      setSavedContext(null);
     }
-  }, [isOpen, existingNote]);
+  }, [isOpen, existingNote, bookId, chapter, getVerseRange]);
+
+  // Use saved context or derive from existing note / current selection
+  const effectiveBookId = existingNote?.bookId || savedContext?.bookId || bookId;
+  const effectiveChapter = existingNote?.chapter || savedContext?.chapter || chapter;
+  const verseRange = existingNote
+    ? { start: existingNote.verseStart, end: existingNote.verseEnd }
+    : savedContext?.verseRange || getVerseRange();
+  const book = getBookById(effectiveBookId);
 
   const getVerseLabel = () => {
-    if (existingNote) {
-      const existingBook = getBookById(existingNote.bookId);
-      return `${existingBook?.name || existingNote.bookId} ${existingNote.chapter}:${existingNote.verseStart}${existingNote.verseEnd !== existingNote.verseStart ? `-${existingNote.verseEnd}` : ""}`;
-    }
     if (!book || !verseRange) return "";
-    return `${book.name} ${chapter}:${verseRange.start}${verseRange.end !== verseRange.start ? `-${verseRange.end}` : ""}`;
+    return `${book.name} ${effectiveChapter}:${verseRange.start}${verseRange.end !== verseRange.start ? `-${verseRange.end}` : ""}`;
   };
 
   const handleSave = async () => {
     if (!content.trim()) return;
+
+    if (!existingNote?.id && !verseRange) {
+      showToast("Fehler: Keine Verse ausgewählt", "remove");
+      return;
+    }
 
     setIsSaving(true);
 
     try {
       if (existingNote?.id) {
         await updateNote(existingNote.id, content.trim());
-      } else if (verseRange) {
-        await addNote(bookId, chapter, verseRange.start, verseRange.end, content.trim());
+      } else {
+        await addNote(effectiveBookId, effectiveChapter, verseRange!.start, verseRange!.end, content.trim());
       }
       showToast("Notiz gespeichert", "check");
       onSaved?.();

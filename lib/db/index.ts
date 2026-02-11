@@ -35,7 +35,7 @@ export async function addHighlight(
 ): Promise<void> {
   const authed = isAuthenticated();
   if (authed) {
-    return supabaseAdapter.addHighlight(bookId, chapter, verse, color);
+    return supabaseAdapter.addHighlight(globalUserId!, bookId, chapter, verse, color);
   }
   return dexieDb.addHighlight(bookId, chapter, verse, color);
 }
@@ -48,7 +48,7 @@ export async function addHighlightsForVerses(
 ): Promise<void> {
   const authed = isAuthenticated();
   if (authed) {
-    return supabaseAdapter.addHighlightsForVerses(bookId, chapter, verses, color);
+    return supabaseAdapter.addHighlightsForVerses(globalUserId!, bookId, chapter, verses, color);
   }
   return dexieDb.addHighlightsForVerses(bookId, chapter, verses, color);
 }
@@ -60,7 +60,7 @@ export async function removeHighlight(
 ): Promise<void> {
   const authed = isAuthenticated();
   if (authed) {
-    return supabaseAdapter.removeHighlight(bookId, chapter, verse);
+    return supabaseAdapter.removeHighlight(globalUserId!, bookId, chapter, verse);
   }
   return dexieDb.removeHighlight(bookId, chapter, verse);
 }
@@ -72,7 +72,7 @@ export async function removeHighlightsForVerses(
 ): Promise<void> {
   const authed = isAuthenticated();
   if (authed) {
-    return supabaseAdapter.removeHighlightsForVerses(bookId, chapter, verses);
+    return supabaseAdapter.removeHighlightsForVerses(globalUserId!, bookId, chapter, verses);
   }
   return dexieDb.removeHighlightsForVerses(bookId, chapter, verses);
 }
@@ -83,7 +83,7 @@ export async function getHighlightsForChapter(
 ): Promise<dexieDb.Highlight[]> {
   const authed = isAuthenticated();
   if (authed) {
-    return supabaseAdapter.getHighlightsForChapter(bookId, chapter);
+    return supabaseAdapter.getHighlightsForChapter(globalUserId!, bookId, chapter);
   }
   return dexieDb.getHighlightsForChapter(bookId, chapter);
 }
@@ -99,7 +99,7 @@ export async function addNote(
 ): Promise<void> {
   const authed = isAuthenticated();
   if (authed) {
-    return supabaseAdapter.addNote(bookId, chapter, verseStart, verseEnd, content);
+    return supabaseAdapter.addNote(globalUserId!, bookId, chapter, verseStart, verseEnd, content);
   }
   return dexieDb.addNote(bookId, chapter, verseStart, verseEnd, content);
 }
@@ -107,7 +107,7 @@ export async function addNote(
 export async function updateNote(id: string | number, content: string): Promise<void> {
   const authed = isAuthenticated();
   if (authed) {
-    return supabaseAdapter.updateNote(id, content);
+    return supabaseAdapter.updateNote(globalUserId!, id, content);
   }
   // DexieDB expects numeric IDs
   const numericId = typeof id === 'string' ? parseInt(id, 10) : id;
@@ -117,7 +117,7 @@ export async function updateNote(id: string | number, content: string): Promise<
 export async function deleteNote(id: string | number): Promise<void> {
   const authed = isAuthenticated();
   if (authed) {
-    return supabaseAdapter.deleteNote(id);
+    return supabaseAdapter.deleteNote(globalUserId!, id);
   }
   // DexieDB expects numeric IDs
   const numericId = typeof id === 'string' ? parseInt(id, 10) : id;
@@ -130,7 +130,7 @@ export async function getNotesForChapter(
 ): Promise<dexieDb.Note[]> {
   const authed = isAuthenticated();
   if (authed) {
-    return supabaseAdapter.getNotesForChapter(bookId, chapter);
+    return supabaseAdapter.getNotesForChapter(globalUserId!, bookId, chapter);
   }
   return dexieDb.getNotesForChapter(bookId, chapter);
 }
@@ -138,7 +138,7 @@ export async function getNotesForChapter(
 export async function getAllNotes(): Promise<dexieDb.Note[]> {
   const authed = isAuthenticated();
   if (authed) {
-    return supabaseAdapter.getAllNotes();
+    return supabaseAdapter.getAllNotes(globalUserId!);
   }
   return dexieDb.getAllNotes();
 }
@@ -153,7 +153,7 @@ export async function addBookmark(
 ): Promise<void> {
   const authed = isAuthenticated();
   if (authed) {
-    return supabaseAdapter.addBookmark(bookId, chapter, verseStart, verseEnd);
+    return supabaseAdapter.addBookmark(globalUserId!, bookId, chapter, verseStart, verseEnd);
   }
   return dexieDb.addBookmark(bookId, chapter, verseStart, verseEnd);
 }
@@ -161,7 +161,7 @@ export async function addBookmark(
 export async function deleteBookmark(id: string | number): Promise<void> {
   const authed = isAuthenticated();
   if (authed) {
-    return supabaseAdapter.deleteBookmark(id);
+    return supabaseAdapter.deleteBookmark(globalUserId!, id);
   }
   // DexieDB expects numeric IDs
   const numericId = typeof id === 'string' ? parseInt(id, 10) : id;
@@ -174,7 +174,7 @@ export async function getBookmarksForChapter(
 ): Promise<dexieDb.Bookmark[]> {
   const authed = isAuthenticated();
   if (authed) {
-    return supabaseAdapter.getBookmarksForChapter(bookId, chapter);
+    return supabaseAdapter.getBookmarksForChapter(globalUserId!, bookId, chapter);
   }
   return dexieDb.getBookmarksForChapter(bookId, chapter);
 }
@@ -182,7 +182,7 @@ export async function getBookmarksForChapter(
 export async function getAllBookmarks(): Promise<dexieDb.Bookmark[]> {
   const authed = isAuthenticated();
   if (authed) {
-    return supabaseAdapter.getAllBookmarks();
+    return supabaseAdapter.getAllBookmarks(globalUserId!);
   }
   return dexieDb.getAllBookmarks();
 }
@@ -194,7 +194,7 @@ export async function deleteBookmarksForVerses(
 ): Promise<void> {
   const authed = isAuthenticated();
   if (authed) {
-    return supabaseAdapter.deleteBookmarksForVerses(bookId, chapter, verses);
+    return supabaseAdapter.deleteBookmarksForVerses(globalUserId!, bookId, chapter, verses);
   }
   return dexieDb.deleteBookmarksForVerses(bookId, chapter, verses);
 }

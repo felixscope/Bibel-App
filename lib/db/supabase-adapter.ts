@@ -4,32 +4,22 @@ import type { Highlight, Note, Bookmark } from "../db";
 /**
  * Supabase adapter that provides the same API as the Dexie db
  * This allows us to replace Dexie with Supabase without changing component code
+ *
+ * userId is passed from the dispatch layer (lib/db/index.ts) which gets it
+ * from globalUserId set by AuthProvider. This avoids a network call to
+ * supabase.auth.getUser() on every DB operation.
  */
-
-// Helper to get current user ID
-async function getCurrentUserId(): Promise<string> {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    throw new Error("User not authenticated");
-  }
-
-  return user.id;
-}
 
 // ==================== HIGHLIGHTS ====================
 
 export async function addHighlight(
+  userId: string,
   bookId: string,
   chapter: number,
   verse: number,
   color: Highlight["color"]
 ): Promise<void> {
   const supabase = createClient();
-  const userId = await getCurrentUserId();
 
   // Delete existing highlight for this verse
   await supabase
@@ -53,13 +43,13 @@ export async function addHighlight(
 }
 
 export async function addHighlightsForVerses(
+  userId: string,
   bookId: string,
   chapter: number,
   verses: number[],
   color: Highlight["color"]
 ): Promise<void> {
   const supabase = createClient();
-  const userId = await getCurrentUserId();
 
   // Delete existing highlights for these verses
   for (const verse of verses) {
@@ -86,12 +76,12 @@ export async function addHighlightsForVerses(
 }
 
 export async function removeHighlight(
+  userId: string,
   bookId: string,
   chapter: number,
   verse: number
 ): Promise<void> {
   const supabase = createClient();
-  const userId = await getCurrentUserId();
 
   const { error } = await supabase
     .from("highlights")
@@ -105,12 +95,12 @@ export async function removeHighlight(
 }
 
 export async function removeHighlightsForVerses(
+  userId: string,
   bookId: string,
   chapter: number,
   verses: number[]
 ): Promise<void> {
   const supabase = createClient();
-  const userId = await getCurrentUserId();
 
   for (const verse of verses) {
     const { error } = await supabase
@@ -126,11 +116,11 @@ export async function removeHighlightsForVerses(
 }
 
 export async function getHighlightsForChapter(
+  userId: string,
   bookId: string,
   chapter: number
 ): Promise<Highlight[]> {
   const supabase = createClient();
-  const userId = await getCurrentUserId();
 
   const { data, error } = await supabase
     .from("highlights")
@@ -155,6 +145,7 @@ export async function getHighlightsForChapter(
 // ==================== NOTES ====================
 
 export async function addNote(
+  userId: string,
   bookId: string,
   chapter: number,
   verseStart: number,
@@ -162,7 +153,6 @@ export async function addNote(
   content: string
 ): Promise<void> {
   const supabase = createClient();
-  const userId = await getCurrentUserId();
 
   const { error } = await supabase.from("notes").insert({
     user_id: userId,
@@ -176,18 +166,16 @@ export async function addNote(
   if (error) throw error;
 }
 
-export async function updateNote(id: string | number, content: string): Promise<void> {
+export async function updateNote(userId: string, id: string | number, content: string): Promise<void> {
   const supabase = createClient();
-  const userId = await getCurrentUserId();
 
   // @ts-expect-error - Supabase client type inference issue with Database generic
   const { error } = await supabase.from("notes").update({ content, updated_at: new Date().toISOString() }).eq("id", id).eq("user_id", userId);
   if (error) throw error;
 }
 
-export async function deleteNote(id: string | number): Promise<void> {
+export async function deleteNote(userId: string, id: string | number): Promise<void> {
   const supabase = createClient();
-  const userId = await getCurrentUserId();
 
   const { error } = await supabase
     .from("notes")
@@ -199,11 +187,11 @@ export async function deleteNote(id: string | number): Promise<void> {
 }
 
 export async function getNotesForChapter(
+  userId: string,
   bookId: string,
   chapter: number
 ): Promise<Note[]> {
   const supabase = createClient();
-  const userId = await getCurrentUserId();
 
   const { data, error } = await supabase
     .from("notes")
@@ -228,9 +216,8 @@ export async function getNotesForChapter(
   }));
 }
 
-export async function getAllNotes(): Promise<Note[]> {
+export async function getAllNotes(userId: string): Promise<Note[]> {
   const supabase = createClient();
-  const userId = await getCurrentUserId();
 
   const { data, error } = await supabase
     .from("notes")
@@ -256,13 +243,13 @@ export async function getAllNotes(): Promise<Note[]> {
 // ==================== BOOKMARKS ====================
 
 export async function addBookmark(
+  userId: string,
   bookId: string,
   chapter: number,
   verseStart: number,
   verseEnd: number
 ): Promise<void> {
   const supabase = createClient();
-  const userId = await getCurrentUserId();
 
   const { error } = await supabase.from("bookmarks").insert({
     user_id: userId,
@@ -275,9 +262,8 @@ export async function addBookmark(
   if (error) throw error;
 }
 
-export async function deleteBookmark(id: string | number): Promise<void> {
+export async function deleteBookmark(userId: string, id: string | number): Promise<void> {
   const supabase = createClient();
-  const userId = await getCurrentUserId();
 
   const { error } = await supabase
     .from("bookmarks")
@@ -289,11 +275,11 @@ export async function deleteBookmark(id: string | number): Promise<void> {
 }
 
 export async function getBookmarksForChapter(
+  userId: string,
   bookId: string,
   chapter: number
 ): Promise<Bookmark[]> {
   const supabase = createClient();
-  const userId = await getCurrentUserId();
 
   const { data, error } = await supabase
     .from("bookmarks")
@@ -315,9 +301,8 @@ export async function getBookmarksForChapter(
   }));
 }
 
-export async function getAllBookmarks(): Promise<Bookmark[]> {
+export async function getAllBookmarks(userId: string): Promise<Bookmark[]> {
   const supabase = createClient();
-  const userId = await getCurrentUserId();
 
   const { data, error } = await supabase
     .from("bookmarks")
@@ -339,12 +324,12 @@ export async function getAllBookmarks(): Promise<Bookmark[]> {
 }
 
 export async function deleteBookmarksForVerses(
+  userId: string,
   bookId: string,
   chapter: number,
   verses: number[]
 ): Promise<void> {
   const supabase = createClient();
-  const userId = await getCurrentUserId();
 
   // Get all bookmarks for this chapter
   const { data: bookmarks } = await supabase

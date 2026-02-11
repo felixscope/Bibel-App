@@ -251,7 +251,8 @@ export function VerseActionBar({
           {/* Aktions-Buttons */}
           <div className="flex items-center gap-2">
             <button
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 if (!user) {
                   setShowLoginPrompt(true);
                   return;
@@ -279,7 +280,7 @@ export function VerseActionBar({
             </button>
 
             <button
-              onClick={handleBookmark}
+              onClick={(e) => { e.stopPropagation(); handleBookmark(); }}
               className={clsx(
                 "flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-lg transition-colors",
                 versesAreBookmarked
@@ -306,7 +307,7 @@ export function VerseActionBar({
             </button>
 
             <button
-              onClick={handleCopy}
+              onClick={(e) => { e.stopPropagation(); handleCopy(); }}
               className="flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-lg bg-[var(--bg-secondary)] hover:bg-[var(--bg-hover)] transition-colors"
             >
               <svg

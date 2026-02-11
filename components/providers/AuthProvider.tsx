@@ -64,12 +64,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Initialize auth state using onAuthStateChange only (getSession can hang)
   useEffect(() => {
     let mounted = true;
+    let authCallbackFired = false;
 
     // onAuthStateChange fires INITIAL_SESSION immediately with current state
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, session) => {
+    } = supabase.auth.onAuthStateChange((event, session) => {
       if (!mounted) return;
+      authCallbackFired = true;
 
       console.log("Auth event:", event, session?.user?.email ?? "no user");
 
@@ -77,7 +79,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setGlobalUserId(session?.user?.id ?? null);
 
       if (session?.user) {
-        await loadProfile(session.user.id);
+        // Don't await — loadProfile makes a DB query which calls getSession()
+        // internally, and that needs the auth lock. But onAuthStateChange
+        // callbacks run while the auth lock is held, so awaiting here would
+        // deadlock. Fire-and-forget is safe: loadProfile sets profile state
+        // when done, and errors are caught internally.
+        loadProfile(session.user.id);
       } else {
         setProfile(null);
       }
@@ -87,7 +94,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // Fallback timeout in case onAuthStateChange never fires
     const timeout = setTimeout(() => {
-      if (mounted && loading) {
+      if (mounted && !authCallbackFired) {
         console.warn("Auth timeout - no session");
         setLoading(false);
       }
