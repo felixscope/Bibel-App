@@ -8,6 +8,8 @@ interface TranslationContextType {
   setTranslation: (id: TranslationId) => void;
   translationName: string;
   translationShortName: string;
+  parallelTranslation: TranslationId | null;
+  setParallelTranslation: (id: TranslationId | null) => void;
 }
 
 const TranslationContext = createContext<TranslationContextType | null>(null);
@@ -16,6 +18,7 @@ const STORAGE_KEY = "bible-translation";
 
 export function TranslationProvider({ children }: { children: ReactNode }) {
   const [translation, setTranslationState] = useState<TranslationId>("einheitsuebersetzung");
+  const [parallelTranslation, setParallelState] = useState<TranslationId | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
   // Load from localStorage on mount
@@ -24,12 +27,22 @@ export function TranslationProvider({ children }: { children: ReactNode }) {
     if (stored && stored in TRANSLATIONS) {
       setTranslationState(stored as TranslationId);
     }
+    const storedParallel = localStorage.getItem("bible-parallel-translation");
+    if (storedParallel && storedParallel in TRANSLATIONS) {
+      setParallelState(storedParallel as TranslationId);
+    }
     setIsLoaded(true);
   }, []);
 
   const setTranslation = (id: TranslationId) => {
     setTranslationState(id);
     localStorage.setItem(STORAGE_KEY, id);
+  };
+
+  const setParallelTranslation = (id: TranslationId | null) => {
+    setParallelState(id);
+    if (id) localStorage.setItem("bible-parallel-translation", id);
+    else localStorage.removeItem("bible-parallel-translation");
   };
 
   const currentTranslation = TRANSLATIONS[translation];
@@ -46,6 +59,8 @@ export function TranslationProvider({ children }: { children: ReactNode }) {
         setTranslation,
         translationName: currentTranslation.name,
         translationShortName: currentTranslation.shortName,
+        parallelTranslation,
+        setParallelTranslation,
       }}
     >
       {children}

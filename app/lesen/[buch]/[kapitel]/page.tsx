@@ -5,10 +5,11 @@ import { notFound } from "next/navigation";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { TopBar } from "@/components/layout/TopBar";
 import { ChapterView } from "@/components/bibel/ChapterView";
+import { ParallelChapterView } from "@/components/bibel/ParallelChapterView";
 import { ChapterNavigation } from "@/components/bibel/ChapterNavigation";
 import { useTranslation } from "@/components/providers/TranslationProvider";
 import { loadBook } from "@/lib/bible-loader";
-import { getBookById, Book, Chapter } from "@/lib/types";
+import { getBookById, Book, Chapter, TRANSLATIONS } from "@/lib/types";
 import { motion } from "framer-motion";
 import { saveReadingPosition } from "@/lib/reading-history";
 
@@ -22,9 +23,10 @@ interface PageProps {
 export default function LesenPage({ params }: PageProps) {
   const { buch, kapitel } = use(params);
   const chapterNum = parseInt(kapitel, 10);
-  const { translation } = useTranslation();
+  const { translation, parallelTranslation } = useTranslation();
 
   const [bookData, setBookData] = useState<Book | null>(null);
+  const [secondBookData, setSecondBookData] = useState<Book | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -58,6 +60,21 @@ export default function LesenPage({ params }: PageProps) {
       cancelled = true;
     };
   }, [translation, buch, chapterNum]);
+
+  // Load second book for parallel mode
+  useEffect(() => {
+    let cancelled = false;
+    if (!parallelTranslation) {
+      setSecondBookData(null);
+      return;
+    }
+    loadBook(parallelTranslation, buch).then((book) => {
+      if (!cancelled) setSecondBookData(book ?? null);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [parallelTranslation, buch, chapterNum]);
 
   // Handle loading and errors
   if (!bookMeta) {
@@ -115,13 +132,32 @@ export default function LesenPage({ params }: PageProps) {
       </div>
 
       {/* Kapitelinhalt */}
-      <ChapterView
-        bookId={buch}
-        bookName={bookData.name}
-        chapterNumber={chapter.number}
-        verses={chapter.verses}
-        introduction={bookData.introduction}
-      />
+      {(() => {
+        const secondChapter = secondBookData?.chapters.find(
+          (c: Chapter) => c.number === chapterNum
+        );
+        if (parallelTranslation && secondChapter) {
+          return (
+            <ParallelChapterView
+              chapterNumber={chapter.number}
+              primaryVerses={chapter.verses}
+              primaryBookName={bookData.name}
+              primaryShortName={TRANSLATIONS[translation].shortName}
+              secondaryVerses={secondChapter.verses}
+              secondaryShortName={TRANSLATIONS[parallelTranslation].shortName}
+            />
+          );
+        }
+        return (
+          <ChapterView
+            bookId={buch}
+            bookName={bookData.name}
+            chapterNumber={chapter.number}
+            verses={chapter.verses}
+            introduction={bookData.introduction}
+          />
+        );
+      })()}
 
       {/* Navigation */}
       <ChapterNavigation

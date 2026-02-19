@@ -6,8 +6,14 @@ import { useTranslation } from "@/components/providers/TranslationProvider";
 import { TRANSLATIONS, TranslationId } from "@/lib/types";
 import { loadVorwort } from "@/lib/bible-loader";
 
-export function TranslationSelector() {
-  const { translation, setTranslation, translationShortName } = useTranslation();
+export function TranslationSelector({ secondary = false }: { secondary?: boolean }) {
+  const { translation, setTranslation, translationShortName,
+          parallelTranslation, setParallelTranslation } = useTranslation();
+
+  const activeId = secondary ? parallelTranslation : translation;
+  const setActive = secondary ? setParallelTranslation : setTranslation;
+  const activeShortName = activeId ? TRANSLATIONS[activeId]?.shortName ?? "?" : translationShortName;
+
   const [isOpen, setIsOpen] = useState(false);
   const [showVorwort, setShowVorwort] = useState(false);
   const [vorwortText, setVorwortText] = useState<string | null>(null);
@@ -43,7 +49,7 @@ export function TranslationSelector() {
           onClick={() => setIsOpen(!isOpen)}
           className="flex items-center gap-1 px-2 py-1 rounded-md hover:bg-[var(--bg-secondary)] transition-colors text-sm font-medium"
         >
-          <span>{translationShortName}</span>
+          <span>{activeShortName}</span>
           <svg
             className={`w-3 h-3 transition-transform ${isOpen ? "rotate-180" : ""}`}
             fill="none"
@@ -68,18 +74,18 @@ export function TranslationSelector() {
                 <button
                   key={t.id}
                   onClick={() => {
-                    setTranslation(t.id as TranslationId);
+                    setActive(t.id as TranslationId);
                     setIsOpen(false);
                   }}
                   className={`w-full px-4 py-2.5 text-left hover:bg-[var(--bg-secondary)] transition-colors flex items-center justify-between ${
-                    translation === t.id ? "bg-[var(--bg-secondary)]" : ""
+                    activeId === t.id ? "bg-[var(--bg-secondary)]" : ""
                   }`}
                 >
                   <div>
                     <div className="font-medium text-sm">{t.name}</div>
                     <div className="text-xs text-[var(--text-muted)]">{t.year}</div>
                   </div>
-                  {translation === t.id && (
+                  {activeId === t.id && (
                     <svg className="w-4 h-4 text-[var(--accent)]" fill="currentColor" viewBox="0 0 20 20">
                       <path
                         fillRule="evenodd"

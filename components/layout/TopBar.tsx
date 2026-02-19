@@ -9,6 +9,8 @@ import { BookSelector } from "@/components/bibel/BookSelector";
 import { SearchOverlay } from "@/components/bibel/SearchOverlay";
 import { TranslationSelector } from "@/components/bibel/TranslationSelector";
 import { UserMenuButton } from "@/components/layout/UserMenuButton";
+import { useTranslation } from "@/components/providers/TranslationProvider";
+import { TRANSLATIONS, TranslationId } from "@/lib/types";
 import clsx from "clsx";
 
 interface TopBarProps {
@@ -36,6 +38,7 @@ const fontFamilyLabels: Record<FontFamily, { name: string; desc: string }> = {
 
 export function TopBar({ currentBookId, currentChapter }: TopBarProps) {
   const { theme, setTheme, resolvedTheme, fontSize, setFontSize, fontFamily, setFontFamily, mounted } = useTheme();
+  const { translation, parallelTranslation, setParallelTranslation } = useTranslation();
   const [showFontSettings, setShowFontSettings] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -97,6 +100,14 @@ export function TopBar({ currentBookId, currentChapter }: TopBarProps) {
           <TranslationSelector />
 
           <span className="text-[var(--text-muted)]">|</span>
+
+          {/* Sekundäre Übersetzung (Parallel-Modus) */}
+          {parallelTranslation && (
+            <>
+              <TranslationSelector secondary />
+              <span className="text-[var(--text-muted)]">|</span>
+            </>
+          )}
 
           {/* Buchauswahl */}
           <BookSelector
@@ -199,6 +210,32 @@ export function TopBar({ currentBookId, currentChapter }: TopBarProps) {
               )}
             </AnimatePresence>
           </div>
+
+          {/* Parallel-Ansicht Toggle (nur auf Lese-Seiten) */}
+          {isReadingPage && (
+            <button
+              onClick={() => {
+                if (parallelTranslation) {
+                  setParallelTranslation(null);
+                } else {
+                  const ids = Object.keys(TRANSLATIONS) as TranslationId[];
+                  const other = ids.find((id) => id !== translation) ?? ids[0];
+                  setParallelTranslation(other);
+                }
+              }}
+              className={clsx(
+                "p-2.5 rounded-lg transition-colors",
+                parallelTranslation
+                  ? "bg-[var(--accent-bg)] text-[var(--accent)]"
+                  : "hover:bg-[var(--bg-hover)] text-[var(--text-secondary)]"
+              )}
+              title="Übersetzungen vergleichen"
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 4.5v15m6-15v15M3 9h18M3 15h18" />
+              </svg>
+            </button>
+          )}
 
           {/* User Menu */}
           <UserMenuButton />
