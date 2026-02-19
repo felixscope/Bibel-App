@@ -17,18 +17,20 @@ export async function addHighlight(
   bookId: string,
   chapter: number,
   verse: number,
-  color: Highlight["color"]
+  color: Highlight["color"],
+  translationId: string
 ): Promise<void> {
   const supabase = createClient();
 
-  // Delete existing highlight for this verse
+  // Delete existing highlight for this verse + translation
   await supabase
     .from("highlights")
     .delete()
     .eq("user_id", userId)
     .eq("book_id", bookId)
     .eq("chapter", chapter)
-    .eq("verse", verse);
+    .eq("verse", verse)
+    .eq("translation_id", translationId);
 
   // Insert new highlight
   const { error } = await supabase.from("highlights").insert({
@@ -37,6 +39,7 @@ export async function addHighlight(
     chapter,
     verse,
     color,
+    translation_id: translationId,
   } as any);
 
   if (error) throw error;
@@ -47,11 +50,12 @@ export async function addHighlightsForVerses(
   bookId: string,
   chapter: number,
   verses: number[],
-  color: Highlight["color"]
+  color: Highlight["color"],
+  translationId: string
 ): Promise<void> {
   const supabase = createClient();
 
-  // Delete existing highlights for these verses
+  // Delete existing highlights for these verses + translation
   for (const verse of verses) {
     await supabase
       .from("highlights")
@@ -59,7 +63,8 @@ export async function addHighlightsForVerses(
       .eq("user_id", userId)
       .eq("book_id", bookId)
       .eq("chapter", chapter)
-      .eq("verse", verse);
+      .eq("verse", verse)
+      .eq("translation_id", translationId);
   }
 
   // Insert new highlights
@@ -69,6 +74,7 @@ export async function addHighlightsForVerses(
     chapter,
     verse,
     color,
+    translation_id: translationId,
   }));
 
   const { error } = await supabase.from("highlights").insert(highlights as any);
@@ -79,7 +85,8 @@ export async function removeHighlight(
   userId: string,
   bookId: string,
   chapter: number,
-  verse: number
+  verse: number,
+  translationId: string
 ): Promise<void> {
   const supabase = createClient();
 
@@ -89,7 +96,8 @@ export async function removeHighlight(
     .eq("user_id", userId)
     .eq("book_id", bookId)
     .eq("chapter", chapter)
-    .eq("verse", verse);
+    .eq("verse", verse)
+    .eq("translation_id", translationId);
 
   if (error) throw error;
 }
@@ -98,7 +106,8 @@ export async function removeHighlightsForVerses(
   userId: string,
   bookId: string,
   chapter: number,
-  verses: number[]
+  verses: number[],
+  translationId: string
 ): Promise<void> {
   const supabase = createClient();
 
@@ -109,7 +118,8 @@ export async function removeHighlightsForVerses(
       .eq("user_id", userId)
       .eq("book_id", bookId)
       .eq("chapter", chapter)
-      .eq("verse", verse);
+      .eq("verse", verse)
+      .eq("translation_id", translationId);
 
     if (error) throw error;
   }
@@ -118,7 +128,8 @@ export async function removeHighlightsForVerses(
 export async function getHighlightsForChapter(
   userId: string,
   bookId: string,
-  chapter: number
+  chapter: number,
+  translationId: string
 ): Promise<Highlight[]> {
   const supabase = createClient();
 
@@ -127,7 +138,8 @@ export async function getHighlightsForChapter(
     .select("*")
     .eq("user_id", userId)
     .eq("book_id", bookId)
-    .eq("chapter", chapter);
+    .eq("chapter", chapter)
+    .eq("translation_id", translationId);
 
   if (error) throw error;
 
@@ -138,6 +150,7 @@ export async function getHighlightsForChapter(
     chapter: h.chapter,
     verse: h.verse,
     color: h.color as Highlight["color"],
+    translationId: h.translation_id,
     createdAt: new Date(h.created_at),
   }));
 }
@@ -150,7 +163,8 @@ export async function addNote(
   chapter: number,
   verseStart: number,
   verseEnd: number,
-  content: string
+  content: string,
+  translationId: string
 ): Promise<void> {
   const supabase = createClient();
 
@@ -161,6 +175,7 @@ export async function addNote(
     verse_start: verseStart,
     verse_end: verseEnd,
     content,
+    translation_id: translationId,
   } as any);
 
   if (error) throw error;
@@ -189,7 +204,8 @@ export async function deleteNote(userId: string, id: string | number): Promise<v
 export async function getNotesForChapter(
   userId: string,
   bookId: string,
-  chapter: number
+  chapter: number,
+  translationId: string
 ): Promise<Note[]> {
   const supabase = createClient();
 
@@ -199,6 +215,7 @@ export async function getNotesForChapter(
     .eq("user_id", userId)
     .eq("book_id", bookId)
     .eq("chapter", chapter)
+    .eq("translation_id", translationId)
     .order("created_at", { ascending: false });
 
   if (error) throw error;
@@ -211,6 +228,7 @@ export async function getNotesForChapter(
     verseStart: n.verse_start,
     verseEnd: n.verse_end,
     content: n.content,
+    translationId: n.translation_id,
     createdAt: new Date(n.created_at),
     updatedAt: new Date(n.updated_at),
   }));
@@ -235,6 +253,7 @@ export async function getAllNotes(userId: string): Promise<Note[]> {
     verseStart: n.verse_start,
     verseEnd: n.verse_end,
     content: n.content,
+    translationId: n.translation_id ?? "einheitsuebersetzung",
     createdAt: new Date(n.created_at),
     updatedAt: new Date(n.updated_at),
   }));
@@ -247,7 +266,8 @@ export async function addBookmark(
   bookId: string,
   chapter: number,
   verseStart: number,
-  verseEnd: number
+  verseEnd: number,
+  translationId: string
 ): Promise<void> {
   const supabase = createClient();
 
@@ -257,6 +277,7 @@ export async function addBookmark(
     chapter,
     verse_start: verseStart,
     verse_end: verseEnd,
+    translation_id: translationId,
   } as any);
 
   if (error) throw error;
@@ -277,7 +298,8 @@ export async function deleteBookmark(userId: string, id: string | number): Promi
 export async function getBookmarksForChapter(
   userId: string,
   bookId: string,
-  chapter: number
+  chapter: number,
+  translationId: string
 ): Promise<Bookmark[]> {
   const supabase = createClient();
 
@@ -286,7 +308,8 @@ export async function getBookmarksForChapter(
     .select("*")
     .eq("user_id", userId)
     .eq("book_id", bookId)
-    .eq("chapter", chapter);
+    .eq("chapter", chapter)
+    .eq("translation_id", translationId);
 
   if (error) throw error;
 
@@ -297,6 +320,7 @@ export async function getBookmarksForChapter(
     chapter: b.chapter,
     verseStart: b.verse_start,
     verseEnd: b.verse_end,
+    translationId: b.translation_id,
     createdAt: new Date(b.created_at),
   }));
 }
@@ -319,6 +343,7 @@ export async function getAllBookmarks(userId: string): Promise<Bookmark[]> {
     chapter: b.chapter,
     verseStart: b.verse_start,
     verseEnd: b.verse_end,
+    translationId: b.translation_id ?? "einheitsuebersetzung",
     createdAt: new Date(b.created_at),
   }));
 }
@@ -327,17 +352,19 @@ export async function deleteBookmarksForVerses(
   userId: string,
   bookId: string,
   chapter: number,
-  verses: number[]
+  verses: number[],
+  translationId: string
 ): Promise<void> {
   const supabase = createClient();
 
-  // Get all bookmarks for this chapter
+  // Get all bookmarks for this chapter + translation
   const { data: bookmarks } = await supabase
     .from("bookmarks")
     .select("*")
     .eq("user_id", userId)
     .eq("book_id", bookId)
-    .eq("chapter", chapter);
+    .eq("chapter", chapter)
+    .eq("translation_id", translationId);
 
   if (!bookmarks) return;
 

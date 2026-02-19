@@ -139,12 +139,15 @@ export default function LesenPage({ params }: PageProps) {
         if (parallelTranslation && secondChapter) {
           return (
             <ParallelChapterView
+              bookId={buch}
               chapterNumber={chapter.number}
               primaryVerses={chapter.verses}
               primaryBookName={bookData.name}
-              primaryShortName={TRANSLATIONS[translation].shortName}
+              primaryTranslationId={translation}
+              primaryTranslationName={TRANSLATIONS[translation].name}
               secondaryVerses={secondChapter.verses}
-              secondaryShortName={TRANSLATIONS[parallelTranslation].shortName}
+              secondaryTranslationId={parallelTranslation}
+              secondaryTranslationName={TRANSLATIONS[parallelTranslation].name}
             />
           );
         }

@@ -7,6 +7,7 @@ export interface Highlight {
   chapter: number;
   verse: number;
   color: "yellow" | "green" | "blue" | "pink" | "orange";
+  translationId: string;
   createdAt: Date;
 }
 
@@ -17,6 +18,7 @@ export interface Note {
   verseStart: number;
   verseEnd: number;
   content: string;
+  translationId: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -27,6 +29,7 @@ export interface Bookmark {
   chapter: number;
   verseStart: number;
   verseEnd: number;
+  translationId: string;
   createdAt: Date;
 }
 
@@ -43,6 +46,11 @@ class BibelDatabase extends Dexie {
       notes: "++id, bookId, chapter, verseStart, [bookId+chapter]",
       bookmarks: "++id, bookId, chapter, verseStart, [bookId+chapter], createdAt",
     });
+    this.version(2).stores({
+      highlights: "++id, bookId, chapter, verse, translationId, [bookId+chapter], [bookId+chapter+verse]",
+      notes: "++id, bookId, chapter, verseStart, translationId, [bookId+chapter]",
+      bookmarks: "++id, bookId, chapter, verseStart, translationId, [bookId+chapter], createdAt",
+    });
   }
 }
 
@@ -54,11 +62,14 @@ export async function addHighlight(
   bookId: string,
   chapter: number,
   verse: number,
-  color: Highlight["color"]
+  color: Highlight["color"],
+  translationId: string
 ): Promise<void> {
-  // Erst existierende Highlights für diesen Vers löschen
+  // Erst existierende Highlights für diesen Vers + Übersetzung löschen
   await db.highlights
-    .where({ bookId, chapter, verse })
+    .where("[bookId+chapter+verse]")
+    .equals([bookId, chapter, verse])
+    .filter((h) => h.translationId === translationId)
     .delete();
 
   await db.highlights.add({
@@ -66,6 +77,7 @@ export async function addHighlight(
     chapter,
     verse,
     color,
+    translationId,
     createdAt: new Date(),
   });
 }
@@ -74,12 +86,14 @@ export async function addHighlightsForVerses(
   bookId: string,
   chapter: number,
   verses: number[],
-  color: Highlight["color"]
+  color: Highlight["color"],
+  translationId: string
 ): Promise<void> {
-  // Erst existierende Highlights für diese Verse löschen
+  // Erst existierende Highlights für diese Verse + Übersetzung löschen
   await db.highlights
     .where("[bookId+chapter+verse]")
     .anyOf(verses.map((v) => [bookId, chapter, v]))
+    .filter((h) => h.translationId === translationId)
     .delete();
 
   // Neue Highlights hinzufügen
@@ -88,6 +102,7 @@ export async function addHighlightsForVerses(
     chapter,
     verse,
     color,
+    translationId,
     createdAt: new Date(),
   }));
 
@@ -97,31 +112,38 @@ export async function addHighlightsForVerses(
 export async function removeHighlight(
   bookId: string,
   chapter: number,
-  verse: number
+  verse: number,
+  translationId: string
 ): Promise<void> {
   await db.highlights
-    .where({ bookId, chapter, verse })
+    .where("[bookId+chapter+verse]")
+    .equals([bookId, chapter, verse])
+    .filter((h) => h.translationId === translationId)
     .delete();
 }
 
 export async function removeHighlightsForVerses(
   bookId: string,
   chapter: number,
-  verses: number[]
+  verses: number[],
+  translationId: string
 ): Promise<void> {
   await db.highlights
     .where("[bookId+chapter+verse]")
     .anyOf(verses.map((v) => [bookId, chapter, v]))
+    .filter((h) => h.translationId === translationId)
     .delete();
 }
 
 export async function getHighlightsForChapter(
   bookId: string,
-  chapter: number
+  chapter: number,
+  translationId: string
 ): Promise<Highlight[]> {
   return db.highlights
     .where("[bookId+chapter]")
     .equals([bookId, chapter])
+    .filter((h) => h.translationId === translationId)
     .toArray();
 }
 
@@ -132,7 +154,8 @@ export async function addNote(
   chapter: number,
   verseStart: number,
   verseEnd: number,
-  content: string
+  content: string,
+  translationId: string
 ): Promise<void> {
   await db.notes.add({
     bookId,
@@ -140,6 +163,7 @@ export async function addNote(
     verseStart,
     verseEnd,
     content,
+    translationId,
     createdAt: new Date(),
     updatedAt: new Date(),
   });
@@ -169,11 +193,13 @@ export async function deleteNote(id: string | number): Promise<void> {
 
 export async function getNotesForChapter(
   bookId: string,
-  chapter: number
+  chapter: number,
+  translationId: string
 ): Promise<Note[]> {
   return db.notes
     .where("[bookId+chapter]")
     .equals([bookId, chapter])
+    .filter((n) => n.translationId === translationId)
     .toArray();
 }
 
@@ -187,13 +213,15 @@ export async function addBookmark(
   bookId: string,
   chapter: number,
   verseStart: number,
-  verseEnd: number
+  verseEnd: number,
+  translationId: string
 ): Promise<void> {
   await db.bookmarks.add({
     bookId,
     chapter,
     verseStart,
     verseEnd,
+    translationId,
     createdAt: new Date(),
   });
 }
@@ -208,11 +236,13 @@ export async function deleteBookmark(id: string | number): Promise<void> {
 
 export async function getBookmarksForChapter(
   bookId: string,
-  chapter: number
+  chapter: number,
+  translationId: string
 ): Promise<Bookmark[]> {
   return db.bookmarks
     .where("[bookId+chapter]")
     .equals([bookId, chapter])
+    .filter((b) => b.translationId === translationId)
     .toArray();
 }
 
@@ -223,12 +253,14 @@ export async function getAllBookmarks(): Promise<Bookmark[]> {
 export async function deleteBookmarksForVerses(
   bookId: string,
   chapter: number,
-  verses: number[]
+  verses: number[],
+  translationId: string
 ): Promise<void> {
-  // Finde und lösche alle Lesezeichen, die die angegebenen Verse enthalten
+  // Finde und lösche alle Lesezeichen für diese Übersetzung, die die angegebenen Verse enthalten
   const bookmarks = await db.bookmarks
     .where("[bookId+chapter]")
     .equals([bookId, chapter])
+    .filter((b) => b.translationId === translationId)
     .toArray();
 
   const idsToDelete: number[] = [];

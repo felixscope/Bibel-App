@@ -11,7 +11,9 @@ interface SelectionContextType {
   selectedVerses: Map<number, VerseInfo>;
   bookId: string;
   chapter: number;
-  setContext: (bookId: string, chapter: number) => void;
+  translationId: string;
+  setContext: (bookId: string, chapter: number, translationId: string) => void;
+  setActiveTranslation: (translationId: string) => void;
   toggleVerse: (verse: number, text: string) => void;
   clearSelection: () => void;
   isSelected: (verse: number) => boolean;
@@ -34,21 +36,30 @@ interface SelectionProviderProps {
   children: ReactNode;
   initialBookId?: string;
   initialChapter?: number;
+  initialTranslationId?: string;
 }
 
 export function SelectionProvider({
   children,
   initialBookId = "",
   initialChapter = 1,
+  initialTranslationId = "einheitsuebersetzung",
 }: SelectionProviderProps) {
   const [selectedVerses, setSelectedVerses] = useState<Map<number, VerseInfo>>(new Map());
   const [bookId, setBookId] = useState(initialBookId);
   const [chapter, setChapter] = useState(initialChapter);
+  const [translationId, setTranslationId] = useState(initialTranslationId);
 
-  const setContext = useCallback((newBookId: string, newChapter: number) => {
+  const setContext = useCallback((newBookId: string, newChapter: number, newTranslationId: string) => {
     setBookId(newBookId);
     setChapter(newChapter);
+    setTranslationId(newTranslationId);
     setSelectedVerses(new Map()); // Clear selection when context changes
+  }, []);
+
+  // Updates only translationId without clearing selection (used in parallel view)
+  const setActiveTranslation = useCallback((tid: string) => {
+    setTranslationId(tid);
   }, []);
 
   const toggleVerse = useCallback((verse: number, text: string) => {
@@ -92,7 +103,9 @@ export function SelectionProvider({
         selectedVerses,
         bookId,
         chapter,
+        translationId,
         setContext,
+        setActiveTranslation,
         toggleVerse,
         clearSelection,
         isSelected,

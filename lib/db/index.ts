@@ -31,61 +31,66 @@ export async function addHighlight(
   bookId: string,
   chapter: number,
   verse: number,
-  color: dexieDb.Highlight["color"]
+  color: dexieDb.Highlight["color"],
+  translationId: string
 ): Promise<void> {
   const authed = isAuthenticated();
   if (authed) {
-    return supabaseAdapter.addHighlight(globalUserId!, bookId, chapter, verse, color);
+    return supabaseAdapter.addHighlight(globalUserId!, bookId, chapter, verse, color, translationId);
   }
-  return dexieDb.addHighlight(bookId, chapter, verse, color);
+  return dexieDb.addHighlight(bookId, chapter, verse, color, translationId);
 }
 
 export async function addHighlightsForVerses(
   bookId: string,
   chapter: number,
   verses: number[],
-  color: dexieDb.Highlight["color"]
+  color: dexieDb.Highlight["color"],
+  translationId: string
 ): Promise<void> {
   const authed = isAuthenticated();
   if (authed) {
-    return supabaseAdapter.addHighlightsForVerses(globalUserId!, bookId, chapter, verses, color);
+    return supabaseAdapter.addHighlightsForVerses(globalUserId!, bookId, chapter, verses, color, translationId);
   }
-  return dexieDb.addHighlightsForVerses(bookId, chapter, verses, color);
+  return dexieDb.addHighlightsForVerses(bookId, chapter, verses, color, translationId);
 }
 
 export async function removeHighlight(
   bookId: string,
   chapter: number,
-  verse: number
+  verse: number,
+  translationId: string
 ): Promise<void> {
   const authed = isAuthenticated();
   if (authed) {
-    return supabaseAdapter.removeHighlight(globalUserId!, bookId, chapter, verse);
+    return supabaseAdapter.removeHighlight(globalUserId!, bookId, chapter, verse, translationId);
   }
-  return dexieDb.removeHighlight(bookId, chapter, verse);
+  return dexieDb.removeHighlight(bookId, chapter, verse, translationId);
 }
 
 export async function removeHighlightsForVerses(
   bookId: string,
   chapter: number,
-  verses: number[]
+  verses: number[],
+  translationId: string
 ): Promise<void> {
   const authed = isAuthenticated();
   if (authed) {
-    return supabaseAdapter.removeHighlightsForVerses(globalUserId!, bookId, chapter, verses);
+    return supabaseAdapter.removeHighlightsForVerses(globalUserId!, bookId, chapter, verses, translationId);
   }
-  return dexieDb.removeHighlightsForVerses(bookId, chapter, verses);
+  return dexieDb.removeHighlightsForVerses(bookId, chapter, verses, translationId);
 }
 
 export async function getHighlightsForChapter(
   bookId: string,
-  chapter: number
+  chapter: number,
+  translationId: string
 ): Promise<dexieDb.Highlight[]> {
   const authed = isAuthenticated();
   if (authed) {
-    return supabaseAdapter.getHighlightsForChapter(globalUserId!, bookId, chapter);
+    return supabaseAdapter.getHighlightsForChapter(globalUserId!, bookId, chapter, translationId);
   }
-  return dexieDb.getHighlightsForChapter(bookId, chapter);
+  return dexieDb.getHighlightsForChapter(bookId, chapter, translationId);
 }
 
 // ==================== NOTES ====================
@@ -95,13 +100,14 @@ export async function addNote(
   chapter: number,
   verseStart: number,
   verseEnd: number,
-  content: string
+  content: string,
+  translationId: string
 ): Promise<void> {
   const authed = isAuthenticated();
   if (authed) {
-    return supabaseAdapter.addNote(globalUserId!, bookId, chapter, verseStart, verseEnd, content);
+    return supabaseAdapter.addNote(globalUserId!, bookId, chapter, verseStart, verseEnd, content, translationId);
   }
-  return dexieDb.addNote(bookId, chapter, verseStart, verseEnd, content);
+  return dexieDb.addNote(bookId, chapter, verseStart, verseEnd, content, translationId);
 }
 
 export async function updateNote(id: string | number, content: string): Promise<void> {
@@ -126,13 +132,14 @@ export async function deleteNote(id: string | number): Promise<void> {
 
 export async function getNotesForChapter(
   bookId: string,
-  chapter: number
+  chapter: number,
+  translationId: string
 ): Promise<dexieDb.Note[]> {
   const authed = isAuthenticated();
   if (authed) {
-    return supabaseAdapter.getNotesForChapter(globalUserId!, bookId, chapter);
+    return supabaseAdapter.getNotesForChapter(globalUserId!, bookId, chapter, translationId);
   }
-  return dexieDb.getNotesForChapter(bookId, chapter);
+  return dexieDb.getNotesForChapter(bookId, chapter, translationId);
 }
 
 export async function getAllNotes(): Promise<dexieDb.Note[]> {
@@ -149,13 +156,14 @@ export async function addBookmark(
   bookId: string,
   chapter: number,
   verseStart: number,
-  verseEnd: number
+  verseEnd: number,
+  translationId: string
 ): Promise<void> {
   const authed = isAuthenticated();
   if (authed) {
-    return supabaseAdapter.addBookmark(globalUserId!, bookId, chapter, verseStart, verseEnd);
+    return supabaseAdapter.addBookmark(globalUserId!, bookId, chapter, verseStart, verseEnd, translationId);
   }
-  return dexieDb.addBookmark(bookId, chapter, verseStart, verseEnd);
+  return dexieDb.addBookmark(bookId, chapter, verseStart, verseEnd, translationId);
 }
 
 export async function deleteBookmark(id: string | number): Promise<void> {
@@ -170,13 +178,14 @@ export async function deleteBookmark(id: string | number): Promise<void> {
 
 export async function getBookmarksForChapter(
   bookId: string,
-  chapter: number
+  chapter: number,
+  translationId: string
 ): Promise<dexieDb.Bookmark[]> {
   const authed = isAuthenticated();
   if (authed) {
-    return supabaseAdapter.getBookmarksForChapter(globalUserId!, bookId, chapter);
+    return supabaseAdapter.getBookmarksForChapter(globalUserId!, bookId, chapter, translationId);
   }
-  return dexieDb.getBookmarksForChapter(bookId, chapter);
+  return dexieDb.getBookmarksForChapter(bookId, chapter, translationId);
 }
 
 export async function getAllBookmarks(): Promise<dexieDb.Bookmark[]> {
@@ -190,13 +199,14 @@ export async function getAllBookmarks(): Promise<dexieDb.Bookmark[]> {
 export async function deleteBookmarksForVerses(
   bookId: string,
   chapter: number,
-  verses: number[]
+  verses: number[],
+  translationId: string
 ): Promise<void> {
   const authed = isAuthenticated();
   if (authed) {
-    return supabaseAdapter.deleteBookmarksForVerses(globalUserId!, bookId, chapter, verses);
+    return supabaseAdapter.deleteBookmarksForVerses(globalUserId!, bookId, chapter, verses, translationId);
   }
-  return dexieDb.deleteBookmarksForVerses(bookId, chapter, verses);
+  return dexieDb.deleteBookmarksForVerses(bookId, chapter, verses, translationId);
 }
 
 // ==================== UTILITY ====================

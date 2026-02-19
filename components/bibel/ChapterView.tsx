@@ -8,6 +8,7 @@ import { VerseActionBar } from "./VerseActionBar";
 import { NoteModal } from "./NoteModal";
 import { BookIntroduction } from "./BookIntroduction";
 import { SelectionProvider, useSelection } from "@/components/providers/SelectionProvider";
+import { useTranslation } from "@/components/providers/TranslationProvider";
 import {
   getHighlightsForChapter,
   getNotesForChapter,
@@ -34,28 +35,29 @@ function ChapterContent({
   introduction,
 }: ChapterViewProps) {
   const { toggleVerse, isSelected, clearSelection, setContext } = useSelection();
+  const { translation } = useTranslation();
   const [isNoteModalOpen, setIsNoteModalOpen] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
 
-  // Set context when chapter changes
+  // Set context when chapter or translation changes
   useEffect(() => {
-    setContext(bookId, chapterNumber);
-  }, [bookId, chapterNumber, setContext]);
+    setContext(bookId, chapterNumber, translation);
+  }, [bookId, chapterNumber, translation, setContext]);
 
   // Load data with live updates (works with both Dexie and Supabase)
   const highlights = useSupabaseLiveQuery(
-    () => getHighlightsForChapter(bookId, chapterNumber),
-    [bookId, chapterNumber, refreshKey]
+    () => getHighlightsForChapter(bookId, chapterNumber, translation),
+    [bookId, chapterNumber, translation, refreshKey]
   );
 
   const notes = useSupabaseLiveQuery(
-    () => getNotesForChapter(bookId, chapterNumber),
-    [bookId, chapterNumber, refreshKey]
+    () => getNotesForChapter(bookId, chapterNumber, translation),
+    [bookId, chapterNumber, translation, refreshKey]
   );
 
   const bookmarks = useSupabaseLiveQuery(
-    () => getBookmarksForChapter(bookId, chapterNumber),
-    [bookId, chapterNumber, refreshKey]
+    () => getBookmarksForChapter(bookId, chapterNumber, translation),
+    [bookId, chapterNumber, translation, refreshKey]
   );
 
   // Build lookup maps
@@ -165,8 +167,9 @@ function ChapterContent({
 }
 
 export function ChapterView(props: ChapterViewProps) {
+  const { translation } = useTranslation();
   return (
-    <SelectionProvider initialBookId={props.bookId} initialChapter={props.chapterNumber}>
+    <SelectionProvider initialBookId={props.bookId} initialChapter={props.chapterNumber} initialTranslationId={translation}>
       <ChapterContent {...props} />
     </SelectionProvider>
   );

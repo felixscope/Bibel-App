@@ -16,7 +16,7 @@ interface NoteModalProps {
 }
 
 export function NoteModal({ isOpen, onClose, existingNote, onSaved }: NoteModalProps) {
-  const { bookId, chapter, getVerseRange, clearSelection } = useSelection();
+  const { bookId, chapter, translationId, getVerseRange, clearSelection } = useSelection();
   const { showToast } = useToast();
   const [content, setContent] = useState("");
   const [mounted, setMounted] = useState(false);
@@ -25,6 +25,7 @@ export function NoteModal({ isOpen, onClose, existingNote, onSaved }: NoteModalP
   const [savedContext, setSavedContext] = useState<{
     bookId: string;
     chapter: number;
+    translationId: string;
     verseRange: { start: number; end: number };
   } | null>(null);
 
@@ -39,7 +40,7 @@ export function NoteModal({ isOpen, onClose, existingNote, onSaved }: NoteModalP
       if (!existingNote) {
         const range = getVerseRange();
         if (range) {
-          setSavedContext({ bookId, chapter, verseRange: range });
+          setSavedContext({ bookId, chapter, translationId, verseRange: range });
         }
       }
     } else {
@@ -50,6 +51,7 @@ export function NoteModal({ isOpen, onClose, existingNote, onSaved }: NoteModalP
   // Use saved context or derive from existing note / current selection
   const effectiveBookId = existingNote?.bookId || savedContext?.bookId || bookId;
   const effectiveChapter = existingNote?.chapter || savedContext?.chapter || chapter;
+  const effectiveTranslationId = existingNote?.translationId || savedContext?.translationId || translationId;
   const verseRange = existingNote
     ? { start: existingNote.verseStart, end: existingNote.verseEnd }
     : savedContext?.verseRange || getVerseRange();
@@ -74,7 +76,7 @@ export function NoteModal({ isOpen, onClose, existingNote, onSaved }: NoteModalP
       if (existingNote?.id) {
         await updateNote(existingNote.id, content.trim());
       } else {
-        await addNote(effectiveBookId, effectiveChapter, verseRange!.start, verseRange!.end, content.trim());
+        await addNote(effectiveBookId, effectiveChapter, verseRange!.start, verseRange!.end, content.trim(), effectiveTranslationId);
       }
       showToast("Notiz gespeichert", "check");
       onSaved?.();

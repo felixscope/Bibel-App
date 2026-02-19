@@ -44,6 +44,7 @@ export function VerseActionBar({
     selectedVerses,
     bookId,
     chapter,
+    translationId,
     clearSelection,
     getSelectedVerseNumbers,
     getSelectedTexts,
@@ -108,11 +109,11 @@ export function VerseActionBar({
 
       if (allHaveSameColor) {
         // Remove highlights
-        await removeHighlightsForVerses(bookId, chapter, verses);
+        await removeHighlightsForVerses(bookId, chapter, verses, translationId);
         showToast("Markierung entfernt", "remove");
       } else {
         // Add highlights
-        await addHighlightsForVerses(bookId, chapter, verses, color);
+        await addHighlightsForVerses(bookId, chapter, verses, color, translationId);
         showToast("Markiert", "highlight");
       }
 
@@ -137,10 +138,10 @@ export function VerseActionBar({
     try {
       // Toggle: Wenn bereits gemerkt, dann löschen
       if (versesAreBookmarked) {
-        await deleteBookmarksForVerses(bookId, chapter, verses);
+        await deleteBookmarksForVerses(bookId, chapter, verses, translationId);
         showToast("Lesezeichen entfernt", "remove");
       } else {
-        await addBookmark(bookId, chapter, verseRange.start, verseRange.end);
+        await addBookmark(bookId, chapter, verseRange.start, verseRange.end, translationId);
         showToast("Lesezeichen gespeichert", "bookmark");
       }
 
