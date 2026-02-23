@@ -13,7 +13,7 @@ export function MainLayout({ children }: MainLayoutProps) {
       <Navigation />
 
       {/* Main Content Area */}
-      <main className="md:ml-64 pb-20 md:pb-0">
+      <main className="md:ml-64 pb-16 md:pb-0">
         {children}
       </main>
     </div>

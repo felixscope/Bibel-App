@@ -184,7 +184,7 @@ export function VerseActionBar({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
-          className="fixed bottom-6 md:bottom-8 left-4 right-4 mx-auto max-w-md z-[9998]"
+          className="fixed bottom-[calc(1.5rem+env(safe-area-inset-bottom))] md:bottom-8 left-4 right-4 mx-auto max-w-md z-[9998]"
         >
         <div className="bg-[var(--bg-elevated)] border border-[var(--border)] rounded-2xl shadow-lg p-3">
           {/* Header */}

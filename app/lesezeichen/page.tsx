@@ -127,7 +127,7 @@ export default function LesezeichenPage() {
                               <button
                                 onClick={() => bookmark.id && handleDelete(bookmark.id as string | number)}
                                 disabled={deletingId === bookmark.id}
-                                className="p-2 rounded-lg opacity-0 group-hover:opacity-100 hover:bg-[var(--bg-secondary)] transition-all"
+                                className="p-2 rounded-lg hover:bg-[var(--bg-secondary)] transition-all"
                                 title="Löschen"
                               >
                                 <svg

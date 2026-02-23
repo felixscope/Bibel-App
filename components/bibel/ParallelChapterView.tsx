@@ -141,23 +141,24 @@ function ParallelContent({
           </div>
         </header>
 
-        {/* Übersetzungs-Labels (voll ausgeschrieben) */}
-        <div className="grid grid-cols-2 mb-4 pb-3 border-b border-[var(--border)]">
+        {/* Übersetzungs-Labels (nur auf Desktop, voll ausgeschrieben) */}
+        <div className="hidden md:grid md:grid-cols-2 mb-4 pb-3 border-b border-[var(--border)]">
           <div className="text-xs font-semibold text-[var(--accent)] uppercase tracking-wider">
             {primaryTranslationName}
           </div>
-          <div className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider pl-3 md:pl-6">
+          <div className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider pl-6">
             {secondaryTranslationName}
           </div>
         </div>
 
-        {/* Verse nebeneinander */}
+        {/* Verse — auf Mobile gestapelt, auf Desktop nebeneinander */}
         <div className="bible-text text-[var(--text-primary)]">
           {primaryVerses.map((verse) => {
             const secVerse = secondaryVerses.find((v) => v.number === verse.number);
             return (
-              <div key={verse.number} className="grid grid-cols-2 mb-1">
-                <div className="pr-3 md:pr-6" onClick={(e) => e.stopPropagation()}>
+              <div key={verse.number} className="grid grid-cols-1 md:grid-cols-2 mb-3 md:mb-1">
+                <div className="md:pr-6" onClick={(e) => e.stopPropagation()}>
+                  <span className="md:hidden text-[10px] font-semibold text-[var(--accent)] uppercase tracking-wider">{primaryTranslationName}</span>
                   <VerseText
                     number={verse.number}
                     text={verse.text}
@@ -170,8 +171,10 @@ function ParallelContent({
                     onSelect={handlePrimarySelect}
                   />
                 </div>
-                <div className="pl-3 md:pl-6 border-l border-[var(--border)]" onClick={(e) => e.stopPropagation()}>
+                <div className="md:pl-6 md:border-l border-[var(--border)]" onClick={(e) => e.stopPropagation()}>
                   {secVerse && (
+                    <>
+                    <span className="md:hidden text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-wider">{secondaryTranslationName}</span>
                     <VerseText
                       number={secVerse.number}
                       text={secVerse.text}
@@ -183,6 +186,7 @@ function ParallelContent({
                       isSelected={translationId === secondaryTranslationId && isSelected(secVerse.number)}
                       onSelect={handleSecondarySelect}
                     />
+                    </>
                   )}
                 </div>
               </div>
