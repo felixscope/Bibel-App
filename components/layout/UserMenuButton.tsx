@@ -77,7 +77,7 @@ export function UserMenuButton() {
   // Loading state
   if (loading) {
     return (
-      <div className="w-9 h-9 rounded-full bg-[var(--bg-secondary)] animate-pulse" />
+      <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[var(--bg-secondary)] animate-pulse" />
     );
   }
 
@@ -86,7 +86,7 @@ export function UserMenuButton() {
     return (
       <Link
         href="/auth/login"
-        className="px-3 py-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors"
+        className="px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors"
       >
         Anmelden
       </Link>
@@ -99,7 +99,7 @@ export function UserMenuButton() {
       <button
         onClick={() => setShowMenu(!showMenu)}
         className={clsx(
-          "w-9 h-9 rounded-full bg-[var(--accent)] text-white font-semibold text-sm flex items-center justify-center transition-all hover:scale-105 hover:shadow-md",
+          "w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[var(--accent)] text-white font-semibold text-xs sm:text-sm flex items-center justify-center transition-all hover:scale-105 hover:shadow-md",
           showMenu && "ring-2 ring-[var(--accent)] ring-offset-2 ring-offset-[var(--bg-primary)]"
         )}
         title="Konto-Menü"

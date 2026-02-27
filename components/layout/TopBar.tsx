@@ -74,13 +74,13 @@ export function TopBar({ currentBookId, currentChapter }: TopBarProps) {
 
   return (
     <header className="sticky top-0 z-30 bg-[var(--bg-primary)]/90 backdrop-blur-md border-b border-[var(--border)]">
-      <div className="max-w-4xl mx-auto px-4 py-2.5 flex items-center justify-between gap-2">
+      <div className="max-w-4xl mx-auto px-2 sm:px-4 py-2 flex items-center justify-between gap-1 sm:gap-2">
         {/* Linke Seite: Übersetzung + Buch */}
-        <div className="flex items-center gap-2 flex-1 min-w-0">
+        <div className="flex items-center gap-1 sm:gap-2 min-w-0 overflow-hidden">
           {/* Übersetzungsauswahl */}
           <TranslationSelector />
 
-          <span className="text-[var(--text-muted)]">|</span>
+          <span className="text-[var(--text-muted)] hidden sm:inline">|</span>
 
           {/* Buchauswahl */}
           <BookSelector
@@ -90,14 +90,14 @@ export function TopBar({ currentBookId, currentChapter }: TopBarProps) {
         </div>
 
         {/* Rechte Icons */}
-        <div className="flex items-center gap-1 flex-shrink-0">
+        <div className="flex items-center gap-0.5 sm:gap-1 flex-shrink-0">
           {/* Suche */}
           <button
             onClick={() => setShowSearch(true)}
-            className="p-2.5 rounded-lg hover:bg-[var(--bg-hover)] transition-colors"
+            className="p-2 sm:p-2.5 rounded-lg hover:bg-[var(--bg-hover)] transition-colors"
             title="Suche (Cmd+K)"
           >
-            <svg className="w-5 h-5 text-[var(--text-secondary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <svg className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--text-secondary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
             </svg>
           </button>
@@ -107,12 +107,12 @@ export function TopBar({ currentBookId, currentChapter }: TopBarProps) {
             <button
               onClick={() => setShowFontSettings(!showFontSettings)}
               className={clsx(
-                "p-2.5 rounded-lg transition-colors",
+                "p-2 sm:p-2.5 rounded-lg transition-colors",
                 showFontSettings ? "bg-[var(--bg-hover)]" : "hover:bg-[var(--bg-hover)]"
               )}
               title="Schrifteinstellungen"
             >
-              <span className="text-base font-semibold text-[var(--text-secondary)]">Aa</span>
+              <span className="text-sm sm:text-base font-semibold text-[var(--text-secondary)]">Aa</span>
             </button>
 
             {/* Font Settings Dropdown */}

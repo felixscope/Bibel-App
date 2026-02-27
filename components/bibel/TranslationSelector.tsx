@@ -41,11 +41,11 @@ export function TranslationSelector() {
         {/* Translation Dropdown */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="flex items-center gap-1 px-2 py-1 rounded-md hover:bg-[var(--bg-secondary)] transition-colors text-sm font-medium"
+          className="flex items-center gap-0.5 sm:gap-1 px-1.5 sm:px-2 py-1 rounded-md hover:bg-[var(--bg-secondary)] transition-colors text-xs sm:text-sm font-medium"
         >
           <span>{translationShortName}</span>
           <svg
-            className={`w-3 h-3 transition-transform ${isOpen ? "rotate-180" : ""}`}
+            className={`w-2.5 h-2.5 sm:w-3 sm:h-3 transition-transform ${isOpen ? "rotate-180" : ""}`}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
