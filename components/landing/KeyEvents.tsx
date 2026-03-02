@@ -31,14 +31,14 @@ const events = [
     title: "Bund mit Abraham",
     hook: "Gottes Versprechen — der Anfang eines Volkes und eines Glaubens.",
     href: "/lesen/genesis/15",
-    imagePath: "/bund mit abraham.png",
+    imagePath: "/bund mit abraham.jpg",
     imageAlt: "Gott schließt einen Bund mit Abraham",
   },
   {
     title: "Die 10 Plagen",
     hook: "Zehn Zeichen der Macht Gottes — und der Weg zur Befreiung.",
     href: "/lesen/exodus/7",
-    imagePath: "/die10plagen.png",
+    imagePath: "/die10plagen.jpg",
     imageAlt: "Die zehn Plagen Ägyptens",
   },
   {
@@ -59,14 +59,14 @@ const events = [
     title: "Das Goldene Kalb",
     hook: "Ungehorsam, Götzendienst und die Gnade einer zweiten Chance.",
     href: "/lesen/exodus/32",
-    imagePath: "/goldenes lamm.png",
+    imagePath: "/goldenes lamm.jpg",
     imageAlt: "Israel betet das goldene Kalb an",
   },
   {
     title: "David & Goliath",
     hook: "Mut, Vertrauen und die Kraft des Glaubens.",
     href: "/lesen/1samuel/17",
-    imagePath: "/david und goliath.png",
+    imagePath: "/david und goliath.jpg",
     imageAlt: "David mit Schleuder gegen Goliath",
   },
   {
@@ -87,7 +87,7 @@ const events = [
     title: "Geburt Jesu",
     hook: "Ein Kind in einer Krippe — und die Welt wird nie mehr dieselbe sein.",
     href: "/lesen/luke/2",
-    imagePath: "/geburt jesu.png",
+    imagePath: "/geburt jesu.jpg",
     imageAlt: "Die Geburt Jesu in Bethlehem",
   },
   {
@@ -115,7 +115,7 @@ const events = [
     title: "Tempelreinigung",
     hook: "Jesus treibt die Händler aus dem Tempel — prophetisch, mutig, kompromisslos.",
     href: "/lesen/matthew/21",
-    imagePath: "/tempelreinigung.png",
+    imagePath: "/tempelreinigung.jpg",
     imageAlt: "Jesus reinigt den Tempel",
   },
   {
@@ -129,7 +129,7 @@ const events = [
     title: "Auferstehung",
     hook: "Sieg des Lebens, Hoffnung, neue Schöpfung.",
     href: "/lesen/john/20",
-    imagePath: "/auferstehung.png",
+    imagePath: "/auferstehung.jpg",
     imageAlt: "Das leere Grab, Jesus ist auferstanden",
   },
 ];
