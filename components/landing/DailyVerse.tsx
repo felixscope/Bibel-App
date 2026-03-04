@@ -29,7 +29,7 @@ export function DailyVerse() {
             src="/nature-light.jpg"
             alt="Naturbild Hintergrund"
             fill
-            className="object-cover opacity-[0.08]"
+            className="object-cover opacity-30"
             sizes="(max-width: 768px) 100vw, 672px"
           />
         </div>

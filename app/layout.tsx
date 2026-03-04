@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { AuthProvider } from "@/components/providers/AuthProvider";
 import { ToastProvider } from "@/components/providers/ToastProvider";
 import { TranslationProvider } from "@/components/providers/TranslationProvider";
+import { PostHogProvider } from "@/components/providers/PostHogProvider";
 import { Agentation } from "agentation";
 
 // Bibeltext – elegant, klassisch, hervorragende Lesbarkeit
@@ -73,9 +74,11 @@ export default function RootLayout({
         <ThemeProvider>
           <ToastProvider>
             <AuthProvider>
-              <TranslationProvider>
-                {children}
-              </TranslationProvider>
+              <PostHogProvider>
+                <TranslationProvider>
+                  {children}
+                </TranslationProvider>
+              </PostHogProvider>
             </AuthProvider>
           </ToastProvider>
         </ThemeProvider>

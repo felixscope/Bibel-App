@@ -179,7 +179,7 @@ export function KeyEvents() {
           transition={{ duration: 0.6 }}
           className="font-display text-2xl md:text-3xl text-text-primary mb-4"
         >
-          Schlüsselereignisse
+          Entdecke die wunderbarste Geschichte der Welt.
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -188,8 +188,7 @@ export function KeyEvents() {
           transition={{ duration: 0.6, delay: 0.05 }}
           className="text-text-secondary max-w-2xl mb-10"
         >
-          Geschichten, die seit Jahrtausenden Menschen bewegen — und nichts von
-          ihrer Kraft verloren haben.
+          Egal wo du gerade stehst - die Bibel hat etwas für dich. Fang einfach an zu lesen.
         </motion.p>
       </div>
 
