@@ -50,6 +50,7 @@ export default function LandingPage() {
             fill
             priority
             className="object-cover"
+            style={{ objectPosition: "28% center" }}
             sizes="100vw"
           />
         </motion.div>
