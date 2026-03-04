@@ -101,12 +101,12 @@ export function TopBar({ currentBookId, currentChapter }: TopBarProps) {
 
           <span className="text-[var(--text-muted)]">|</span>
 
-          {/* Sekundäre Übersetzung (Parallel-Modus) */}
+          {/* Sekundäre Übersetzung (Parallel-Modus) — nur Desktop */}
           {parallelTranslation && (
-            <>
+            <div className="hidden md:flex items-center gap-2">
               <TranslationSelector secondary />
               <span className="text-[var(--text-muted)]">|</span>
-            </>
+            </div>
           )}
 
           {/* Buchauswahl */}
@@ -128,7 +128,7 @@ export function TopBar({ currentBookId, currentChapter }: TopBarProps) {
                 }
               }}
               className={clsx(
-                "p-1.5 rounded-lg transition-colors flex-shrink-0",
+                "hidden md:inline-flex p-1.5 rounded-lg transition-colors flex-shrink-0",
                 parallelTranslation
                   ? "bg-[var(--accent-bg)] text-[var(--accent)]"
                   : "hover:bg-[var(--bg-hover)] text-[var(--text-secondary)]"
