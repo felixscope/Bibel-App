@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { getDailyVerse, type DailyVerseData } from "@/lib/daily-verse";
@@ -24,13 +23,11 @@ export function DailyVerse() {
     >
       <div className="relative overflow-hidden bg-bg-elevated rounded-2xl p-6 md:p-8 border border-border shadow-sm">
         {/* Background Image */}
-        <div className="absolute inset-0 z-0">
-          <Image
+        <div className="absolute inset-0 z-0 overflow-hidden rounded-2xl">
+          <img
             src="/nature-light.jpg"
-            alt="Naturbild Hintergrund"
-            fill
-            className="object-cover opacity-30"
-            sizes="(max-width: 768px) 100vw, 672px"
+            alt=""
+            className="w-full h-full object-cover opacity-30"
           />
         </div>
 
