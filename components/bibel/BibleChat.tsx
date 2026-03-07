@@ -115,7 +115,8 @@ export function BibleChat({
       });
 
       if (!res.ok) {
-        throw new Error("API error");
+        const errText = await res.text();
+        throw new Error(errText || "API error");
       }
 
       const reader = res.body!.getReader();
@@ -139,7 +140,9 @@ export function BibleChat({
         {
           role: "assistant",
           content:
-            "Entschuldigung, es gab einen Fehler. Bitte versuche es erneut.",
+            error instanceof Error && error.message !== "API error"
+              ? error.message
+              : "Entschuldigung, es gab einen Fehler. Bitte versuche es erneut.",
         },
       ]);
     } finally {

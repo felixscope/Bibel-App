@@ -65,7 +65,7 @@ Beziehe dich stillschweigend auf den Kontext des gelesenen Textes.`;
     if (!response.ok) {
       const errorData = await response.text();
       console.error("Claude API Error:", errorData);
-      return new Response("Fehler beim Aufruf der Claude API", {
+      return new Response(errorData, {
         status: response.status,
       });
     }
