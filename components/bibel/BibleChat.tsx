@@ -13,6 +13,9 @@ interface BibleChatProps {
   bookName: string;
   chapterNumber: number;
   selectedVerses: { verse: number; text: string }[];
+  translationName?: string;
+  externalOpen?: boolean;
+  onExternalOpenHandled?: () => void;
 }
 
 function FormattedText({ text }: { text: string }) {
@@ -37,6 +40,9 @@ export function BibleChat({
   bookName,
   chapterNumber,
   selectedVerses,
+  translationName,
+  externalOpen,
+  onExternalOpenHandled,
 }: BibleChatProps) {
   const [mounted, setMounted] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -52,6 +58,21 @@ export function BibleChat({
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // External open trigger (from VerseActionBar)
+  useEffect(() => {
+    if (externalOpen) {
+      setIsOpen(true);
+      onExternalOpenHandled?.();
+    }
+  }, [externalOpen, onExternalOpenHandled]);
+
+  // AutoFocus textarea when panel opens
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => textareaRef.current?.focus(), 100);
+    }
+  }, [isOpen]);
 
   // Auto-scroll to bottom on new messages
   useEffect(() => {
@@ -89,10 +110,11 @@ export function BibleChat({
       ? `${bookName} ${chapterNumber}:${selectedVerses[0].verse}${selectedVerses.length > 1 ? `–${selectedVerses[selectedVerses.length - 1].verse}` : ""}`
       : `${bookName} ${chapterNumber}`;
 
-  const handleSend = useCallback(async () => {
-    if (!input.trim() || isStreaming) return;
+  const handleSend = useCallback(async (overrideText?: string) => {
+    const text = overrideText || input.trim();
+    if (!text || isStreaming) return;
 
-    const userMessage: ChatMessage = { role: "user", content: input.trim() };
+    const userMessage: ChatMessage = { role: "user", content: text };
     const newMessages = [...messages, userMessage];
     setMessages([...newMessages, { role: "assistant", content: "" }]);
     setInput("");
@@ -112,6 +134,7 @@ export function BibleChat({
           context: {
             bookName,
             chapter: chapterNumber,
+            translationName,
             selectedVerses:
               selectedVerses.length > 0 ? selectedVerses : undefined,
           },
@@ -286,10 +309,33 @@ export function BibleChat({
           {/* Messages */}
           <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3">
             {messages.length === 0 && (
-              <div className="flex items-center justify-center h-full">
-                <p className="text-sm text-[var(--text-muted)] text-center px-4">
-                  Was möchtest du über {bookName} {chapterNumber} wissen?
+              <div className="flex flex-col items-center justify-center h-full gap-4 px-4">
+                <p className="text-sm text-[var(--text-muted)] text-center">
+                  Was möchtest du wissen?
                 </p>
+                <div className="flex flex-wrap justify-center gap-2">
+                  {(selectedVerses.length > 0
+                    ? [
+                        "Erkläre die markierten Verse",
+                        "Historischer Hintergrund",
+                        "Was bedeutet das für mein Leben?",
+                      ]
+                    : [
+                        "Worum geht es in diesem Kapitel?",
+                        "Historischer Hintergrund",
+                        "Was kann ich daraus lernen?",
+                      ]
+                  ).map((prompt) => (
+                    <button
+                      key={prompt}
+                      onClick={() => handleSend(prompt)}
+                      disabled={isStreaming}
+                      className="px-3 py-1.5 rounded-full text-xs border border-[var(--border)] text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] transition-colors disabled:opacity-40"
+                    >
+                      {prompt}
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
 
@@ -330,7 +376,7 @@ export function BibleChat({
                 disabled={isStreaming}
               />
               <button
-                onClick={handleSend}
+                onClick={() => handleSend()}
                 disabled={!input.trim() || isStreaming}
                 className="p-2 rounded-xl bg-[var(--accent)] text-white hover:bg-[var(--accent-hover)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
                 aria-label="Senden"

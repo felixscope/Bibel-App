@@ -29,6 +29,7 @@ const COLOR_CLASSES: Record<Highlight["color"], string> = {
 
 interface VerseActionBarProps {
   onOpenNoteModal: () => void;
+  onOpenChat?: () => void;
   onHighlightChange?: () => void;
   currentHighlights?: Map<number, Highlight["color"]>;
   currentBookmarks?: Set<number>;
@@ -36,6 +37,7 @@ interface VerseActionBarProps {
 
 export function VerseActionBar({
   onOpenNoteModal,
+  onOpenChat,
   onHighlightChange,
   currentHighlights = new Map(),
   currentBookmarks = new Set(),
@@ -328,6 +330,30 @@ export function VerseActionBar({
                 Kopieren
               </span>
             </button>
+
+            {onOpenChat && (
+              <button
+                onClick={(e) => { e.stopPropagation(); onOpenChat(); }}
+                className="flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-lg bg-[var(--bg-secondary)] hover:bg-[var(--bg-hover)] transition-colors"
+              >
+                <svg
+                  className="w-4 h-4 text-[var(--text-secondary)]"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={1.5}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                  />
+                </svg>
+                <span className="text-sm font-medium text-[var(--text-primary)]">
+                  KI fragen
+                </span>
+              </button>
+            )}
           </div>
         </div>
       </motion.div>

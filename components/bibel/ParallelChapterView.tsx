@@ -41,6 +41,7 @@ function ParallelContent({
 }: ParallelChapterViewProps) {
   const { toggleVerse, isSelected, clearSelection, setContext, setActiveTranslation, translationId, getSelectedTexts } = useSelection();
   const [isNoteModalOpen, setIsNoteModalOpen] = useState(false);
+  const [chatOpen, setChatOpen] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
@@ -205,6 +206,7 @@ function ParallelContent({
 
       <VerseActionBar
         onOpenNoteModal={() => setIsNoteModalOpen(true)}
+        onOpenChat={() => setChatOpen(true)}
         onHighlightChange={handleDataChange}
         currentHighlights={activeHighlightMap}
         currentBookmarks={activeBookmarkVerses}
@@ -221,6 +223,9 @@ function ParallelContent({
         bookName={primaryBookName}
         chapterNumber={chapterNumber}
         selectedVerses={getSelectedTexts()}
+        translationName={primaryTranslationName}
+        externalOpen={chatOpen}
+        onExternalOpenHandled={() => setChatOpen(false)}
       />
     </>
   );

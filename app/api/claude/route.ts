@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
     }
 
     // System-Prompt dynamisch aus Kontext bauen
-    let contextInfo = `Der Nutzer liest gerade: ${context.bookName} Kapitel ${context.chapter}.`;
+    let contextInfo = `Der Nutzer liest gerade: ${context.bookName} Kapitel ${context.chapter}${context.translationName ? ` (${context.translationName})` : ""}.`;
     if (context.selectedVerses?.length > 0) {
       const verseTexts = context.selectedVerses
         .map((v: { verse: number; text: string }) => `Vers ${v.verse}: "${v.text}"`)

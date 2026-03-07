@@ -36,8 +36,9 @@ function ChapterContent({
   introduction,
 }: ChapterViewProps) {
   const { toggleVerse, isSelected, clearSelection, setContext, getSelectedTexts } = useSelection();
-  const { translation } = useTranslation();
+  const { translation, translationName } = useTranslation();
   const [isNoteModalOpen, setIsNoteModalOpen] = useState(false);
+  const [chatOpen, setChatOpen] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
 
   // Set context when chapter or translation changes
@@ -152,6 +153,7 @@ function ChapterContent({
       {/* ActionBar */}
       <VerseActionBar
         onOpenNoteModal={() => setIsNoteModalOpen(true)}
+        onOpenChat={() => setChatOpen(true)}
         onHighlightChange={handleDataChange}
         currentHighlights={highlightMap}
         currentBookmarks={bookmarkVerses}
@@ -169,6 +171,9 @@ function ChapterContent({
         bookName={bookName}
         chapterNumber={chapterNumber}
         selectedVerses={getSelectedTexts()}
+        translationName={translationName}
+        externalOpen={chatOpen}
+        onExternalOpenHandled={() => setChatOpen(false)}
       />
     </>
   );
