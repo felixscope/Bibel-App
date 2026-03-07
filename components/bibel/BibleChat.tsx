@@ -232,7 +232,7 @@ export function BibleChat({
           exit={{ opacity: 0, y: 20, scale: 0.95 }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
           className="fixed z-[9999] flex flex-col bg-[var(--bg-elevated)] border border-[var(--border)] shadow-xl rounded-2xl overflow-hidden
-            inset-x-4 bottom-20 h-[70vh] max-h-[600px]
+            inset-x-4 bottom-20 h-[70dvh] max-h-[600px]
             md:inset-x-auto md:right-24 md:bottom-8 md:w-96"
         >
           {/* Header */}
@@ -318,7 +318,7 @@ export function BibleChat({
                 onKeyDown={handleKeyDown}
                 placeholder="Frage stellen..."
                 rows={1}
-                className="flex-1 px-3 py-2 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border)] text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] resize-none focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent"
+                className="flex-1 px-3 py-2 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border)] text-base text-[var(--text-primary)] placeholder:text-[var(--text-muted)] resize-none focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent"
                 disabled={isStreaming}
               />
               <button
