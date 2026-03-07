@@ -45,6 +45,7 @@ export function BibleChat({
   const [isStreaming, setIsStreaming] = useState(false);
 
   const panelRef = useRef<HTMLDivElement>(null);
+  const fabRef = useRef<HTMLButtonElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -67,11 +68,14 @@ export function BibleChat({
     return () => document.removeEventListener("keydown", handler);
   }, [isOpen]);
 
-  // Click-outside to close
+  // Click-outside to close (exclude FAB to avoid race condition)
   useEffect(() => {
     if (!isOpen) return;
     const handler = (e: MouseEvent) => {
-      if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
+      if (
+        panelRef.current && !panelRef.current.contains(e.target as Node) &&
+        fabRef.current && !fabRef.current.contains(e.target as Node)
+      ) {
         setIsOpen(false);
       }
     };
@@ -174,6 +178,7 @@ export function BibleChat({
 
   const fab = (
     <motion.button
+      ref={fabRef}
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ type: "spring", stiffness: 400, damping: 25 }}
