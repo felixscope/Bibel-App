@@ -6,6 +6,7 @@ const publicRoutes = [
   '/',
   '/lesen',
   '/suche',
+  '/api',
 ]
 
 // Auth routes - redirect logged-in users away from these

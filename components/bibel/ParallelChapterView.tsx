@@ -6,6 +6,7 @@ import { useSupabaseLiveQuery } from "@/hooks/useSupabaseLiveQuery";
 import { VerseText } from "./VerseText";
 import { VerseActionBar } from "./VerseActionBar";
 import { NoteModal } from "./NoteModal";
+import { BibleChat } from "./BibleChat";
 import { SelectionProvider, useSelection } from "@/components/providers/SelectionProvider";
 import {
   getHighlightsForChapter,
@@ -38,7 +39,7 @@ function ParallelContent({
   secondaryTranslationId,
   secondaryTranslationName,
 }: ParallelChapterViewProps) {
-  const { toggleVerse, isSelected, clearSelection, setContext, setActiveTranslation, translationId } = useSelection();
+  const { toggleVerse, isSelected, clearSelection, setContext, setActiveTranslation, translationId, getSelectedTexts } = useSelection();
   const [isNoteModalOpen, setIsNoteModalOpen] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
 
@@ -213,6 +214,13 @@ function ParallelContent({
         isOpen={isNoteModalOpen}
         onClose={() => setIsNoteModalOpen(false)}
         onSaved={handleDataChange}
+      />
+
+      {/* KI-Begleiter */}
+      <BibleChat
+        bookName={primaryBookName}
+        chapterNumber={chapterNumber}
+        selectedVerses={getSelectedTexts()}
       />
     </>
   );

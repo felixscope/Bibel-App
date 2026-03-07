@@ -6,6 +6,7 @@ import { useSupabaseLiveQuery } from "@/hooks/useSupabaseLiveQuery";
 import { VerseText } from "./VerseText";
 import { VerseActionBar } from "./VerseActionBar";
 import { NoteModal } from "./NoteModal";
+import { BibleChat } from "./BibleChat";
 import { BookIntroduction } from "./BookIntroduction";
 import { SelectionProvider, useSelection } from "@/components/providers/SelectionProvider";
 import { useTranslation } from "@/components/providers/TranslationProvider";
@@ -34,7 +35,7 @@ function ChapterContent({
   verses,
   introduction,
 }: ChapterViewProps) {
-  const { toggleVerse, isSelected, clearSelection, setContext } = useSelection();
+  const { toggleVerse, isSelected, clearSelection, setContext, getSelectedTexts } = useSelection();
   const { translation } = useTranslation();
   const [isNoteModalOpen, setIsNoteModalOpen] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
@@ -161,6 +162,13 @@ function ChapterContent({
         isOpen={isNoteModalOpen}
         onClose={() => setIsNoteModalOpen(false)}
         onSaved={handleDataChange}
+      />
+
+      {/* KI-Begleiter */}
+      <BibleChat
+        bookName={bookName}
+        chapterNumber={chapterNumber}
+        selectedVerses={getSelectedTexts()}
       />
     </>
   );
