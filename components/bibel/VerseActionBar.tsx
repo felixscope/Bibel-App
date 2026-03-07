@@ -252,7 +252,7 @@ export function VerseActionBar({
           </div>
 
           {/* Aktions-Buttons */}
-          <div className="grid grid-cols-4 gap-2">
+          <div className="flex items-center gap-2">
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -350,7 +350,7 @@ export function VerseActionBar({
                   />
                 </svg>
                 <span className="text-sm font-medium text-[var(--text-primary)]">
-                  KI fragen
+                  KI
                 </span>
               </button>
             )}
