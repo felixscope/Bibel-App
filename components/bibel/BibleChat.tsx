@@ -134,7 +134,7 @@ export function BibleChat({
           ];
         });
       }
-    } catch {
+    } catch (error) {
       setMessages((prev) => [
         ...prev.slice(0, -1),
         {
