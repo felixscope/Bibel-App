@@ -67,9 +67,9 @@ export function BibleChat({
     }
   }, [externalOpen, onExternalOpenHandled]);
 
-  // AutoFocus textarea when panel opens
+  // AutoFocus textarea when panel opens (desktop only — on mobile the keyboard would cover suggested prompts)
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && window.matchMedia("(min-width: 768px)").matches) {
       setTimeout(() => textareaRef.current?.focus(), 100);
     }
   }, [isOpen]);
