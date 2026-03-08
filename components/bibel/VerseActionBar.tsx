@@ -334,10 +334,10 @@ export function VerseActionBar({
             {onOpenChat && (
               <button
                 onClick={(e) => { e.stopPropagation(); onOpenChat(); }}
-                className="flex items-center justify-center py-2 px-3 rounded-lg bg-[var(--bg-secondary)] hover:bg-[var(--bg-hover)] transition-colors"
+                className="shrink-0 flex items-center justify-center py-2 px-3 rounded-lg bg-[var(--bg-secondary)] hover:bg-[var(--bg-hover)] transition-colors"
               >
                 <svg
-                  className="w-4 h-4 text-[var(--text-secondary)]"
+                  className="w-5 h-5 text-[var(--text-secondary)]"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
