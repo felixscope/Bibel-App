@@ -214,7 +214,7 @@ export function VerseActionBar({
             </button>
           </div>
 
-          {/* Farb-Buttons */}
+          {/* Farb-Buttons + KI */}
           <div className="flex items-center gap-2 mb-3">
             <span className="text-xs text-[var(--text-muted)] mr-1">Farbe:</span>
             {HIGHLIGHT_COLORS.map((color) => (
@@ -249,6 +249,26 @@ export function VerseActionBar({
                 )}
               </button>
             ))}
+            {onOpenChat && (
+              <button
+                onClick={(e) => { e.stopPropagation(); onOpenChat(); }}
+                className="ml-auto w-8 h-8 flex items-center justify-center rounded-lg bg-[var(--bg-secondary)] hover:bg-[var(--bg-hover)] transition-colors"
+              >
+                <svg
+                  className="w-5 h-5 text-[var(--text-secondary)]"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={1.5}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                  />
+                </svg>
+              </button>
+            )}
           </div>
 
           {/* Aktions-Buttons */}
@@ -331,26 +351,6 @@ export function VerseActionBar({
               </span>
             </button>
 
-            {onOpenChat && (
-              <button
-                onClick={(e) => { e.stopPropagation(); onOpenChat(); }}
-                className="shrink-0 flex items-center justify-center py-2 px-3 rounded-lg bg-[var(--bg-secondary)] hover:bg-[var(--bg-hover)] transition-colors"
-              >
-                <svg
-                  className="w-5 h-5 text-[var(--text-secondary)]"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={1.5}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                  />
-                </svg>
-              </button>
-            )}
           </div>
         </div>
       </motion.div>
