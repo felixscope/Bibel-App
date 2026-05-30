@@ -102,17 +102,17 @@ export function TopBar({ currentBookId, currentChapter }: TopBarProps) {
             </svg>
           </button>
 
-          {/* Schrifteinstellungen */}
-          <div className="relative" ref={dropdownRef}>
+          {/* Schrifteinstellungen - nur auf Desktop */}
+          <div className="relative hidden sm:block" ref={dropdownRef}>
             <button
               onClick={() => setShowFontSettings(!showFontSettings)}
               className={clsx(
-                "p-2 sm:p-2.5 rounded-lg transition-colors",
+                "p-2.5 rounded-lg transition-colors",
                 showFontSettings ? "bg-[var(--bg-hover)]" : "hover:bg-[var(--bg-hover)]"
               )}
               title="Schrifteinstellungen"
             >
-              <span className="text-sm sm:text-base font-semibold text-[var(--text-secondary)]">Aa</span>
+              <span className="text-base font-semibold text-[var(--text-secondary)]">Aa</span>
             </button>
 
             {/* Font Settings Dropdown */}
